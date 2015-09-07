@@ -13,17 +13,22 @@ TIntX
 
     
 **`Hints about the code:`**
+
     1.  Multi-condition "for" loops and loops where iterator gets changed inside 
       the loop were converted to while loops. 
+      
     2.  All Strings were ported as 1-Based (Index) because that is what Delphi Desktop 
        Compilers Uses by Default.
+       
     3.  Delphi needs manual disposal of objects created , as they don't have built-in 
         destructor (automatic garbage collectors) support in them.
+        
     4.  This Library is written with (Delphi XE7 Update 1). 
         This Library have been tested to work properly with 
         Delphi (XE7 Update 1). 
         This Library might work with other Unicode versions of Delphi (XE to Latest 
-        versions) with little or no modifications but have not been tested by me.   
+        versions) with little or no modifications but have not been tested by me. 
+        
     5.  Mobile Compilers are NOT Supported. you could make a fork and implement it.
   
    
@@ -88,18 +93,18 @@ Internally TIntX library operates with floating-point numbers when multiplicatio
 Internal Representation and ToString() Performance
 --------------------------------------------------
 
-      For a really huge integer numbers (like 42 in power 1048576 above) `ToString()` 
-    call can take a quite some time to execute. This is because internally TIntX big 
-    integer is stored as 2^32-base number in 'UInt32' array and to generate decimal 
-    string output it should be converted from 2^32 base to decimal base. Such digits 
-    storage approach was chosen intentionally -- it makes 'ToString' slower but uses 
-    memory efficiently and makes primitive operations on digits faster than power of 
-    10-base storage (which would make 'ToString()' working faster) and 
-    usually computations are used more often than 'ToString()'.
+   For a really huge integer numbers (like 42 in power 1048576 above) `ToString()` 
+ call can take a quite some time to execute. This is because internally TIntX big 
+ integer is stored as 2^32-base number in `UInt32` array and to generate decimal 
+ string output it should be converted from 2^32 base to decimal base. Such digits 
+ storage approach was chosen intentionally -- it makes `ToString` slower but uses 
+ memory efficiently and makes primitive operations on digits faster than power of 
+ 10-base storage (which would make `ToString()` working faster) and 
+ usually computations are used more often than `ToString()`.
 
 Unit Tests
 --------------------------------------------------
-      Unit Tests can be found in the 'IntXLib.Test' Folder.
+      Unit Tests can be found in the `IntXLib.Test` Folder.
     The Unit tests uses DUnitX and TestInsight. 
     (Thanks to the developers of DunitX and TestInsight) for making tools that makes 
     Unit testing fun.
