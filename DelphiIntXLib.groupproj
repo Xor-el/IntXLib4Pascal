@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{3FBC528F-F38B-4A05-8B28-91A8FD8747D2}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="IntXLib.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="IntXLibTest.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IntXLib">
+        <MSBuild Projects="IntXLib.dproj"/>
+    </Target>
+    <Target Name="IntXLib:Clean">
+        <MSBuild Projects="IntXLib.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IntXLib:Make">
+        <MSBuild Projects="IntXLib.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IntXLibTest">
+        <MSBuild Projects="IntXLibTest.dproj"/>
+    </Target>
+    <Target Name="IntXLibTest:Clean">
+        <MSBuild Projects="IntXLibTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IntXLibTest:Make">
+        <MSBuild Projects="IntXLibTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IntXLib;IntXLibTest"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IntXLib:Clean;IntXLibTest:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IntXLib:Make;IntXLibTest:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
