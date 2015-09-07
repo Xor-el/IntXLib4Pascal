@@ -74,14 +74,14 @@ end;
 **Some other functions implemented internally by me are**
 
   
-  SquareRoot (Integer SquareRoot) 
-  Square 
-  GCD (Greatest Common Divisor) 
-  AbsoluteValue (Get Absolute Value of a Negative TIntX)
-  Bézouts Identity
-  InvMod (Modular Inverse)
-  Factorial
-  LogN(base, number) (Get Log of a number using a specified base)
+      SquareRoot (Integer SquareRoot) 
+      Square 
+      GCD (Greatest Common Divisor) 
+      AbsoluteValue (Get Absolute Value of a Negative TIntX)
+      Bézouts Identity
+      InvMod (Modular Inverse)
+      Factorial
+      LogN(base, number) (Get Log of a number using a specified base)
 
 As you can see, `TIntX` implements all the standard arithmetic operators using `operator overloading` so its usage is transparent for developers, like if you're working with usual integers.
 
