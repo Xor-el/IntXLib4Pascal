@@ -20,7 +20,7 @@ uses
 
 type
   /// <summary>
-  /// Constants used in <see cref="IntX" /> and helping classes.
+  /// Constants used in <see cref="TIntX" /> and helping classes.
   /// </summary>
 
   TConstants = class
@@ -66,18 +66,18 @@ type
     DigitBaseLog: Double = 22.180709777918249;
 
     /// <summary>
-    /// Count of bits in one <see cref="IntX" /> digit.
+    /// Count of bits in one <see cref="TIntX" /> digit.
     /// </summary>
     DigitBitCount: Integer = 32;
 
     /// <summary>
-    /// <see cref="IntX" /> length from which FHT is used (in auto-FHT mode).
+    /// <see cref="TIntX" /> length from which FHT is used (in auto-FHT mode).
     /// Before this length usual multiply algorithm works faster.
     /// </summary>
     AutoFhtLengthLowerBound: UInt32 = UInt32(1) shl 9;
 
     /// <summary>
-    /// <see cref="IntX" /> length 'till which FHT is used (in auto-FHT mode).
+    /// <see cref="TIntX" /> length 'till which FHT is used (in auto-FHT mode).
     /// After this length using of FHT may be unsafe due to big precision errors.
     /// </summary>
     AutoFhtLengthUpperBound: UInt32 = UInt32(1) shl 26;
@@ -88,43 +88,43 @@ type
     FhtValidityCheckDigitCount: UInt32 = 10;
 
     /// <summary>
-    /// <see cref="IntX" /> length from which Newton approach is used (in auto-Newton mode).
+    /// <see cref="TIntX" /> length from which Newton approach is used (in auto-Newton mode).
     /// Before this length usual divide algorithm works faster.
     /// </summary>
     AutoNewtonLengthLowerBound: UInt32 = UInt32(1) shl 13;
 
     /// <summary>
-    /// <see cref="IntX" /> length 'till which Newton approach is used (in auto-Newton mode).
+    /// <see cref="TIntX" /> length 'till which Newton approach is used (in auto-Newton mode).
     /// After this length using of fast division may be slow.
     /// </summary>
     AutoNewtonLengthUpperBound: UInt32 = UInt32(1) shl 26;
 
     /// <summary>
-    /// <see cref="IntX" /> length from which fast parsing is used (in Fast parsing mode).
+    /// <see cref="TIntX" /> length from which fast parsing is used (in Fast parsing mode).
     /// Before this length usual parsing algorithm works faster.
     /// </summary>
     FastParseLengthLowerBound: UInt32 = 32;
 
     /// <summary>
-    /// <see cref="IntX" /> length 'till which fast parsing is used (in Fast parsing mode).
+    /// <see cref="TIntX" /> length 'till which fast parsing is used (in Fast parsing mode).
     /// After this length using of parsing will be slow.
     /// </summary>
     FastParseLengthUpperBound: UInt32 = 4294967295;
 
     /// <summary>
-    /// <see cref="IntX" /> length from which fast conversion is used (in Fast convert mode).
+    /// <see cref="TIntX" /> length from which fast conversion is used (in Fast convert mode).
     /// Before this length usual conversion algorithm works faster.
     /// </summary>
     FastConvertLengthLowerBound: UInt32 = 16;
 
     /// <summary>
-    /// <see cref="IntX" /> length 'till which fast conversion is used (in Fast convert mode).
+    /// <see cref="TIntX" /> length 'till which fast conversion is used (in Fast convert mode).
     /// After this length using of conversion will be slow.
     /// </summary>
     FastConvertLengthUpperBound: UInt32 = 4294967295;
 
     /// <summary>
-    /// Maximum count of bits which can fit in <see cref="IntX" />.
+    /// Maximum count of bits which can fit in <see cref="TIntX" />.
     /// </summary>
     MaxBitCount: UInt64 = 4294967295 * UInt64(32);
 

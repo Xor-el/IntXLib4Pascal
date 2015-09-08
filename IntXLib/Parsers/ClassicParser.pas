@@ -52,7 +52,7 @@ begin
 end;
 
 /// <summary>
-/// Parses provided string representation of <see cref="IntX" /> object.
+/// Parses provided string representation of <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="value">Number as string.</param>
 /// <param name="startIndex">Index inside string from which to start.</param>

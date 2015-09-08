@@ -20,7 +20,7 @@ uses
 
 type
   /// <summary>
-  /// Helps to work with <see cref="IntX" /> string representations.
+  /// Helps to work with <see cref="TIntX" /> string representations.
   /// </summary>
 
   TStrRepHelper = class
@@ -48,7 +48,7 @@ type
 implementation
 
 /// <summary>
-/// Returns chararray for given string.
+/// Returns char array for given string.
 /// </summary>
 /// <param name="InString">input string.</param>
 
@@ -57,7 +57,7 @@ class function TStrRepHelper.ToCharArray(InString: String): TCharArray;
 begin
   SetLength(result, Length(InString));
 
-  // Move the string contents to a chararray
+  // Move the string contents to a char array
   Move((PChar(InString))^, result[0], Length(InString) * SizeOf(Char));
 
 end;

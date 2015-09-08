@@ -22,7 +22,7 @@ uses
 
 type
   /// <summary>
-  /// Contains helping methods for operations over <see cref="IntX" /> digits as arrays.
+  /// Contains helping methods for operations over <see cref="TIntX" /> digits as arrays.
   /// </summary>
 
   TDigitOpHelper = class
@@ -159,7 +159,6 @@ begin
   end;
 
   // Perform digits + carry moving
-  // for (uint i = length2; i < length1; ++i)
   i := length2;
   while i < (length1) do
   begin
@@ -315,7 +314,7 @@ begin
 end;
 
 /// <summary>
-/// Divides one big integer represented by it's digits on another one big ingeter.
+/// Divides one big integer represented by it's digits on another one big integer.
 /// Only remainder is filled.
 /// </summary>
 /// <param name="digits1">First big integer digits.</param>
@@ -333,7 +332,7 @@ begin
 end;
 
 /// <summary>
-/// Divides one big integer represented by it's digits on another one big ingeter.
+/// Divides one big integer represented by it's digits on another one big integer.
 /// Only remainder is filled.
 /// </summary>
 /// <param name="digitsPtr1">First big integer digits.</param>
@@ -362,7 +361,7 @@ begin
 end;
 
 /// <summary>
-/// Compares 2 <see cref="IntX" /> objects represented by digits only (not taking sign into account).
+/// Compares 2 <see cref="TIntX" /> objects represented by digits only (not taking sign into account).
 /// Returns "-1" if <paramref name="digits1" /> &lt; <paramref name="digits2" />, "0" if equal and "1" if &gt;.
 /// </summary>
 /// <param name="digits1">First big integer digits.</param>
@@ -390,7 +389,7 @@ begin
 end;
 
 /// <summary>
-/// Compares 2 <see cref="IntX" /> objects represented by pointers only (not taking sign into account).
+/// Compares 2 <see cref="TIntX" /> objects represented by pointers only (not taking sign into account).
 /// Returns "-1" if <paramref name="digitsPtr1" /> &lt; <paramref name="digitsPtr2" />, "0" if equal and "1" if &gt;.
 /// </summary>
 /// <param name="digitsPtr1">First big integer digits.</param>

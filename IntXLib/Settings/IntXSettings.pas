@@ -20,7 +20,7 @@ uses
 
 type
   /// <summary>
-  /// <see cref="IntX" /> instance settings.
+  /// <see cref="TIntX" /> instance settings.
   /// </summary>
 
   TIntXSettings = class sealed
@@ -71,7 +71,7 @@ begin
 end;
 
 /// <summary>
-/// To string conversion mode used in this <see cref="IntX" /> instance.
+/// To string conversion mode used in this <see cref="TIntX" /> instance.
 /// Set to value from <see cref="TIntX.GlobalSettings" /> by default.
 /// </summary>
 

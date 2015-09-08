@@ -23,7 +23,7 @@ uses
 type
   /// <summary>
   /// Base class for multipliers.
-  /// Contains default implementation of multiply operation over <see cref="IntX" /> instances.
+  /// Contains default implementation of multiply operation over <see cref="TIntX" /> instances.
   /// </summary>
 
   TMultiplierBase = class abstract(TInterfacedObject, IIMultiplier)

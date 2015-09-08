@@ -21,7 +21,7 @@ uses
 type
   /// <summary>
   /// Base class for ToString converters.
-  /// Contains default implementations of convert operation over <see cref="IntX" /> instances.
+  /// Contains default implementations of convert operation over <see cref="TIntX" /> instances.
   /// </summary>
 
   TStringConverterBase = class abstract(TInterfacedObject, IIStringConverter)
@@ -62,13 +62,13 @@ begin
 end;
 
 /// <summary>
-/// Returns string representation of <see cref="IntX" /> object in given base.
+/// Returns string representation of <see cref="TIntX" /> object in given base.
 /// </summary>
-/// <param name="IntX">Big integer to convert.</param>
+/// <param name="TIntX">Big integer to convert.</param>
 /// <param name="numberBase">Base of system in which to do output.</param>
 /// <param name="alphabet">Alphabet which contains chars used to represent big integer, char position is coresponding digit value.</param>
 /// <returns>Object string representation.</returns>
-/// <exception cref="EArgumentException"><paramref name="numberBase" /> is less then 2 or <paramref name="intX" /> is too big to fit in string.</exception>
+/// <exception cref="EArgumentException"><paramref name="numberBase" /> is less then 2 or <paramref name="IntX" /> is too big to fit in string.</exception>
 
 function TStringConverterBase.ToString(IntX: TIntX; numberBase: UInt32;
   alphabet: array of Char): String;

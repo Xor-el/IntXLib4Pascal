@@ -24,7 +24,7 @@ uses
 type
   /// <summary>
   /// Base class for dividers.
-  /// Contains default implementation of divide operation over <see cref="IntX" /> instances.
+  /// Contains default implementation of divide operation over <see cref="TIntX" /> instances.
   /// </summary>
 
   TDividerBase = class abstract(TInterfacedObject, IIDivider)
@@ -64,7 +64,7 @@ type
 implementation
 
 /// <summary>
-/// Divides one <see cref="IntX" /> by another.
+/// Divides one <see cref="TIntX" /> by another.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>

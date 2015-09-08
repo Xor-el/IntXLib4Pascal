@@ -34,7 +34,7 @@ uses
 
 type
   /// <summary>
-  /// Contains helping methods for operations over <see cref="IntX" />.
+  /// Contains helping methods for operations over <see cref="TIntX" />.
   /// </summary>
 
   TOpHelper = class sealed
@@ -187,7 +187,7 @@ begin
   end;
 
   tempState := TIntX.CompareRecords(int1, smallerInt);
-  // Create new big int object
+  // Create new big TIntX object
   newInt := TIntX.Create(biggerInt._length, tempState xor int1._negative);
 
   // Do actual subtraction
@@ -201,7 +201,7 @@ begin
 end;
 
 /// <summary>
-/// Adds/subtracts one <see cref="IntX" /> to/from another.
+/// Adds/subtracts one <see cref="TIntX" /> to/from another.
 /// Determines which operation to use basing on operands signs.
 /// </summary>
 /// <param name="int1">First big integer.</param>
@@ -318,7 +318,7 @@ begin
 end;
 
 /// <summary>
-/// Calculates Integer Logarithm of a number <see cref="IntX" /> object for a specified base.
+/// Calculates Integer Logarithm of a number <see cref="TIntX" /> object for a specified base.
 /// the largest power the base can be raised to that does not exceed the number.
 /// </summary>
 /// <param name="base">base.</param>
@@ -614,7 +614,7 @@ begin
 end;
 
 /// <summary>
-/// Compares 2 <see cref="IntX" /> objects.
+/// Compares 2 <see cref="TIntX" /> objects.
 /// Returns "-2" if any argument is null, "-1" if <paramref name="int1" /> &lt; <paramref name="int2" />,
 /// "0" if equal and "1" if &gt;.
 /// </summary>
@@ -682,7 +682,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object to int.
+/// Compares <see cref="TIntX" /> object to int.
 /// Returns "-1" if <paramref name="int1" /> &lt; <paramref name="int2" />, "0" if equal and "1" if &gt;.
 /// </summary>
 /// <param name="int1">First big integer.</param>
@@ -783,7 +783,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object to unsigned int.
+/// Compares <see cref="TIntX" /> object to unsigned int.
 /// Returns "-1" if <paramref name="int1" /> &lt; <paramref name="int2" />, "0" if equal and "1" if &gt;.
 /// For internal use.
 /// </summary>
@@ -855,7 +855,7 @@ begin
 end;
 
 /// <summary>
-/// Shifts <see cref="IntX" /> object.
+/// Shifts <see cref="TIntX" /> object.
 /// Determines which operation to use basing on shift sign.
 /// </summary>
 /// <param name="IntX">Big integer.</param>
@@ -1139,7 +1139,7 @@ begin
     Exit;
   end;
 
-  // Create new big int object of needed length
+  // Create new big TIntX object of needed length
   newInt := TIntX.Create(value._length, not value._negative);
 
   // Do actual operation

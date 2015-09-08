@@ -23,7 +23,7 @@ uses
 type
   /// <summary>
   /// Contains helping methods for work with FHT (Fast Hartley Transform).
-  /// FHT is a better alternative of FFT (Fast Fourier Transform) - at least for <see cref="IntX" />.
+  /// FHT is a better alternative of FFT (Fast Fourier Transform) - at least for <see cref="TIntX" />.
   /// </summary>
 
   TFhtHelper = class
@@ -110,12 +110,8 @@ type
     class procedure ReverseFht(slice: PMyDouble; mlength: UInt32;
       lengthLog2: Integer); overload; static;
 
-    // SIN() table
-    // class function msineTable: TMyDoubleArray;
-
   class var
 
-    // var
     FLock: TCriticalSection;
     sineTable: TMyDoubleArray;
 
@@ -176,7 +172,7 @@ begin
 end;
 
 /// <summary>
-/// Converts <see cref="IntX" /> digits into real representation (used in FHT).
+/// Converts <see cref="TIntX" /> digits into real representation (used in FHT).
 /// </summary>
 /// <param name="digits">Big integer digits.</param>
 /// <param name="mlength"><paramref name="digits" /> length.</param>
@@ -196,7 +192,7 @@ begin
 end;
 
 /// <summary>
-/// Converts <see cref="IntX" /> digits into real representation (used in FHT).
+/// Converts <see cref="TIntX" /> digits into real representation (used in FHT).
 /// </summary>
 /// <param name="digitsPtr">Big integer digits.</param>
 /// <param name="length"><paramref name="digitsPtr" /> length.</param>
@@ -226,7 +222,7 @@ begin
   // Amount of units pointed by digitsPtr
   unitCount := mlength shl DoubleDataLengthShift;
 
-  // Copy all words from digits into new double[]
+  // Copy all words from digits into new double array
   unitDigitsPtr := PMyByte(digitsPtr);
   i := 0;
   while i < (unitCount) do
@@ -265,7 +261,7 @@ begin
 end;
 
 /// <summary>
-/// Converts real digits representation (result of FHT) into usual <see cref="IntX" /> digits.
+/// Converts real digits representation (result of FHT) into usual <see cref="TIntX" /> digits.
 /// </summary>
 /// <param name="array">Real digits representation.</param>
 /// <param name="mlength"><paramref name="array" /> length.</param>
@@ -287,7 +283,7 @@ begin
 end;
 
 /// <summary>
-/// Converts real digits representation (result of FHT) into usual <see cref="IntX" /> digits.
+/// Converts real digits representation (result of FHT) into usual <see cref="TIntX" /> digits.
 /// </summary>
 /// <param name="slice">Real digits representation.</param>
 /// <param name="length"><paramref name="slice" /> length.</param>
@@ -425,7 +421,7 @@ begin
 end;
 {$HINTS ON}
 /// <summary>
-/// Performs FHT "in place" for given double[] array.
+/// Performs FHT "in place" for given double array.
 /// </summary>
 /// <param name="array">Double array.</param>
 /// <param name="mlength">Array length.</param>
@@ -441,7 +437,7 @@ begin
 end;
 
 /// <summary>
-/// Performs FHT "in place" for given double[] array slice.
+/// Performs FHT "in place" for given double array slice.
 /// </summary>
 /// <param name="slice">Double array slice.</param>
 /// <param name="length">Slice length.</param>
@@ -510,7 +506,7 @@ begin
 end;
 
 /// <summary>
-/// Performs FHT "in place" for given double[] array slice.
+/// Performs FHT "in place" for given double array slice.
 /// Fast version for length == 4.
 /// </summary>
 /// <param name="slice">Double array slice.</param>
@@ -604,7 +600,7 @@ begin
 end;
 
 /// <summary>
-/// Performs FHT reverse "in place" for given double[] array.
+/// Performs FHT reverse "in place" for given double array.
 /// </summary>
 /// <param name="array">Double array.</param>
 /// <param name="mlength">Array length.</param>
@@ -620,7 +616,7 @@ begin
 end;
 
 /// <summary>
-/// Performs reverse FHT "in place" for given double[] array slice.
+/// Performs reverse FHT "in place" for given double array slice.
 /// </summary>
 /// <param name="slice">Double array slice.</param>
 /// <param name="length">Slice length.</param>
@@ -679,7 +675,7 @@ begin
 end;
 
 /// <summary>
-/// Performs reverse FHT "in place" for given double[] array slice.
+/// Performs reverse FHT "in place" for given double array slice.
 /// Fast version for length == 8.
 /// </summary>
 /// <param name="slice">Double array slice.</param>

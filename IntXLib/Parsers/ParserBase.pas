@@ -17,12 +17,12 @@ interface
 
 uses
   IParser, SysUtils, Math, RegularExpressions, Generics.Collections, Strings,
-  Constants, DTypes, Bits, IntX, Vcl.Dialogs;
+  Constants, DTypes, Bits, IntX;
 
 type
   /// <summary>
   /// Base class for parsers.
-  /// Contains default implementations of parse operation over <see cref="IntX" /> instances.
+  /// Contains default implementations of parse operation over <see cref="TIntX" /> instances.
   /// </summary>
 
   TParserBase = class abstract(TInterfacedObject, IIParser)
@@ -78,7 +78,7 @@ begin
 end;
 
 /// <summary>
-/// Parses provided string representation of <see cref="IntX" /> object.
+/// Parses provided string representation of <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="value">Number as string.</param>
 /// <param name="numberBase">Number base.</param>
@@ -201,8 +201,7 @@ begin
     Result := TIntX.Create(0);
     Exit;
   end;
-  // numberBase := 10;
-  // Determine length of new digits array and create new IntX object with given length
+  // Determine length of new digits array and create new TIntX object with given length
 
   valueLength := endIndex - startIndex + 1;
   digitsLength := UInt32(Ceil(Ln(numberBase) / TConstants.DigitBaseLog *
@@ -218,7 +217,7 @@ begin
 end;
 
 /// <summary>
-/// Parses provided string representation of <see cref="IntX" /> object.
+/// Parses provided string representation of <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="value">Number as string.</param>
 /// <param name="startIndex">Index inside string from which to start.</param>

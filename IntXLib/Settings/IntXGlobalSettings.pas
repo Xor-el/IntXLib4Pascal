@@ -21,7 +21,7 @@ uses
 
 type
   /// <summary>
-  /// <see cref="IntX" /> global settings.
+  /// <see cref="TIntX" /> global settings.
   /// </summary>
 
   TIntXGlobalSettings = class sealed
@@ -100,7 +100,7 @@ begin
 end;
 
 /// <summary>
-/// Multiply operation mode used in all <see cref="IntX" /> instances.
+/// Multiply operation mode used in all <see cref="TIntX" /> instances.
 /// Set to auto-FHT by default.
 /// </summary>
 
@@ -115,7 +115,7 @@ begin
 end;
 
 /// <summary>
-/// Divide operation mode used in all <see cref="IntX" /> instances.
+/// Divide operation mode used in all <see cref="TIntX" /> instances.
 /// Set to auto-Newton by default.
 /// </summary>
 
@@ -130,7 +130,7 @@ begin
 end;
 
 /// <summary>
-/// Parse mode used in all <see cref="IntX" /> instances.
+/// Parse mode used in all <see cref="TIntX" /> instances.
 /// Set to Fast by default.
 /// </summary>
 

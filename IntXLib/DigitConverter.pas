@@ -36,7 +36,7 @@ implementation
 /// <summary>
 /// Converts big integer digits to bytes.
 /// </summary>
-/// <param name="digits"><see cref="IntX" /> digits.</param>
+/// <param name="digits"><see cref="TIntX" /> digits.</param>
 /// <returns>Resulting bytes.</returns>
 /// <remarks>
 /// Digits can be obtained using <see cref="TIntX.GetInternalState" /> method.
@@ -58,7 +58,7 @@ end;
 /// Converts bytes to big integer digits.
 /// </summary>
 /// <param name="bytes">Bytes.</param>
-/// <returns>Resulting <see cref="IntX" /> digits.</returns>
+/// <returns>Resulting <see cref="TIntX" /> digits.</returns>
 /// <remarks>
 /// Big integer can be created from digits using <see cref="TIntX.Create(TMyUInt32Array, Boolean)" /> constructor.
 /// </remarks>

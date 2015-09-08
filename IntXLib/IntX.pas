@@ -324,7 +324,7 @@ end;
 /// Creates new big integer from array of it's "digits".
 /// Digit with lower index has less weight.
 /// </summary>
-/// <param name="digits">Array of <see cref="IntX" /> digits.</param>
+/// <param name="digits">Array of <see cref="TIntX" /> digits.</param>
 /// <param name="negative">True if this number is negative.</param>
 /// <exception cref="ArgumentNullException"><paramref name="digits" /> is a null reference.</exception>
 
@@ -341,7 +341,7 @@ begin
 end;
 
 /// <summary>
-/// Creates new <see cref="IntX" /> from string.
+/// Creates new <see cref="TIntX" /> from string.
 /// </summary>
 /// <param name="value">Number as string.</param>
 
@@ -354,7 +354,7 @@ begin
 end;
 
 /// <summary>
-/// Creates new <see cref="IntX" /> from string.
+/// Creates new <see cref="TIntX" /> from string.
 /// </summary>
 /// <param name="value">Number as string.</param>
 /// <param name="numberBase">Number base.</param>
@@ -425,7 +425,7 @@ end;
 ///
 /// For internal use.
 /// </summary>
-/// <param name="digits">Array of <see cref="IntX" /> digits.</param>
+/// <param name="digits">Array of <see cref="TIntX" /> digits.</param>
 /// <param name="negative">True if this number is negative.</param>
 /// <param name="mlength">Length to use for internal digits array.</param>
 /// <exception cref="EArgumentNilException"><paramref name="digits" /> is a null reference.</exception>
@@ -443,7 +443,7 @@ begin
 end;
 
 /// <summary>
-/// <see cref="IntX" /> global settings.
+/// <see cref="TIntX" /> global settings.
 /// </summary>
 
 class function TIntX.GlobalSettings: TIntXGlobalSettings;
@@ -453,7 +453,7 @@ begin
 end;
 
 /// <summary>
-/// <see cref="IntX" /> instance settings.
+/// <see cref="TIntX" /> instance settings.
 /// </summary>
 
 function TIntX.Settings: TIntXSettings;
@@ -471,7 +471,7 @@ begin
 end;
 
 /// <summary>
-/// Compares two <see cref="IntX" /> objects and returns true if their internal state is equal.
+/// Compares two <see cref="TIntX" /> objects and returns true if their internal state is equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -483,7 +483,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with integer and returns true if their internal state is equal.
+/// Compares <see cref="TIntX" /> object with integer and returns true if their internal state is equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second integer.</param>
@@ -495,7 +495,7 @@ begin
 end;
 
 /// <summary>
-/// Compares integer with <see cref="IntX" /> object and returns true if their internal state is equal.
+/// Compares integer with <see cref="TIntX" /> object and returns true if their internal state is equal.
 /// </summary>
 /// <param name="int1">First integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -507,10 +507,10 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with unsinged integer and returns true if their internal state is equal.
+/// Compares <see cref="TIntX" /> object with unsigned integer and returns true if their internal state is equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
-/// <param name="int2">Second unsinged integer.</param>
+/// <param name="int2">Second unsigned integer.</param>
 /// <returns>True if equals.</returns>
 
 class operator TIntX.Equal(int1: TIntX; int2: UInt32): Boolean;
@@ -519,9 +519,9 @@ begin
 end;
 
 /// <summary>
-/// Compares unsigned integer with <see cref="IntX" /> object and returns true if their internal state is equal.
+/// Compares unsigned integer with <see cref="TIntX" /> object and returns true if their internal state is equal.
 /// </summary>
-/// <param name="int1">First unsinged integer.</param>
+/// <param name="int1">First unsigned integer.</param>
 /// <param name="int2">Second big integer.</param>
 /// <returns>True if equals.</returns>
 
@@ -531,7 +531,7 @@ begin
 end;
 
 /// <summary>
-/// Compares two <see cref="IntX" /> objects and returns true if their internal state is not equal.
+/// Compares two <see cref="TIntX" /> objects and returns true if their internal state is not equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -543,7 +543,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with integer and returns true if their internal state is not equal.
+/// Compares <see cref="TIntX" /> object with integer and returns true if their internal state is not equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second integer.</param>
@@ -555,7 +555,7 @@ begin
 end;
 
 /// <summary>
-/// Compares integer with <see cref="IntX" /> object and returns true if their internal state is not equal.
+/// Compares integer with <see cref="TIntX" /> object and returns true if their internal state is not equal.
 /// </summary>
 /// <param name="int1">First integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -567,7 +567,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with unsigned integer and returns true if their internal state is not equal.
+/// Compares <see cref="TIntX" /> object with unsigned integer and returns true if their internal state is not equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second unsigned integer.</param>
@@ -579,7 +579,7 @@ begin
 end;
 
 /// <summary>
-/// Compares unsigned integer with <see cref="IntX" /> object and returns true if their internal state is not equal.
+/// Compares unsigned integer with <see cref="TIntX" /> object and returns true if their internal state is not equal.
 /// </summary>
 /// <param name="int1">First unsigned integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -591,7 +591,7 @@ begin
 end;
 
 /// <summary>
-/// Compares two <see cref="IntX" /> objects and returns true if first is greater.
+/// Compares two <see cref="TIntX" /> objects and returns true if first is greater.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -603,7 +603,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with integer and returns true if first is greater.
+/// Compares <see cref="TIntX" /> object with integer and returns true if first is greater.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second integer.</param>
@@ -615,7 +615,7 @@ begin
 end;
 
 /// <summary>
-/// Compares integer with <see cref="IntX" /> object and returns true if first is greater.
+/// Compares integer with <see cref="TIntX" /> object and returns true if first is greater.
 /// </summary>
 /// <param name="int1">First integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -627,7 +627,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with unsigned integer and returns true if first is greater.
+/// Compares <see cref="TIntX" /> object with unsigned integer and returns true if first is greater.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second unsigned integer.</param>
@@ -639,7 +639,7 @@ begin
 end;
 
 /// <summary>
-/// Compares unsigned integer with <see cref="IntX" /> object and returns true if first is greater.
+/// Compares unsigned integer with <see cref="TIntX" /> object and returns true if first is greater.
 /// </summary>
 /// <param name="int1">First unsigned integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -651,7 +651,7 @@ begin
 end;
 
 /// <summary>
-/// Compares two <see cref="IntX" /> objects and returns true if first is greater or equal.
+/// Compares two <see cref="TIntX" /> objects and returns true if first is greater or equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -663,7 +663,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with integer and returns true if first is greater or equal.
+/// Compares <see cref="TIntX" /> object with integer and returns true if first is greater or equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second integer.</param>
@@ -675,7 +675,7 @@ begin
 end;
 
 /// <summary>
-/// Compares integer with <see cref="IntX" /> object and returns true if first is greater or equal.
+/// Compares integer with <see cref="TIntX" /> object and returns true if first is greater or equal.
 /// </summary>
 /// <param name="int1">First integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -687,10 +687,10 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with unsinged integer and returns true if first is greater or equal.
+/// Compares <see cref="TIntX" /> object with unsigned integer and returns true if first is greater or equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
-/// <param name="int2">Second unsinged integer.</param>
+/// <param name="int2">Second unsigned integer.</param>
 /// <returns>True if first is greater or equal.</returns>
 
 class operator TIntX.GreaterThanOrEqual(int1: TIntX; int2: UInt32): Boolean;
@@ -699,9 +699,9 @@ begin
 end;
 
 /// <summary>
-/// Compares unsinged integer with <see cref="IntX" /> object and returns true if first is greater or equal.
+/// Compares unsigned integer with <see cref="TIntX" /> object and returns true if first is greater or equal.
 /// </summary>
-/// <param name="int1">First unsinged integer.</param>
+/// <param name="int1">First unsigned integer.</param>
 /// <param name="int2">Second big integer.</param>
 /// <returns>True if first is greater or equal.</returns>
 
@@ -711,7 +711,7 @@ begin
 end;
 
 /// <summary>
-/// Compares two <see cref="IntX" /> objects and returns true if first is lighter.
+/// Compares two <see cref="TIntX" /> objects and returns true if first is lighter.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -723,7 +723,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with integer and returns true if first is lighter.
+/// Compares <see cref="TIntX" /> object with integer and returns true if first is lighter.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second integer.</param>
@@ -735,7 +735,7 @@ begin
 end;
 
 /// <summary>
-/// Compares integer with <see cref="IntX" /> object and returns true if first is lighter.
+/// Compares integer with <see cref="TIntX" /> object and returns true if first is lighter.
 /// </summary>
 /// <param name="int1">First integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -747,10 +747,10 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with unsinged integer and returns true if first is lighter.
+/// Compares <see cref="TIntX" /> object with unsigned integer and returns true if first is lighter.
 /// </summary>
 /// <param name="int1">First big integer.</param>
-/// <param name="int2">Second unsinged integer.</param>
+/// <param name="int2">Second unsigned integer.</param>
 /// <returns>True if first is lighter.</returns>
 
 class operator TIntX.LessThan(int1: TIntX; int2: UInt32): Boolean;
@@ -759,9 +759,9 @@ begin
 end;
 
 /// <summary>
-/// Compares unsinged integer with <see cref="IntX" /> object and returns true if first is lighter.
+/// Compares unsigned integer with <see cref="TIntX" /> object and returns true if first is lighter.
 /// </summary>
-/// <param name="int1">First unsinged integer.</param>
+/// <param name="int1">First unsigned integer.</param>
 /// <param name="int2">Second big integer.</param>
 /// <returns>True if first is lighter.</returns>
 
@@ -771,7 +771,7 @@ begin
 end;
 
 /// <summary>
-/// Compares two <see cref="IntX" /> objects and returns true if first is lighter or equal.
+/// Compares two <see cref="TIntX" /> objects and returns true if first is lighter or equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -783,7 +783,7 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with integer and returns true if first is lighter or equal.
+/// Compares <see cref="TIntX" /> object with integer and returns true if first is lighter or equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second integer.</param>
@@ -795,7 +795,7 @@ begin
 end;
 
 /// <summary>
-/// Compares integer with <see cref="IntX" /> object and returns true if first is lighter or equal.
+/// Compares integer with <see cref="TIntX" /> object and returns true if first is lighter or equal.
 /// </summary>
 /// <param name="int1">First integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -807,10 +807,10 @@ begin
 end;
 
 /// <summary>
-/// Compares <see cref="IntX" /> object with unsinged integer and returns true if first is lighter or equal.
+/// Compares <see cref="TIntX" /> object with unsigned integer and returns true if first is lighter or equal.
 /// </summary>
 /// <param name="int1">First big integer.</param>
-/// <param name="int2">Second unsinged integer.</param>
+/// <param name="int2">Second unsigned integer.</param>
 /// <returns>True if first is lighter or equal.</returns>
 
 class operator TIntX.LessThanOrEqual(int1: TIntX; int2: UInt32): Boolean;
@@ -819,9 +819,9 @@ begin
 end;
 
 /// <summary>
-/// Compares unsigned integer with <see cref="IntX" /> object and returns true if first is lighter or equal.
+/// Compares unsigned integer with <see cref="TIntX" /> object and returns true if first is lighter or equal.
 /// </summary>
-/// <param name="int1">First unsinged integer.</param>
+/// <param name="int1">First unsigned integer.</param>
 /// <param name="int2">Second big integer.</param>
 /// <returns>True if first is lighter or equal.</returns>
 
@@ -831,7 +831,7 @@ begin
 end;
 
 /// <summary>
-/// Adds one <see cref="IntX" /> object to another.
+/// Adds one <see cref="TIntX" /> object to another.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -843,7 +843,7 @@ begin
 end;
 
 /// <summary>
-/// Subtracts one <see cref="IntX" /> object from another.
+/// Subtracts one <see cref="TIntX" /> object from another.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -855,7 +855,7 @@ begin
 end;
 
 /// <summary>
-/// Multiplies one <see cref="IntX" /> object on another.
+/// Multiplies one <see cref="TIntX" /> object on another.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -867,7 +867,7 @@ begin
 end;
 
 /// <summary>
-/// Divides one <see cref="IntX" /> object by another.
+/// Divides one <see cref="TIntX" /> object by another.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -882,7 +882,7 @@ begin
 end;
 
 /// <summary>
-/// Divides one <see cref="IntX" /> object by another and returns division modulo.
+/// Divides one <see cref="TIntX" /> object by another and returns division modulo.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -898,7 +898,7 @@ begin
 end;
 
 /// <summary>
-/// Shifts <see cref="IntX" /> object on selected bits count to the left.
+/// Shifts <see cref="TIntX" /> object on selected bits count to the left.
 /// </summary>
 /// <param name="intX">Big integer.</param>
 /// <param name="shift">Bits count.</param>
@@ -910,7 +910,7 @@ begin
 end;
 
 /// <summary>
-/// Shifts <see cref="IntX" /> object on selected bits count to the right.
+/// Shifts <see cref="TIntX" /> object on selected bits count to the right.
 /// </summary>
 /// <param name="intX">Big integer.</param>
 /// <param name="shift">Bits count.</param>
@@ -922,7 +922,7 @@ begin
 end;
 
 /// <summary>
-/// Returns the same <see cref="IntX" /> value.
+/// Returns the same <see cref="TIntX" /> value.
 /// </summary>
 /// <param name="value">Initial value.</param>
 /// <returns>The same value, but new object.</returns>
@@ -943,7 +943,7 @@ begin
 end;
 
 /// <summary>
-/// Returns the same <see cref="IntX" /> value, but with other sign.
+/// Returns the same <see cref="TIntX" /> value, but with other sign.
 /// </summary>
 /// <param name="value">Initial value.</param>
 /// <returns>The same value, but with other sign.</returns>
@@ -969,7 +969,7 @@ begin
 end;
 
 /// <summary>
-/// Returns increased <see cref="IntX" /> value.
+/// Returns increased <see cref="TIntX" /> value.
 /// </summary>
 /// <param name="value">Initial value.</param>
 /// <returns>Increased value.</returns>
@@ -989,7 +989,7 @@ begin
 end;
 
 /// <summary>
-/// Returns decreased <see cref="IntX" /> value.
+/// Returns decreased <see cref="TIntX" /> value.
 /// </summary>
 /// <param name="value">Initial value.</param>
 /// <returns>Decreased value.</returns>
@@ -1061,7 +1061,7 @@ begin
 end;
 
 /// <summary>
-/// Implicitly converts <see cref="Integer" /> to <see cref="IntX" />.
+/// Implicitly converts <see cref="Integer" /> to <see cref="TIntX" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1072,7 +1072,7 @@ begin
 end;
 
 /// <summary>
-/// Implicitly converts <see cref="UInt32" /> to <see cref="IntX" />.
+/// Implicitly converts <see cref="UInt32" /> to <see cref="TIntX" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1083,7 +1083,7 @@ begin
 end;
 
 /// <summary>
-/// Implicitly converts <see cref="Word" /> to <see cref="IntX" />.
+/// Implicitly converts <see cref="Word" /> to <see cref="TIntX" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1094,7 +1094,7 @@ begin
 end;
 
 /// <summary>
-/// Implicitly converts <see cref="Int64" /> to <see cref="IntX" />.
+/// Implicitly converts <see cref="Int64" /> to <see cref="TIntX" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1105,7 +1105,7 @@ begin
 end;
 
 /// <summary>
-/// Implicitly converts <see cref="UInt64" /> to <see cref="IntX" />.
+/// Implicitly converts <see cref="UInt64" /> to <see cref="TIntX" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1116,7 +1116,7 @@ begin
 end;
 
 /// <summary>
-/// Explicitly converts <see cref="IntX" /> to <see cref="Integer" />.
+/// Explicitly converts <see cref="TIntX" /> to <see cref="Integer" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1133,7 +1133,7 @@ begin
 end;
 
 /// <summary>
-/// Explicitly converts <see cref="IntX" /> to <see cref="UInt32" />.
+/// Explicitly converts <see cref="TIntX" /> to <see cref="UInt32" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1154,7 +1154,7 @@ begin
 end;
 
 /// <summary>
-/// Explicitly converts <see cref="IntX" /> to <see cref="Int64" />.
+/// Explicitly converts <see cref="TIntX" /> to <see cref="Int64" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1171,7 +1171,7 @@ begin
 end;
 
 /// <summary>
-/// Explicitly converts <see cref="IntX" /> to <see cref="UInt64" />.
+/// Explicitly converts <see cref="TIntX" /> to <see cref="UInt64" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1189,7 +1189,7 @@ begin
 end;
 
 /// <summary>
-/// Explicitly converts <see cref="IntX" /> to <see cref="Word" />.
+/// Explicitly converts <see cref="TIntX" /> to <see cref="Word" />.
 /// </summary>
 /// <param name="value">Value to convert.</param>
 /// <returns>Conversion result.</returns>
@@ -1200,7 +1200,7 @@ begin
 end;
 
 /// <summary>
-/// Multiplies one <see cref="IntX" /> object on another.
+/// Multiplies one <see cref="TIntX" /> object on another.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -1214,7 +1214,7 @@ begin
 end;
 
 /// <summary>
-/// Divides one <see cref="IntX" /> object by another.
+/// Divides one <see cref="TIntX" /> object by another.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -1232,7 +1232,7 @@ begin
 end;
 
 /// <summary>
-/// Divides one <see cref="IntX" /> object by another and returns division modulo.
+/// Divides one <see cref="TIntX" /> object by another and returns division modulo.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -1249,7 +1249,7 @@ begin
 end;
 
 /// <summary>
-/// Divides one <see cref="IntX" /> object on another.
+/// Divides one <see cref="TIntX" /> object on another.
 /// Returns both divident and remainder
 /// </summary>
 /// <param name="int1">First big integer.</param>
@@ -1266,7 +1266,7 @@ begin
 end;
 
 /// <summary>
-/// Divides one <see cref="IntX" /> object on another.
+/// Divides one <see cref="TIntX" /> object on another.
 /// Returns both divident and remainder
 /// </summary>
 /// <param name="int1">First big integer.</param>
@@ -1284,7 +1284,7 @@ begin
 end;
 
 /// <summary>
-/// Calculates absolute value <see cref="IntX" /> object.
+/// Calculates absolute value <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="value">value to get absolute value of.</param>
 /// <returns>Absolute value.</returns>
@@ -1298,7 +1298,7 @@ end;
 
 /// <summary>
 /// http://gist.github.com/dharmatech/409723
-/// Calculates Integer Logarithm of a number <see cref="IntX" /> object for a specified base.
+/// Calculates Integer Logarithm of a number <see cref="TIntX" /> object for a specified base.
 /// the largest power the base can be raised to that does not exceed the number.
 /// </summary>
 /// <param name="base">base.</param>
@@ -1322,7 +1322,7 @@ begin
 end;
 
 /// <summary>
-/// Calculates Square of <see cref="IntX" /> object.
+/// Calculates Square of <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="value">value to get square of.</param>
 /// <returns>Squared value.</returns>
@@ -1340,7 +1340,7 @@ begin
 end;
 
 /// <summary>
-/// Calculates Integer SquareRoot of a TIntX object <see cref="http://www.dahuatu.com/RkWdPBx6W8.html" />
+/// Calculates Integer SquareRoot of <see cref="TIntX" /> object <see cref="http://www.dahuatu.com/RkWdPBx6W8.html" />
 /// </summary>
 /// <param name="value">value to get squareroot of.</param>
 /// <returns>Integer SquareRoot.</returns>
@@ -1361,7 +1361,7 @@ begin
 end;
 
 /// <summary>
-/// Calculates Factorial of <see cref="IntX" /> object.
+/// Calculates Factorial of <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="value">value to get factorial of.</param>
 /// <returns>Factorial.</returns>
@@ -1375,7 +1375,7 @@ begin
 end;
 
 /// <summary>
-/// Calculate GCD of two <see cref="IntX" /> object.
+/// Calculate GCD of two <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -1453,7 +1453,7 @@ begin
 end;
 
 /// <summary>
-/// Returns decimal string representation of this <see cref="IntX" /> object.
+/// Returns decimal string representation of this <see cref="TIntX" /> object.
 /// </summary>
 /// <returns>Decimal number in string.</returns>
 
@@ -1463,7 +1463,7 @@ begin
 end;
 
 /// <summary>
-/// Returns string representation of this <see cref="IntX" /> object in given base.
+/// Returns string representation of this <see cref="TIntX" /> object in given base.
 /// </summary>
 /// <param name="numberBase">Base of system in which to do output.</param>
 /// <returns>Object string representation.</returns>
@@ -1474,7 +1474,7 @@ begin
 end;
 
 /// <summary>
-/// Returns string representation of this <see cref="IntX" /> object in given base.
+/// Returns string representation of this <see cref="TIntX" /> object in given base.
 /// </summary>
 /// <param name="numberBase">Base of system in which to do output.</param>
 /// <param name="upperCase">Use uppercase for bases from 11 to 16 (which use letters A-F).</param>
@@ -1496,7 +1496,7 @@ begin
 end;
 
 /// <summary>
-/// Returns string representation of this <see cref="IntX" /> object in given base using custom alphabet.
+/// Returns string representation of this <see cref="TIntX" /> object in given base using custom alphabet.
 /// </summary>
 /// <param name="numberBase">Base of system in which to do output.</param>
 /// <param name="alphabet">Alphabet which contains chars used to represent big integer, char position is coresponding digit value.</param>
@@ -1511,7 +1511,7 @@ begin
 end;
 
 /// <summary>
-/// Parses provided string representation of <see cref="IntX" /> object in decimal base.
+/// Parses provided string representation of <see cref="TIntX" /> object in decimal base.
 /// If number starts from "0" then it's treated as octal; if number starts fropm "0x"
 /// then it's treated as hexadecimal.
 /// </summary>
@@ -1525,7 +1525,7 @@ begin
 end;
 
 /// <summary>
-/// Parses provided string representation of <see cref="IntX" /> object.
+/// Parses provided string representation of <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="value">Number as string.</param>
 /// <param name="numberBase">Number base.</param>
@@ -1538,7 +1538,7 @@ begin
 end;
 
 /// <summary>
-/// Parses provided string representation of <see cref="IntX" /> object using custom alphabet.
+/// Parses provided string representation of <see cref="TIntX" /> object using custom alphabet.
 /// </summary>
 /// <param name="value">Number as string.</param>
 /// <param name="numberBase">Number base.</param>
@@ -1562,7 +1562,7 @@ begin
 end;
 
 /// <summary>
-/// Parses provided string representation of <see cref="IntX" /> object in decimal base.
+/// Parses provided string representation of <see cref="TIntX" /> object in decimal base.
 /// If number starts from "0" then it's treated as octal; if number starts fropm "$"
 /// then it's treated as hexadecimal.
 /// </summary>
@@ -1577,7 +1577,7 @@ begin
 end;
 
 /// <summary>
-/// Parses provided string representation of <see cref="IntX" /> object.
+/// Parses provided string representation of <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="value">Number as string.</param>
 /// <param name="numberBase">Number base.</param>
@@ -1589,11 +1589,10 @@ class function TIntX.Parse(value: String; numberBase: UInt32;
 begin
   result := TParseManager.GetParser(mode).Parse(value, numberBase,
     TConstants.FBaseCharToDigits, False);
-  // TConstants.FBaseCharToDigits.Free;
 end;
 
 /// <summary>
-/// Parses provided string representation of <see cref="IntX" /> object using custom alphabet.
+/// Parses provided string representation of <see cref="TIntX" /> object using custom alphabet.
 /// </summary>
 /// <param name="value">Number as string.</param>
 /// <param name="numberBase">Number base.</param>
@@ -1618,7 +1617,7 @@ begin
 end;
 
 /// <summary>
-/// Returns equality of this <see cref="IntX" /> with another big integer.
+/// Returns equality of this <see cref="TIntX" /> with another big integer.
 /// </summary>
 /// <param name="n">Big integer to compare with.</param>
 /// <returns>True if equals.</returns>
@@ -1628,7 +1627,7 @@ begin
 end;
 
 /// <summary>
-/// Returns equality of this <see cref="IntX" /> with another integer.
+/// Returns equality of this <see cref="TIntX" /> with another integer.
 /// </summary>
 /// <param name="n">Integer to compare with.</param>
 /// <returns>True if equals.</returns>
@@ -1638,7 +1637,7 @@ begin
 end;
 
 /// <summary>
-/// Returns equality of this <see cref="IntX" /> with another unsigned integer.
+/// Returns equality of this <see cref="TIntX" /> with another unsigned integer.
 /// </summary>
 /// <param name="n">Unsigned integer to compare with.</param>
 /// <returns>True if equals.</returns>
@@ -1648,7 +1647,7 @@ begin
 end;
 
 /// <summary>
-/// Returns equality of this <see cref="IntX" /> with another Int64.
+/// Returns equality of this <see cref="TIntX" /> with another Int64.
 /// </summary>
 /// <param name="n">Int64 to compare with.</param>
 /// <returns>True if equals.</returns>
@@ -1658,7 +1657,7 @@ begin
 end;
 
 /// <summary>
-/// Returns equality of this <see cref="IntX" /> with another unsigned Int64.
+/// Returns equality of this <see cref="TIntX" /> with another unsigned Int64.
 /// </summary>
 /// <param name="n">unsigned Int64 to compare with.</param>
 /// <returns>True if equals.</returns>
@@ -1739,9 +1738,9 @@ begin
 end;
 
 /// <summary>
-/// Retrieves this <see cref="IntX" /> internal state as digits array and sign.
+/// Retrieves this <see cref="TIntX" /> internal state as digits array and sign.
 /// Can be used for serialization and other purposes.
-/// Note: please use constructor instead to clone <see cref="IntX" /> object.
+/// Note: please use constructor instead to clone <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="digits">Digits array.</param>
 /// <param name="negative">Is negative integer.</param>
@@ -1803,7 +1802,7 @@ begin
 end;
 
 /// <summary>
-/// Initializes record instance from another <see cref="IntX" /> value.
+/// Initializes record instance from another <see cref="TIntX" /> value.
 /// For internal use.
 /// </summary>
 /// <param name="value">Big integer value.</param>
@@ -1870,7 +1869,7 @@ end;
 class function TIntX.CompareRecords(Rec1: TIntX; Rec2: TIntX): Boolean;
 begin
 
-  result := (CompareMem(@Rec1._digits, @Rec2._digits, Length(Rec1._digits)) and
+  result := (CompareMem(@Rec1._digits, @Rec2._digits, Length(Rec1._digits) * SizeOf(UInt32)) and
     (Rec1._length = Rec2._length) and (Rec1._negative = Rec2._negative) and
     (Rec1._zeroinithelper = Rec2._zeroinithelper));
 end;

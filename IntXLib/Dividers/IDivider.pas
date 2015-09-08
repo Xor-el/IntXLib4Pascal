@@ -27,7 +27,7 @@ type
     ['{1DE44B6B-BCC7-47EF-B03E-1E289CBDA4B9}']
 
     /// <summary>
-    /// Divides one <see cref="IntX" /> by another.
+    /// Divides one <see cref="TIntX" /> by another.
     /// </summary>
     /// <param name="int1">First big integer.</param>
     /// <param name="int2">Second big integer.</param>

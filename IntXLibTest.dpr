@@ -9,7 +9,8 @@ uses
 {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
 {$ENDIF }
- // DUnitX.Init,
+
+  //DUnitX.Init,  // <== Uncomment this line if you use Delphi XE3
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,

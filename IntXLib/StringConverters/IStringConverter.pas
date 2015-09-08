@@ -27,9 +27,9 @@ type
     ['{EC961CBB-1DA0-492B-A68F-97D3F1A30484}']
 
     /// <summary>
-    /// Returns string representation of <see cref="IntX" /> object in given base.
+    /// Returns string representation of <see cref="TIntX" /> object in given base.
     /// </summary>
-    /// <param name="intX">Big integer to convert.</param>
+    /// <param name="IntX">Big integer to convert.</param>
     /// <param name="numberBase">Base of system in which to do output.</param>
     /// <param name="alphabet">Alphabet which contains chars used to represent big integer, char position is coresponding digit value.</param>
     /// <returns>Object string representation.</returns>

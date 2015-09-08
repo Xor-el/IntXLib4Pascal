@@ -90,7 +90,7 @@ begin
 end;
 
 /// <summary>
-/// Determines <see cref="IntX" /> object with lower length.
+/// Determines <see cref="TIntX" /> object with lower length.
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
@@ -113,7 +113,7 @@ begin
 end;
 
 /// <summary>
-/// Converts int value to uint digit and value sign.
+/// Converts Integer value to UInt32 digit and value sign.
 /// </summary>
 /// <param name="value">Initial value.</param>
 /// <param name="resultValue">Resulting unsigned part.</param>
@@ -144,7 +144,7 @@ begin
 end;
 
 /// <summary>
-/// Converts long value to ulong digit and value sign.
+/// Converts Int64 value to UInt64 digit and value sign.
 /// </summary>
 /// <param name="value">Initial value.</param>
 /// <param name="resultValue">Resulting unsigned part.</param>

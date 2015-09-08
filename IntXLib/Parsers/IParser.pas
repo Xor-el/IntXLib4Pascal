@@ -27,7 +27,7 @@ type
     ['{933EE4BE-5EC3-4E51-8EBB-033D0E10F793}']
 
     /// <summary>
-    /// Parses provided string representation of <see cref="IntX" /> object.
+    /// Parses provided string representation of <see cref="TIntX" /> object.
     /// </summary>
     /// <param name="value">Number as string.</param>
     /// <param name="numberBase">Number base.</param>
@@ -40,7 +40,7 @@ type
       : TIntX; overload;
 
     /// <summary>
-    /// Parses provided string representation of <see cref="IntX" /> object.
+    /// Parses provided string representation of <see cref="TIntX" /> object.
     /// </summary>
     /// <param name="value">Number as string.</param>
     /// <param name="startIndex">Index inside string from which to start.</param>

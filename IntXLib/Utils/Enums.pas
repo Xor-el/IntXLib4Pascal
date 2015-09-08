@@ -17,7 +17,7 @@ interface
 
 type
   /// <summary>
-  /// <see cref="IntX" /> divide results to return.
+  /// <see cref="TIntX" /> divide results to return.
   /// </summary>
 
   TDivModResultFlags = (
@@ -35,7 +35,7 @@ type
     dmrfMod = 2);
 
   /// <summary>
-  /// Big integers multiply mode used in <see cref="IntX" />.
+  /// Big integers multiply mode used in <see cref="TIntX" />.
   /// </summary>
 
   TMultiplyMode = (
@@ -56,7 +56,7 @@ type
     mmClassic);
 
   /// <summary>
-  /// Big integers divide mode used in <see cref="IntX" />.
+  /// Big integers divide mode used in <see cref="TIntX" />.
   /// </summary>
 
   TDivideMode = (
@@ -77,7 +77,7 @@ type
     dmClassic);
 
   /// <summary>
-  /// Big integers parsing mode used in <see cref="IntX" />.
+  /// Big integers parsing mode used in <see cref="TIntX" />.
   /// </summary>
 
   TParseMode = (
@@ -98,7 +98,7 @@ type
     pmClassic);
 
   /// <summary>
-  /// Big integers to string conversion mode used in <see cref="IntX" />.
+  /// Big integers to string conversion mode used in <see cref="TIntX" />.
   /// </summary>
 
   TToStringMode = (

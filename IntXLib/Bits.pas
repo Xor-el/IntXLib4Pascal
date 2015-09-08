@@ -33,7 +33,7 @@ implementation
 /// <summary>
 /// Returns number of leading zero bits in int.
 /// </summary>
-/// <param name="x">Int value.</param>
+/// <param name="x">UInt32 value.</param>
 /// <returns>Number of leading zero bits.</returns>
 
 class function TBits.Nlz(x: UInt32): Integer;
@@ -78,7 +78,7 @@ end;
 /// Counts position of the most significant bit in int.
 /// Can also be used as Floor(Log2(<paramref name="x" />)).
 /// </summary>
-/// <param name="x">Int value.</param>
+/// <param name="x">UInt32 value.</param>
 /// <returns>Position of the most significant one bit (-1 if all zeroes).</returns>
 
 class function TBits.Msb(x: UInt32): Integer;
@@ -91,7 +91,7 @@ end;
 /// <summary>
 /// Ceil(Log2(<paramref name="x" />)).
 /// </summary>
-/// <param name="x">Int value.</param>
+/// <param name="x">UInt32 value.</param>
 /// <returns>Ceil of the Log2.</returns>
 
 class function TBits.CeilLog2(x: UInt32): Integer;
