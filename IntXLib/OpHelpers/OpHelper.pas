@@ -85,10 +85,10 @@ begin
     Exit;
   end
   else
-   begin
+  begin
     result := Guesser(n, (g + (n div g)) shr 1, g);
     Exit;
-   end;
+  end;
 end;
 
 /// <summary>
@@ -425,6 +425,8 @@ end;
 /// <exception cref="EArgumentException"><paramref name="value" /> is a negative value.</exception>
 
 class function TOpHelper.Factorial(value: TIntX): TIntX;
+var
+  i: TIntX;
 
 begin
   // Exception
@@ -433,10 +435,14 @@ begin
       [value.ToString]));
 
   result := 1;
-  if value > 0 then
-    // recursive call
-    result := value * Factorial(value - 1);
-
+  // using iterative approach
+  // recursive approach is slower and causes much overhead. it is also limiting (stackoverflow)
+  i := 1;
+  while i <= value do
+  begin
+    result := result * i;
+    Inc(i);
+  end;
 end;
 
 /// <summary>
