@@ -52,6 +52,7 @@ uses
   StringConverterBase in 'IntXLib\StringConverters\StringConverterBase.pas',
   StringConvertManager in 'IntXLib\StringConverters\StringConvertManager.pas',
   OpHelper in 'IntXLib\OpHelpers\OpHelper.pas',
+  MT19937_32 in 'IntXLib\MersenneTwister\MT19937_32.pas',
   AddOpTest in 'IntXLib.Test\AddOpTest.pas',
   BitwiseAndOpTest in 'IntXLib.Test\BitwiseAndOpTest.pas',
   BitwiseOrOpTest in 'IntXLib.Test\BitwiseOrOpTest.pas',

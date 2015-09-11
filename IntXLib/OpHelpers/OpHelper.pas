@@ -13,24 +13,11 @@ unit OpHelper;
 
 }
 
-{
-  * Copyright (c) 2015 Ugochukwu Mmaduekwe ugo4brain@gmail.com
-
-  *   This Source Code Form is subject to the terms of the Mozilla Public License
-  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
-  * obtain one at http://mozilla.org/MPL/2.0/.
-
-  *   Neither the name of Ugochukwu Mmaduekwe nor the names of its contributors may
-  *  be used to endorse or promote products derived from this software without
-  *  specific prior written permission.
-
-}
-
 interface
 
 uses
   IntX, Constants, DigitHelper, Strings, SysUtils, DigitOpHelper, Bits, Enums,
-  IMultiplier, MultiplyManager, DTypes;
+  IMultiplier, MultiplyManager, DTypes, MT19937_32;
 
 type
   /// <summary>
@@ -49,6 +36,7 @@ type
       : TIntX; static;
     class function Pow(value: TIntX; power: UInt32; multiplyMode: TMultiplyMode)
       : TIntX; static;
+    class function Random(): TIntX; static;
     class function AbsoluteValue(value: TIntX): TIntX; static;
     class function LogN(base: TIntX; number: TIntX): TIntX; static;
     class function Square(value: TIntX): TIntX; static;
@@ -301,6 +289,20 @@ begin
   end;
 
   result := res;
+end;
+
+/// <summary>
+/// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme Twister.
+/// </summary>
+/// <returns>Random TIntX value.</returns>
+
+class function TOpHelper.Random(): TIntX;
+var
+  newInt: TIntX;
+begin
+  newInt := TIntX.Create(1, False);
+  newInt._digits[0] := TMersenneTwister_32.NextUInt32();
+  result := newInt;
 end;
 
 /// <summary>

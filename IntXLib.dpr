@@ -38,7 +38,8 @@ uses
   FastParser in 'IntXLib\Parsers\FastParser.pas',
   StringConverterBase in 'IntXLib\StringConverters\StringConverterBase.pas',
   StringConvertManager in 'IntXLib\StringConverters\StringConvertManager.pas',
-  OpHelper in 'IntXLib\OpHelpers\OpHelper.pas';
+  OpHelper in 'IntXLib\OpHelpers\OpHelper.pas',
+  MT19937_32 in 'IntXLib\MersenneTwister\MT19937_32.pas';
 
 {$R *.res}
 

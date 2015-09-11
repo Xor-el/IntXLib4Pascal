@@ -81,6 +81,7 @@ type
       : TIntX; overload; static;
     class function DivideModulo(int1: TIntX; int2: TIntX; out modRes: TIntX;
       mode: TDivideMode): TIntX; overload; static;
+      class function Random(): TIntX; static;
     class function AbsoluteValue(value: TIntX): TIntX; static;
     class function LogN(base: TIntX; number: TIntX): TIntX; static;
     class function Square(value: TIntX): TIntX; static;
@@ -1281,6 +1282,16 @@ begin
   result := TDivideManager.GetDivider(mode).DivMod(int1, int2, modRes,
     TDivModResultFlags(Ord(TDivModResultFlags.dmrfDiv) or
     Ord(TDivModResultFlags.dmrfMod)));
+end;
+
+/// <summary>
+/// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme Twister.
+/// </summary>
+/// <returns>Random TIntX value.</returns>
+
+class function TIntX.Random(): TIntX;
+begin
+ result := TOpHelper.Random();
 end;
 
 /// <summary>
