@@ -82,6 +82,7 @@ end;
       Factorial
       LogN(base, number) (Get Log of a number using a specified base)
       Random (Using MersenneTwister)
+      Modular Exponentiation (ModPow)
 
 As you can see, `TIntX` implements all the standard arithmetic operators using `operator overloading` so its usage is transparent for developers, like if you're working with usual Integers.
 
