@@ -81,7 +81,7 @@ type
       : TIntX; overload; static;
     class function DivideModulo(int1: TIntX; int2: TIntX; out modRes: TIntX;
       mode: TDivideMode): TIntX; overload; static;
-      class function Random(): TIntX; static;
+    class function Random(): TIntX; static;
     class function AbsoluteValue(value: TIntX): TIntX; static;
     class function LogN(base: TIntX; number: TIntX): TIntX; static;
     class function Square(value: TIntX): TIntX; static;
@@ -89,6 +89,8 @@ type
     class function Factorial(value: TIntX): TIntX; static;
     class function GCD(int1: TIntX; int2: TIntX): TIntX; static;
     class function InvMod(int1: TIntX; int2: TIntX): TIntX; static;
+    class function ModPow(value: TIntX; exponent: TIntX; modulus: TIntX)
+      : TIntX; static;
     class function Bézoutsidentity(int1: TIntX; int2: TIntX; out bezOne: TIntX;
       out bezTwo: TIntX): TIntX; static;
     class function Pow(value: TIntX; power: UInt32): TIntX; overload; static;
@@ -168,7 +170,7 @@ type
     class operator Multiply(int1: TIntX; int2: TIntX): TIntX;
 
     class operator IntDivide(int1: TIntX; int2: TIntX): TIntX;
-    class operator Modulus(int1: TIntX; int2: TIntX): TIntX;
+    class operator modulus(int1: TIntX; int2: TIntX): TIntX;
 
     class operator LeftShift(IntX: TIntX; shift: Integer): TIntX;
     class operator RightShift(IntX: TIntX; shift: Integer): TIntX;
@@ -327,7 +329,6 @@ end;
 /// </summary>
 /// <param name="digits">Array of <see cref="TIntX" /> digits.</param>
 /// <param name="negative">True if this number is negative.</param>
-/// <exception cref="ArgumentNullException"><paramref name="digits" /> is a null reference.</exception>
 
 constructor TIntX.Create(digits: TMyUint32Array; negative: Boolean);
 begin
@@ -336,7 +337,6 @@ begin
   begin
     raise EArgumentNilException.Create('values');
   end;
-
   InitFromDigits(digits, negative, TDigitHelper.GetRealDigitsLength(digits,
     UInt32(Length(digits))));
 end;
@@ -889,7 +889,7 @@ end;
 /// <param name="int2">Second big integer.</param>
 /// <returns>Modulo result.</returns>
 
-class operator TIntX.Modulus(int1: TIntX; int2: TIntX): TIntX;
+class operator TIntX.modulus(int1: TIntX; int2: TIntX): TIntX;
 var
   modRes: TIntX;
 begin
@@ -1291,7 +1291,7 @@ end;
 
 class function TIntX.Random(): TIntX;
 begin
- result := TOpHelper.Random();
+  result := TOpHelper.Random();
 end;
 
 /// <summary>
@@ -1415,11 +1415,36 @@ begin
   if TIntX.CompareRecords(int2, Default (TIntX)) then
     raise EArgumentException.Create('int2');
 
-  if (int1._negative or int2._negative) then
+  if ((int1._negative) or (int2._negative)) then
     raise EArgumentException.Create(Strings.InvModNegativeNotAllowed);
 
   result := TOpHelper.InvMod(int1, int2);
 end;
+
+// https://en.wikipedia.org/wiki/Modular_exponentiation
+// Calculates Modular Exponentiation
+
+class function TIntX.ModPow(value: TIntX; exponent: TIntX;
+  modulus: TIntX): TIntX;
+begin
+  if TIntX.CompareRecords(value, Default (TIntX)) then
+    raise EArgumentException.Create('value');
+
+  if TIntX.CompareRecords(exponent, Default (TIntX)) then
+    raise EArgumentException.Create('exponent');
+
+  if TIntX.CompareRecords(modulus, Default (TIntX)) then
+    raise EArgumentException.Create('modulus');
+
+  if modulus = 0 then
+    raise EArgumentException.Create(Strings.ModPowModulusCantbeZero);
+
+  if (exponent._negative) then
+    raise EArgumentException.Create(Strings.ModPowExponentCantbeNegative);
+
+  result := TOpHelper.ModPow(value, exponent, modulus);
+end;
+
 
 // https://en.wikipedia.org/wiki/Bézout's_identity
 // https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Pseudocode
@@ -1880,8 +1905,9 @@ end;
 class function TIntX.CompareRecords(Rec1: TIntX; Rec2: TIntX): Boolean;
 begin
 
-  result := (CompareMem(@Rec1._digits, @Rec2._digits, Length(Rec1._digits) * SizeOf(UInt32)) and
-    (Rec1._length = Rec2._length) and (Rec1._negative = Rec2._negative) and
+  result := (CompareMem(@Rec1._digits, @Rec2._digits, Length(Rec1._digits) *
+    SizeOf(UInt32)) and (Rec1._length = Rec2._length) and
+    (Rec1._negative = Rec2._negative) and
     (Rec1._zeroinithelper = Rec2._zeroinithelper));
 end;
 

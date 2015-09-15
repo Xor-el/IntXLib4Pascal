@@ -112,6 +112,7 @@ begin
   Assert.IsTrue(int1 - 0 = 3);
   Assert.IsTrue(0 - int1 = -3);
   Assert.IsTrue(TIntX.Create(0) - int1 = -3);
+  Assert.IsTrue(TIntX.Create(0) - 0 = 0);
 end;
 
 [Test]

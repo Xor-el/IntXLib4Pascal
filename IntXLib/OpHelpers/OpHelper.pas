@@ -28,6 +28,7 @@ type
 
   strict private
     class function Guesser(n: TIntX; g: TIntX; last: TIntX): TIntX; static;
+    class function __builtin_ctz(x: UInt32): Integer; inline; static;
 
   public
     class function Add(int1: TIntX; int2: TIntX): TIntX; static;
@@ -44,6 +45,8 @@ type
     class function Factorial(value: TIntX): TIntX; static;
     class function GCD(int1: TIntX; int2: TIntX): TIntX; static;
     class function InvMod(int1: TIntX; int2: TIntX): TIntX; static;
+    class function ModPow(value: TIntX; exponent: TIntX; modulus: TIntX)
+      : TIntX; static;
     class function Bézoutsidentity(int1: TIntX; int2: TIntX; out bezOne: TIntX;
       out bezTwo: TIntX): TIntX; static;
     class function Cmp(int1: TIntX; int2: TIntX; throwNullException: Boolean)
@@ -93,6 +96,13 @@ var
 
 begin
   // Process zero values in special way
+
+  if ((int1._length = 0) and (int2._length = 0)) then
+  begin
+    result := TIntX.Create(0);
+    Exit;
+  end;
+
   if (int2._length = 0) then
   begin
     result := TIntX.Create(int1);
@@ -143,6 +153,13 @@ var
   tempState: Boolean;
 begin
   // Process zero values in special way
+
+  if ((int1._length = 0) and (int2._length = 0)) then
+  begin
+    result := TIntX.Create(0);
+    Exit;
+  end;
+
   if (int1._length = 0) then
   begin
     result := TIntX.Create(int2._digits, True);
@@ -225,7 +242,7 @@ end;
 /// <param name="power">Power.</param>
 /// <param name="multiplyMode">Multiply mode set explicitly.</param>
 /// <returns>Number in given power.</returns>
-/// <exception cref="ArgumentNillException"><paramref name="value" /> is a null reference.</exception>
+/// <exception cref="EArgumentNilException"><paramref name="value" /> is a null reference.</exception>
 
 class function TOpHelper.Pow(value: TIntX; power: UInt32;
   multiplyMode: TMultiplyMode): TIntX;
@@ -301,7 +318,7 @@ var
   newInt: TIntX;
 begin
   newInt := TIntX.Create(1, False);
-  newInt._digits[0] := TMersenneTwister_32.NextUInt32();
+  newInt := TMersenneTwister_32.NextUInt32();
   result := newInt;
 end;
 
@@ -447,17 +464,82 @@ begin
   end;
 end;
 
+(* // Returns the number of trailing 0-bits in x, starting at the least significant
+  // bit position. If x is 0, the result is undefined as per GCC Implementation.
+  // ASM Version
+
+  class function TOpHelper.__builtin_ctz(x: UInt32): Integer;
+
+  {$IFDEF WIN64}
+  asm
+  BSF     ECX,ECX
+  // NEG     ECX
+  // ADD     ECX,31
+  MOV     EAX,ECX
+  {$ENDIF}
+  {$IFDEF WIN32}
+
+
+
+
+
+
+  asm
+  BSF     EAX,EAX
+  // NEG     EAX
+  // ADD     EAX,31
+  {$ENDIF}
+  end; *)
+
+// __builtin_ctz
+// Returns the number of trailing 0-bits in x, starting at the least significant
+// bit position. If x is 0, the result is undefined as per GCC Implementation.
+// PurePascal Version
+
+class function TOpHelper.__builtin_ctz(x: UInt32): Integer;
+var
+  n: Integer;
+begin
+  // This uses a binary search algorithm from Hacker's Delight.
+  n := 1;
+  if ((x and $0000FFFF) = 0) then
+  begin
+    n := n + 16;
+    x := x shr 16;
+  end;
+  if ((x and $000000FF) = 0) then
+  begin
+    n := n + 8;
+    x := x shr 8;
+  end;
+  if ((x and $0000000F) = 0) then
+  begin
+    n := n + 4;
+    x := x shr 4;
+  end;
+  if ((x and $00000003) = 0) then
+  begin
+    n := n + 2;
+    x := x shr 2;
+  end;
+  result := n - Integer(x and 1);
+end;
+
 /// <summary>
+/// Optimized GCD
 /// Returns a specified big integer holding the GCD (Greatest common Divisor) of
 /// two big integers using Binary GCD (Stein's algorithm).
-/// using recursive implementation.
-/// http://en.wikipedia.org/wiki/Binary_GCD_algorithm
+/// http://lemire.me/blog/archives/2013/12/26/fastest-way-to-compute-the-greatest-common-divisor/
+/// https://hbfs.wordpress.com/2013/12/10/the-speed-of-gcd/
 /// </summary>
 /// <param name="int1">First big integer.</param>
 /// <param name="int2">Second big integer.</param>
 /// <returns>GCD number.</returns>
 
 class function TOpHelper.GCD(int1: TIntX; int2: TIntX): TIntX;
+var
+  shift: Integer;
+  temp: TIntX;
 begin
   // check if int1 is negative and returns the absolute value of it.
   if int1._negative then
@@ -485,40 +567,95 @@ begin
     Exit;
   end;
 
+  shift := __builtin_ctz(UInt32(int1 or int2));
+  int1 := int1 shr __builtin_ctz(UInt32(int1));
+  while (int2 <> 0) do
+  begin
+    int2 := int2 shr __builtin_ctz(UInt32(int2));
+    if (int1 > int2) then
+    begin
+      temp := int2;
+      int2 := int1;
+      int1 := temp;
+    end;
+    int2 := int2 - int1;
+    int2 := int2;
+  end;
+
+  result := int1 shl shift;
+end;
+
+(*
+  /// <summary>
+  /// Returns a specified big integer holding the GCD (Greatest common Divisor) of
+  /// two big integers using Binary GCD (Stein's algorithm).
+  /// http://en.wikipedia.org/wiki/Binary_GCD_algorithm
+  /// </summary>
+  /// <param name="int1">First big integer.</param>
+  /// <param name="int2">Second big integer.</param>
+  /// <returns>GCD number.</returns>
+
+  class function TOpHelper.GCD(int1: TIntX; int2: TIntX): TIntX;
+  begin
+  // check if int1 is negative and returns the absolute value of it.
+  if int1._negative then
+  int1 := AbsoluteValue(int1);
+
+  // check if int2 is negative and returns the absolute value of it.
+  if int2._negative then
+  int2 := AbsoluteValue(int2);
+
+  // simple cases (termination)
+
+  if (int1 = int2) then
+  begin
+  result := int1;
+  Exit;
+  end;
+  if (int1 = 0) then
+  begin
+  result := int2;
+  Exit;
+  end;
+  if (int2 = 0) then
+  begin
+  result := int1;
+  Exit;
+  end;
+
   // look for factors of 2
 
   if not int1.IsOdd then // int1 is even
   begin
-    if (int2.IsOdd) then // int2 is even
-    begin
-      result := GCD(int1 shr 1, int2);
-      Exit;
-    end
-    else // both int1 and int2 are even
-    begin
-      result := GCD(int1 shr 1, int2 shr 1) shl 1;
-      Exit;
-    end;
+  if (int2.IsOdd) then // int2 is odd
+  begin
+  result := GCD(int1 shr 1, int2);
+  Exit;
+  end
+  else // both int1 and int2 are even
+  begin
+  result := GCD(int1 shr 1, int2 shr 1) shl 1;
+  Exit;
+  end;
 
   end;
 
   if not int2.IsOdd then // int1 is odd, int2 is even
   begin
-    result := GCD(int1, int2 shr 1);
-    Exit;
+  result := GCD(int1, int2 shr 1);
+  Exit;
   end;
 
   // reduce larger argument
 
   if (int1 > int2) then
   begin
-    result := GCD((int1 - int2) shr 1, int2);
-    Exit;
+  result := GCD((int1 - int2) shr 1, int2);
+  Exit;
   end;
 
   result := GCD((int2 - int1) shr 1, int1);
-
-end;
+  end; *)
 
 // http://www.di-mgt.com.au/euclidean.html
 // https://en.wikipedia.org/wiki/Modular_multiplicative_inverse
@@ -529,7 +666,7 @@ var
   u1, u3, v1, v3, t1, t3, q, iter: TIntX;
 begin
 
-  // /* Step X1. Initialise */
+  // /* Step X1. Initialize */
   u1 := 1;
   u3 := int1;
   v1 := 0;
@@ -553,7 +690,7 @@ begin
 
   // /* Make sure u3 = gcd(u,v) == 1 */
 
-  if (u3 <> 1) then // u3 is nowing holding the GCD Value
+  if (u3 <> 1) then // u3 is now holding the GCD Value
   begin
     result := 0; // /* Error: No inverse exists */
     Exit;
@@ -565,6 +702,26 @@ begin
     result := int2 - u1
   else
     result := u1;
+end;
+
+// https://en.wikipedia.org/wiki/Modular_exponentiation
+// Calculates Modular Exponentiation
+
+class function TOpHelper.ModPow(value: TIntX; exponent: TIntX;
+  modulus: TIntX): TIntX;
+begin
+  result := 1;
+  value := value mod modulus;
+  while exponent > 0 do
+  begin
+    if exponent.IsOdd then
+    begin
+      result := (result * value) mod modulus;
+    end;
+    exponent := exponent shr 1;
+    value := (value * value) mod modulus;
+
+  end;
 end;
 
 // https://en.wikipedia.org/wiki/Bézout's_identity
@@ -864,13 +1021,13 @@ end;
 
 /// <summary>
 /// Shifts <see cref="TIntX" /> object.
-/// Determines which operation to use basing on shift sign.
+/// Determines which operation to use based on shift sign.
 /// </summary>
 /// <param name="IntX">Big integer.</param>
 /// <param name="shift">Bits count to shift.</param>
 /// <param name="toLeft">If true the shifting to the left.</param>
 /// <returns>Bitwise shift operation result.</returns>
-/// <exception cref="ArgumentNuilException"><paramref name="IntX" /> is a null reference.</exception>
+/// <exception cref="EArgumentNilException"><paramref name="IntX" /> is a null reference.</exception>
 
 class function TOpHelper.Sh(IntX: TIntX; shift: Int64; toLeft: Boolean): TIntX;
 var

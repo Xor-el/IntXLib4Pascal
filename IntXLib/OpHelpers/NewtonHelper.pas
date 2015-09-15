@@ -39,7 +39,7 @@ implementation
 
 /// <summary>
 /// Generates integer opposite to the given one using approximation.
-/// Uses algorithm from Khuth vol. 2 3rd Edition (4.3.3).
+/// Uses algorithm from Knuth vol. 2 3rd Edition (4.3.3).
 /// </summary>
 /// <param name="digitsPtr">Initial big integer digits.</param>
 /// <param name="mlength">Initial big integer length.</param>
