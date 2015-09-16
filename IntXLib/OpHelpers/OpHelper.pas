@@ -17,7 +17,8 @@ interface
 
 uses
   IntX, Constants, DigitHelper, Strings, SysUtils, DigitOpHelper, Bits, Enums,
-  IMultiplier, MultiplyManager, DTypes, MT19937_32, MillerRabin;
+  IMultiplier, MultiplyManager, DTypes, {MT19937_32} PcgRandomMinimal,
+  MillerRabin;
 
 type
   /// <summary>
@@ -313,8 +314,22 @@ begin
   result := res;
 end;
 
+{ /// <summary>
+  /// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme Twister.
+  /// </summary>
+  /// <returns>Random TIntX value.</returns>
+
+  class function TOpHelper.Random(): TIntX;
+  var
+  newInt: TIntX;
+  begin
+  newInt := TIntX.Create(1, False);
+  newInt := TMersenneTwister_32.NextUInt32();
+  result := newInt;
+  end; }
+
 /// <summary>
-/// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme Twister.
+/// Returns a Non-Negative Random <see cref="TIntX" /> object using Pcg Random.
 /// </summary>
 /// <returns>Random TIntX value.</returns>
 
@@ -323,13 +338,27 @@ var
   newInt: TIntX;
 begin
   newInt := TIntX.Create(1, False);
-  newInt := TMersenneTwister_32.NextUInt32();
+  newInt := TPcg.NextUInt32();
   result := newInt;
 end;
 
+{ /// <summary>
+  /// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme
+  // Twister within the specified Range. (Max not Included)
+  /// </summary>
+  /// <returns>Random TIntX value.</returns>
+
+  class function TOpHelper.RandomRange(Min: UInt32; Max: UInt32): TIntX;
+  var
+  newInt: TIntX;
+  begin
+  newInt := TIntX.Create(1, False);
+  newInt := TMersenneTwister_32.NextUInt32(Min, Max);
+  result := newInt;
+  end; }
+
 /// <summary>
-/// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme
-// Twister within the specified Range. (Max not Included)
+/// Returns a Non-Negative Random <see cref="TIntX" /> object using Pcg Random within the specified Range. (Max not Included)
 /// </summary>
 /// <returns>Random TIntX value.</returns>
 
@@ -338,7 +367,7 @@ var
   newInt: TIntX;
 begin
   newInt := TIntX.Create(1, False);
-  newInt := TMersenneTwister_32.NextUInt32(Min, Max);
+  newInt := TPcg.NextUInt32(Min, Max);
   result := newInt;
 end;
 

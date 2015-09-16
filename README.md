@@ -81,7 +81,7 @@ end;
       InvMod (Modular Inverse)
       Factorial
       LogN(base, number) (Get Log of a number using a specified base)
-      Random (Using MersenneTwister)
+      Random (Now Uses PcgRandom Instead of Mersemme Twister)
       Modular Exponentiation (ModPow)
       isProbablyPrime (based on Miller Rabin Primality Test)
 

@@ -52,6 +52,7 @@ uses
   OpHelper in 'IntXLib\OpHelpers\OpHelper.pas',
   MT19937_32 in 'IntXLib\MersenneTwister\MT19937_32.pas',
   MillerRabin in 'IntXLib\MillerRabin\MillerRabin.pas',
+  PcgRandomMinimal in 'IntXLib\PcgRandom\PcgRandomMinimal.pas',
   AddOpTest in 'IntXLib.Test\AddOpTest.pas',
   BitwiseAndOpTest in 'IntXLib.Test\BitwiseAndOpTest.pas',
   BitwiseOrOpTest in 'IntXLib.Test\BitwiseOrOpTest.pas',

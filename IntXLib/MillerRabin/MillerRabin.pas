@@ -5,7 +5,7 @@ unit MillerRabin;
   *
   * Written by Christian Stigen Larsen, 2012-01-10
   * http://csl.sublevel3.org
-  * Ported to Delphi by Ugochukwu Mmaduekwe
+  * Ported to Delphi by Ugochukwu Mmaduekwe <ugo4brain@gmail.com>
   *
 *)
 

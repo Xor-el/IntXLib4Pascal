@@ -1289,8 +1289,18 @@ begin
     Ord(TDivModResultFlags.dmrfMod)));
 end;
 
+{ /// <summary>
+  /// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme Twister.
+  /// </summary>
+  /// <returns>Random TIntX value.</returns>
+
+  class function TIntX.Random(): TIntX;
+  begin
+  result := TOpHelper.Random();
+  end; }
+
 /// <summary>
-/// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme Twister.
+/// Returns a Non-Negative Random <see cref="TIntX" /> object using Pcg Random.
 /// </summary>
 /// <returns>Random TIntX value.</returns>
 
@@ -1299,9 +1309,19 @@ begin
   result := TOpHelper.Random();
 end;
 
+{ /// <summary>
+  /// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme
+  // Twister within the specified Range. (Max not Included)
+  /// </summary>
+  /// <returns>Random TIntX value.</returns>
+
+  class function TIntX.RandomRange(Min: UInt32; Max: UInt32): TIntX;
+  begin
+  result := TOpHelper.RandomRange(Min, Max);
+  end; }
+
 /// <summary>
-/// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme
-// Twister within the specified Range. (Max not Included)
+/// Returns a Non-Negative Random <see cref="TIntX" /> object using Pcg Random within the specified Range. (Max not Included)
 /// </summary>
 /// <returns>Random TIntX value.</returns>
 
