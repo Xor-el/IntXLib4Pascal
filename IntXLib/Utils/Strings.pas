@@ -39,8 +39,9 @@ resourcestring
   LogCantComputeZero = 'One or more parameters are Zero.';
   LogNegativeNotAllowed = 'Negative value not allowed for LogN';
   InvModNegativeNotAllowed = 'Negative value not allowed for Modular Inverse.';
-  ModPowExponentCantbeNegative = 'Exponent Can''t be Negative for Modular Exponentiation.';
-  ModPowModulusCantbeZero = 'Modulus Can''t be Zero';
+  ModPowExponentCantbeNegative =
+    'Exponent Can''t be Negative for Modular Exponentiation.';
+  ModPowModulusCantbeZeroorNegative = 'Modulus Can''t be Zero or Negative';
 
 implementation
 

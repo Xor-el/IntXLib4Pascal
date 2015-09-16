@@ -82,6 +82,7 @@ type
     class function DivideModulo(int1: TIntX; int2: TIntX; out modRes: TIntX;
       mode: TDivideMode): TIntX; overload; static;
     class function Random(): TIntX; static;
+    class function RandomRange(Min: UInt32; Max: UInt32): TIntX; static;
     class function AbsoluteValue(value: TIntX): TIntX; static;
     class function LogN(base: TIntX; number: TIntX): TIntX; static;
     class function Square(value: TIntX): TIntX; static;
@@ -93,6 +94,10 @@ type
       : TIntX; static;
     class function Bézoutsidentity(int1: TIntX; int2: TIntX; out bezOne: TIntX;
       out bezTwo: TIntX): TIntX; static;
+    class function isProbablyPrime(value: TIntX; Accuracy: Integer = 5)
+      : Boolean; static;
+    class function Max(left: TIntX; right: TIntX): TIntX; static;
+    class function Min(left: TIntX; right: TIntX): TIntX; static;
     class function Pow(value: TIntX; power: UInt32): TIntX; overload; static;
     class function Pow(value: TIntX; power: UInt32; multiplyMode: TMultiplyMode)
       : TIntX; overload; static;
@@ -273,7 +278,7 @@ begin
     SetLength(_digits, 1);
     _digits[0] := value;
     _length := 1;
-    // Initailized _negative to False by default since this type does not have
+    // Initialized _negative to False by default since this type does not have
     // negative values.
     _negative := False;
 
@@ -281,9 +286,9 @@ begin
 end;
 
 /// <summary>
-/// Creates new big integer from long value.
+/// Creates new big integer from Int64 value.
 /// </summary>
-/// <param name="value">Long value to create big integer from.</param>
+/// <param name="value">Int64 value to create big integer from.</param>
 
 constructor TIntX.Create(value: Int64);
 var
@@ -303,9 +308,9 @@ begin
 end;
 
 /// <summary>
-/// Creates new big integer from unsigned long value.
+/// Creates new big integer from unsigned Int64 value.
 /// </summary>
-/// <param name="value">Unsigned long value to create big integer from.</param>
+/// <param name="value">Unsigned Int64 value to create big integer from.</param>
 
 constructor TIntX.Create(value: UInt64);
 begin
@@ -317,7 +322,7 @@ begin
   else
   begin
     InitFromUlong(value);
-    // Initailized _negative to False by default since this type does not have
+    // Initialized _negative to False by default since this type does not have
     // negative values.
     _negative := False;
   end;
@@ -1295,6 +1300,17 @@ begin
 end;
 
 /// <summary>
+/// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme
+// Twister within the specified Range. (Max not Included)
+/// </summary>
+/// <returns>Random TIntX value.</returns>
+
+class function TIntX.RandomRange(Min: UInt32; Max: UInt32): TIntX;
+begin
+  result := TOpHelper.RandomRange(Min, Max);
+end;
+
+/// <summary>
 /// Calculates absolute value <see cref="TIntX" /> object.
 /// </summary>
 /// <param name="value">value to get absolute value of.</param>
@@ -1406,6 +1422,7 @@ end;
 // http://www.di-mgt.com.au/euclidean.html
 // https://en.wikipedia.org/wiki/Modular_multiplicative_inverse
 // Calculate Modular Inversion for two IntX Digits using Euclids Extended Algorithm
+// returns Zero if no Modular Inverse Exists for the Inputs
 
 class function TIntX.InvMod(int1: TIntX; int2: TIntX): TIntX;
 begin
@@ -1436,8 +1453,8 @@ begin
   if TIntX.CompareRecords(modulus, Default (TIntX)) then
     raise EArgumentException.Create('modulus');
 
-  if modulus = 0 then
-    raise EArgumentException.Create(Strings.ModPowModulusCantbeZero);
+  if modulus <= 0 then
+    raise EArgumentException.Create(Strings.ModPowModulusCantbeZeroorNegative);
 
   if (exponent._negative) then
     raise EArgumentException.Create(Strings.ModPowExponentCantbeNegative);
@@ -1460,6 +1477,47 @@ begin
     raise EArgumentException.Create('int2');
 
   result := TOpHelper.Bézoutsidentity(int1, int2, bezOne, bezTwo);
+end;
+
+/// <summary>
+/// Checks if an <see cref="TIntX" /> object is Probably Prime using Miller–Rabin primality test.
+/// https://en.wikipedia.org/wiki/Miller–Rabin_primality_test
+/// https://github.com/cslarsen/miller-rabin
+/// </summary>
+/// <param name="value">big integer to check primality.</param>
+/// <param name="Accuracy">Accuracy parameter `k´ of the Miller-Rabin algorithm. Default is 5. The execution time is proportional to the value of the accuracy parameter.</param>
+/// <returns>Boolean value.</returns>
+
+class function TIntX.isProbablyPrime(value: TIntX;
+  Accuracy: Integer = 5): Boolean;
+begin
+  if TIntX.CompareRecords(value, Default (TIntX)) then
+    raise EArgumentException.Create('value');
+  result := TOpHelper.isProbablyPrime(value, Accuracy);
+end;
+
+// get Maximum value between two TIntX values
+class function TIntX.Max(left: TIntX; right: TIntX): TIntX;
+begin
+  if TIntX.CompareRecords(left, Default (TIntX)) then
+    raise EArgumentException.Create('left');
+
+  if TIntX.CompareRecords(right, Default (TIntX)) then
+    raise EArgumentException.Create('right');
+
+  result := TOpHelper.Max(left, right);
+end;
+
+// get Minimum value between two TIntX values
+class function TIntX.Min(left: TIntX; right: TIntX): TIntX;
+begin
+  if TIntX.CompareRecords(left, Default (TIntX)) then
+    raise EArgumentException.Create('left');
+
+  if TIntX.CompareRecords(right, Default (TIntX)) then
+    raise EArgumentException.Create('right');
+
+  result := TOpHelper.Min(left, right);
 end;
 
 /// <summary>
@@ -1548,7 +1606,7 @@ end;
 
 /// <summary>
 /// Parses provided string representation of <see cref="TIntX" /> object in decimal base.
-/// If number starts from "0" then it's treated as octal; if number starts fropm "0x"
+/// If number starts from "0" then it's treated as octal; if number starts from "$"
 /// then it's treated as hexadecimal.
 /// </summary>
 /// <param name="value">Number as string.</param>
@@ -1599,7 +1657,7 @@ end;
 
 /// <summary>
 /// Parses provided string representation of <see cref="TIntX" /> object in decimal base.
-/// If number starts from "0" then it's treated as octal; if number starts fropm "$"
+/// If number starts from "0" then it's treated as octal; if number starts from "$"
 /// then it's treated as hexadecimal.
 /// </summary>
 /// <param name="value">Number as string.</param>
@@ -1810,14 +1868,14 @@ end;
 /// Doesn't initialize sign.
 /// For internal use.
 /// </summary>
-/// <param name="value">Unsigned long value.</param>
+/// <param name="value">Unsigned Int64 value.</param>
 
 procedure TIntX.InitFromUlong(value: UInt64);
 var
   low, high: UInt32;
 
 begin
-  // Divide ulong into 2 uint values
+  // Divide uint64 into 2 uint32 values
   low := UInt32(value);
   high := UInt32(value shr TConstants.DigitBitCount);
 

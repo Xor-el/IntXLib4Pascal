@@ -17,7 +17,7 @@ interface
 
 uses
   IntX, Constants, DigitHelper, Strings, SysUtils, DigitOpHelper, Bits, Enums,
-  IMultiplier, MultiplyManager, DTypes, MT19937_32;
+  IMultiplier, MultiplyManager, DTypes, MT19937_32, MillerRabin;
 
 type
   /// <summary>
@@ -38,6 +38,7 @@ type
     class function Pow(value: TIntX; power: UInt32; multiplyMode: TMultiplyMode)
       : TIntX; static;
     class function Random(): TIntX; static;
+    class function RandomRange(Min: UInt32; Max: UInt32): TIntX; static;
     class function AbsoluteValue(value: TIntX): TIntX; static;
     class function LogN(base: TIntX; number: TIntX): TIntX; static;
     class function Square(value: TIntX): TIntX; static;
@@ -49,6 +50,10 @@ type
       : TIntX; static;
     class function Bézoutsidentity(int1: TIntX; int2: TIntX; out bezOne: TIntX;
       out bezTwo: TIntX): TIntX; static;
+    class function isProbablyPrime(value: TIntX; Accuracy: Integer = 5)
+      : Boolean; static;
+    class function Max(left: TIntX; right: TIntX): TIntX; static;
+    class function Min(left: TIntX; right: TIntX): TIntX; static;
     class function Cmp(int1: TIntX; int2: TIntX; throwNullException: Boolean)
       : Integer; overload; static;
     class function Cmp(int1: TIntX; int2: Integer): Integer; overload; static;
@@ -319,6 +324,21 @@ var
 begin
   newInt := TIntX.Create(1, False);
   newInt := TMersenneTwister_32.NextUInt32();
+  result := newInt;
+end;
+
+/// <summary>
+/// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme
+// Twister within the specified Range. (Max not Included)
+/// </summary>
+/// <returns>Random TIntX value.</returns>
+
+class function TOpHelper.RandomRange(Min: UInt32; Max: UInt32): TIntX;
+var
+  newInt: TIntX;
+begin
+  newInt := TIntX.Create(1, False);
+  newInt := TMersenneTwister_32.NextUInt32(Min, Max);
   result := newInt;
 end;
 
@@ -660,6 +680,7 @@ end;
 // http://www.di-mgt.com.au/euclidean.html
 // https://en.wikipedia.org/wiki/Modular_multiplicative_inverse
 // Calculate Modular Inversion for two IntX Digits using Euclids Extended Algorithm
+// returns Zero if no Modular Inverse Exists for the Inputs
 
 class function TOpHelper.InvMod(int1: TIntX; int2: TIntX): TIntX;
 var
@@ -776,6 +797,39 @@ begin
   bezTwo := old_t; // old_t holds the second value of bezout identity
   result := old_r; // old_r holds the GCD Value
 
+end;
+
+/// <summary>
+/// Checks if an <see cref="TIntX" /> object is Probably Prime using Miller–Rabin primality test.
+/// https://en.wikipedia.org/wiki/Miller–Rabin_primality_test
+/// https://github.com/cslarsen/miller-rabin
+/// </summary>
+/// <param name="value">big integer to check primality.</param>
+/// <param name="Accuracy">Accuracy parameter `k´ of the Miller-Rabin algorithm. Default is 5. The execution time is proportional to the value of the accuracy parameter. </param>
+/// <returns>Boolean value.</returns>
+
+class function TOpHelper.isProbablyPrime(value: TIntX;
+  Accuracy: Integer = 5): Boolean;
+begin
+  result := TMillerRabin.isProbablyPrimeMR(value, Accuracy);
+end;
+
+// get Maximum value between two TIntX values
+class function TOpHelper.Max(left: TIntX; right: TIntX): TIntX;
+begin
+  if (left.CompareTo(right) < 0) then
+    result := right
+  else
+    result := left;
+end;
+
+// get Minimum value between two TIntX values
+class function TOpHelper.Min(left: TIntX; right: TIntX): TIntX;
+begin
+  if (left.CompareTo(right) <= 0) then
+    result := left
+  else
+    result := right;
 end;
 
 /// <summary>

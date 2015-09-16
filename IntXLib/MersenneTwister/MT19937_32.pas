@@ -14,7 +14,9 @@ type
 
   public
     class constructor Create();
-    class function NextUInt32(): UInt32; inline;
+    class function NextUInt32(): UInt32; overload; inline;
+    class function NextUInt32(min: UInt32; max: UInt32): UInt32;
+      overload; inline;
     class function NextInt(): Integer; overload;
     class function NextInt(max: Integer): Integer; overload;
     class function NextInt(min: Integer; max: Integer): Integer; overload;
@@ -95,6 +97,16 @@ end;
 class function TMersenneTwister_32.NextUInt32(): UInt32;
 begin
   result := ExtractNumber();
+end;
+
+// max is NOT included
+
+class function TMersenneTwister_32.NextUInt32(min: UInt32; max: UInt32): UInt32;
+begin
+  result := 0;
+  if max = 0 then
+    Exit;
+  result := NextUInt32() mod (max - min) + min;
 end;
 
 // Can be negative

@@ -24,7 +24,8 @@ uses
   AutoNewtonDivider in 'IntXLib\Dividers\AutoNewtonDivider.pas',
   ClassicDivider in 'IntXLib\Dividers\ClassicDivider.pas',
   IStringConverter in 'IntXLib\StringConverters\IStringConverter.pas',
-  ClassicStringConverter in 'IntXLib\StringConverters\ClassicStringConverter.pas',
+  ClassicStringConverter
+    in 'IntXLib\StringConverters\ClassicStringConverter.pas',
   Pow2StringConverter in 'IntXLib\StringConverters\Pow2StringConverter.pas',
   FastStringConverter in 'IntXLib\StringConverters\FastStringConverter.pas',
   IntXGlobalSettings in 'IntXLib\Settings\IntXGlobalSettings.pas',
@@ -39,14 +40,15 @@ uses
   StringConverterBase in 'IntXLib\StringConverters\StringConverterBase.pas',
   StringConvertManager in 'IntXLib\StringConverters\StringConvertManager.pas',
   OpHelper in 'IntXLib\OpHelpers\OpHelper.pas',
-  MT19937_32 in 'IntXLib\MersenneTwister\MT19937_32.pas';
+  MT19937_32 in 'IntXLib\MersenneTwister\MT19937_32.pas',
+  MillerRabin in 'IntXLib\MillerRabin\MillerRabin.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
- // Application.MainFormOnTaskbar := True;
   Application.Run;
+
 {$WARNINGS OFF}
   ReportMemoryLeaksOnShutdown := DebugHook <> 0;
 {$WARNINGS ON}
