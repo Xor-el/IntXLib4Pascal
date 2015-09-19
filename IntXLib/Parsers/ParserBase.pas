@@ -89,6 +89,8 @@ end;
 /// <exception cref="EArgumentException"><paramref name="numberBase" /> is less then 2 or more then 16.</exception>
 /// <exception cref="Exception"><paramref name="value" /> is not in valid format.</exception>
 
+{$IFNDEF _FIXINSIGHT_}  // tells FixInsight to Ignore this Function
+
 function TParserBase.Parse(Value: String; numberBase: UInt32;
   charToDigits: TDictionary<Char, UInt32>; checkFormat: Boolean): TIntX;
 var
@@ -216,6 +218,7 @@ begin
   Result := newInt;
 end;
 
+{$ENDIF}
 /// <summary>
 /// Parses provided string representation of <see cref="TIntX" /> object.
 /// </summary>

@@ -40,9 +40,10 @@ class function TMillerRabin.isProbablyPrimeMR(n: TIntX; k: Integer = 5)
 var
   s, i, r: Integer;
   m, d, a, x: TIntX;
-label
-  LOOP;
+  Redo: Boolean;
+
 begin
+  Redo := False;
   // Must have ODD n greater than THREE
   if ((n = 2) or (n = 3)) then
   begin
@@ -87,16 +88,24 @@ begin
         Exit;
       end;
       if (x = n - 1) then
-        goto LOOP;
+      begin
+        Redo := True;
+        Break;
+      end;
       Inc(r);
     end;
 
-    result := False;
-    Exit;
+    if not Redo then
+    begin
+      result := False;
+      Exit;
+    end
+    else
 
-  LOOP:
-    Inc(i);
-    continue;
+    begin
+      Inc(i);
+      continue;
+    end;
 
   end;
   // n is *probably* prime

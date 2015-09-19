@@ -320,12 +320,9 @@ end;
   /// <returns>Random TIntX value.</returns>
 
   class function TOpHelper.Random(): TIntX;
-  var
-  newInt: TIntX;
+
   begin
-  newInt := TIntX.Create(1, False);
-  newInt := TMersenneTwister_32.NextUInt32();
-  result := newInt;
+  result := TMersenneTwister_32.NextUInt32();
   end; }
 
 /// <summary>
@@ -334,12 +331,9 @@ end;
 /// <returns>Random TIntX value.</returns>
 
 class function TOpHelper.Random(): TIntX;
-var
-  newInt: TIntX;
+
 begin
-  newInt := TIntX.Create(1, False);
-  newInt := TPcg.NextUInt32();
-  result := newInt;
+  result := TPcg.NextUInt32();
 end;
 
 { /// <summary>
@@ -349,12 +343,9 @@ end;
   /// <returns>Random TIntX value.</returns>
 
   class function TOpHelper.RandomRange(Min: UInt32; Max: UInt32): TIntX;
-  var
-  newInt: TIntX;
+
   begin
-  newInt := TIntX.Create(1, False);
-  newInt := TMersenneTwister_32.NextUInt32(Min, Max);
-  result := newInt;
+  result := TMersenneTwister_32.NextUInt32(Min, Max);
   end; }
 
 /// <summary>
@@ -363,12 +354,9 @@ end;
 /// <returns>Random TIntX value.</returns>
 
 class function TOpHelper.RandomRange(Min: UInt32; Max: UInt32): TIntX;
-var
-  newInt: TIntX;
+
 begin
-  newInt := TIntX.Create(1, False);
-  newInt := TPcg.NextUInt32(Min, Max);
-  result := newInt;
+  result := TPcg.NextUInt32(Min, Max);
 end;
 
 /// <summary>
@@ -628,7 +616,6 @@ begin
       int1 := temp;
     end;
     int2 := int2 - int1;
-    int2 := int2;
   end;
 
   result := int1 shl shift;

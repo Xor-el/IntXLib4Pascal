@@ -56,8 +56,6 @@ implementation
 constructor TIntXSettings.Create(globalSettings: TIntXGlobalSettings);
 begin
   Inherited Create;
-  F_toStringMode := TToStringMode.tsmFast;
-  F_autoNormalize := False;
   // Copy local settings from global ones
   F_autoNormalize := globalSettings.AutoNormalize;
   F_toStringMode := globalSettings.ToStringMode;

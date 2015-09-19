@@ -113,7 +113,7 @@ type
   class var
 
     FLock: TCriticalSection;
-    sineTable: TMyDoubleArray;
+    F_sineTable: TMyDoubleArray;
 
   const
 
@@ -138,8 +138,8 @@ class constructor TFhtHelper.Create();
 
 begin
   // Initialize SinTable
-  SetLength(sineTable, 31);
-  FillSineTable(sineTable);
+  SetLength(F_sineTable, 31);
+  FillSineTable(F_sineTable);
   // Create Critical Section
   FLock := TCriticalSection.Create;
 end;
@@ -290,12 +290,12 @@ end;
 /// <param name="digitsLength">New digits array length (we always do know the upper value for this array).</param>
 /// <param name="digitsResPtr">Resulting digits storage.</param>
 /// <returns>Big integer digits (dword values).</returns>
-{$HINTS OFF}
 
 class procedure TFhtHelper.ConvertDoubleToDigits(slice: PMyDouble;
   mlength: UInt32; digitsLength: UInt32; digitsResPtr: PMyUInt32);
 var
-  normalizeMultiplier, carry, dataDigit, error, maxError: Double;
+  normalizeMultiplier, carry, dataDigit {$IFDEF DEBUG}, error, maxError
+  {$ENDIF} : Double;
   unitCount, i, digitsCarry, oldDigit: UInt32;
   carryInt, dataDigitInt: Int64;
   unitDigitsPtr: PMyByte;
@@ -419,7 +419,7 @@ begin
 
 {$ENDIF}
 end;
-{$HINTS ON}
+
 /// <summary>
 /// Performs FHT "in place" for given double array.
 /// </summary>
@@ -839,8 +839,8 @@ class procedure TFhtHelper.GetInitialTrigValues(valuesPtr: PTrigValues;
   lengthLog2: Integer);
 
 begin
-  valuesPtr^.TableSin := sineTable[lengthLog2];
-  valuesPtr^.TableCos := sineTable[lengthLog2 + 1];
+  valuesPtr^.TableSin := F_sineTable[lengthLog2];
+  valuesPtr^.TableCos := F_sineTable[lengthLog2 + 1];
   valuesPtr^.TableCos := valuesPtr^.TableCos * -2.0 * (valuesPtr^.TableCos);
 
   valuesPtr^.Sin := valuesPtr^.TableSin;

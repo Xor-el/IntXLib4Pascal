@@ -96,15 +96,15 @@ end;
 
 class function TBits.CeilLog2(x: UInt32): Integer;
 var
-  Msb: Integer;
+  _Msb: Integer;
 
 begin
-  Msb := TBits.Msb(x);
-  if (x <> UInt32(1) shl Msb) then
+  _Msb := TBits.Msb(x);
+  if (x <> UInt32(1) shl _Msb) then
   begin
-    Inc(Msb);
+    Inc(_Msb);
   end;
-  result := Msb;
+  result := _Msb;
 end;
 
 end.

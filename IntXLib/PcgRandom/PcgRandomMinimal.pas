@@ -105,7 +105,7 @@ class constructor TPcg.Create();
 begin
   // ==> initializes using default seeds. you can change it to any reasonable
   // value
-  Seed($853C49E6748FEA9B, $DA3E39CB94B95BDB);
+  Seed(UInt64($853C49E6748FEA9B), UInt64($DA3E39CB94B95BDB));
 end;
 
 constructor TPcg.Create(initState: UInt64; initSeq: UInt64);
@@ -165,7 +165,9 @@ begin
       result := r mod exclusiveBound;
       Exit;
     end;
+
   end;
+  result := 0; // to make FixInsight Happy :)
 end;
 
 class function TPcg.NextInt(minimum: Integer; exclusiveBound: Integer): Integer;
