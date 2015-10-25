@@ -41,7 +41,7 @@ type
     /// Converts digits from internal representation into given base.
     /// </summary>
     /// <param name="digits">Big integer digits.</param>
-    /// <param name="length">Big integer length.</param>
+    /// <param name="mlength">Big integer length.</param>
     /// <param name="numberBase">Base to use for output.</param>
     /// <param name="outputLength">Calculated output length (will be corrected inside).</param>
     /// <returns>Conversion result (later will be transformed to string).</returns>

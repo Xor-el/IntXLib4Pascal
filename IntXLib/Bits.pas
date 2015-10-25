@@ -17,24 +17,42 @@ interface
 
 type
   /// <summary>
-  /// Contains helping methods to with with bits in dword (<see cref="UInt32" />).
+  /// Contains helping methods to work with bits in dword (UInt32).
   /// </summary>
 
   TBits = class
 
   public
+    /// <summary>
+    /// Returns number of leading zero bits in int.
+    /// </summary>
+    /// <param name="x">UInt32 value.</param>
+    /// <returns>Number of leading zero bits.</returns>
     class function Nlz(x: UInt32): Integer; static;
+    /// <summary>
+    /// Counts position of the most significant bit in int.
+    /// Can also be used as Floor(Log2(<paramref name="x" />)).
+    /// </summary>
+    /// <param name="x">UInt32 value.</param>
+    /// <returns>Position of the most significant one bit (-1 if all zeroes).</returns>
     class function Msb(x: UInt32): Integer; static;
+    /// <summary>
+    /// Ceil(Log2(<paramref name="x" />)).
+    /// </summary>
+    /// <param name="x">UInt32 value.</param>
+    /// <returns>Ceil of the Log2.</returns>
     class function CeilLog2(x: UInt32): Integer; static;
+
+    /// <summary>
+    /// Returns bit length in int.
+    /// </summary>
+    /// <param name="x">UInt32 value.</param>
+    /// <returns>Length of bits.</returns>
+
+    class function BitLengthOfUInt(x: UInt32): Integer; static;
   end;
 
 implementation
-
-/// <summary>
-/// Returns number of leading zero bits in int.
-/// </summary>
-/// <param name="x">UInt32 value.</param>
-/// <returns>Number of leading zero bits.</returns>
 
 class function TBits.Nlz(x: UInt32): Integer;
 var
@@ -74,25 +92,12 @@ begin
   result := n - Integer(x shr 31);
 end;
 
-/// <summary>
-/// Counts position of the most significant bit in int.
-/// Can also be used as Floor(Log2(<paramref name="x" />)).
-/// </summary>
-/// <param name="x">UInt32 value.</param>
-/// <returns>Position of the most significant one bit (-1 if all zeroes).</returns>
-
 class function TBits.Msb(x: UInt32): Integer;
 begin
 
   result := 31 - Nlz(x);
 
 end;
-
-/// <summary>
-/// Ceil(Log2(<paramref name="x" />)).
-/// </summary>
-/// <param name="x">UInt32 value.</param>
-/// <returns>Ceil of the Log2.</returns>
 
 class function TBits.CeilLog2(x: UInt32): Integer;
 var
@@ -105,6 +110,20 @@ begin
     Inc(_Msb);
   end;
   result := _Msb;
+end;
+
+class function TBits.BitLengthOfUInt(x: UInt32): Integer;
+var
+  numBits: Integer;
+begin
+  numBits := 0;
+  while (x > 0) do
+  begin
+    x := x shr 1;
+    Inc(numBits);
+  end;
+
+  result := numBits;
 end;
 
 end.

@@ -17,7 +17,7 @@ interface
 
 uses
   SysUtils, IStringConverter, Enums, ClassicStringConverter,
-  FastStringConverter, Pow2StringConverter;
+  FastStringConverter, Pow2StringConverter, Utils;
 
 type
   /// <summary>
@@ -27,8 +27,21 @@ type
   TStringConvertManager = class
 
   public
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     class constructor Create();
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     class destructor Destroy();
+    /// <summary>
+    /// Returns ToString converter instance for given ToString mode.
+    /// </summary>
+    /// <param name="mode">ToString mode.</param>
+    /// <returns>Converter instance.</returns>
+    /// <exception cref="EArgumentOutOfRangeException"><paramref name="mode" />is out of range.</exception>
+
     class function GetStringConverter(mode: TToStringMode)
       : IIStringConverter; static;
 
@@ -72,13 +85,6 @@ begin
   FClassicStringConverter := Nil;
   FFastStringConverter := Nil;
 end;
-
-/// <summary>
-/// Returns ToString converter instance for given ToString mode.
-/// </summary>
-/// <param name="mode">ToString mode.</param>
-/// <returns>Converter instance.</returns>
-/// <exception cref="ArgumentOutOfRangeException"><paramref name="mode" />is out of range.</exception>
 
 class function TStringConvertManager.GetStringConverter(mode: TToStringMode)
   : IIStringConverter;

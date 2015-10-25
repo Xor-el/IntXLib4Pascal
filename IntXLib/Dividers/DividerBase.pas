@@ -19,7 +19,7 @@ interface
 
 uses
   SysUtils, IDivider, Strings, DTypes, DigitOpHelper, DigitHelper, Enums,
-  Constants, IntX;
+  Constants, Utils, IntX;
 
 type
   /// <summary>
@@ -30,6 +30,18 @@ type
   TDividerBase = class abstract(TInterfacedObject, IIDivider)
 
   public
+
+    /// <summary>
+    /// Divides one <see cref="TIntX" /> by another.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <param name="modRes">Remainder big integer.</param>
+    /// <param name="resultFlags">Which operation results to return.</param>
+    /// <returns>Divident big integer.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="int1" /> or <paramref name="int2" /> is a null reference.</exception>
+    /// <exception cref="EDivByZero"><paramref name="int2" /> equals zero.</exception>
+    /// <exception cref="EArithmeticException"><paramref name="int1" /> and <paramref name="int2" /> equals zero.</exception>
     function DivMod(int1: TIntX; int2: TIntX; out modRes: TIntX;
       resultFlags: TDivModResultFlags): TIntX; overload; virtual;
 
@@ -45,7 +57,7 @@ type
     /// <param name="length2">Second big integer length.</param>
     /// <param name="digitsRes">Resulting big integer digits.</param>
     /// <param name="resultFlags">Which operation results to return.</param>
-    /// <param name="cmpResult">Big integers comparsion result (pass -2 if omitted).</param>
+    /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
     /// <returns>Resulting big integer length.</returns>
 
     function DivMod(digits1: TMyUInt32Array; digitsBuffer1: TMyUInt32Array;
@@ -53,6 +65,21 @@ type
       digitsBuffer2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array;
       resultFlags: TDivModResultFlags; cmpResult: Integer): UInt32; overload;
       virtual; abstract;
+
+    /// <summary>
+    /// Divides two big integers.
+    /// Also modifies <paramref name="digitsPtr1" /> and <paramref name="length1"/> (it will contain remainder).
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="digitsBufferPtr1">Buffer for first big integer digits. May also contain remainder.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digitsPtr2">Second big integer digits.</param>
+    /// <param name="digitsBufferPtr2">Buffer for second big integer digits. Only temporarily used.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsResPtr">Resulting big integer digits.</param>
+    /// <param name="resultFlags">Which operation results to return.</param>
+    /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
+    /// <returns>Resulting big integer length.</returns>
 
     function DivMod(digitsPtr1: PMyUInt32; digitsBufferPtr1: PMyUInt32;
       var length1: UInt32; digitsPtr2: PMyUInt32; digitsBufferPtr2: PMyUInt32;
@@ -62,18 +89,6 @@ type
   end;
 
 implementation
-
-/// <summary>
-/// Divides one <see cref="TIntX" /> by another.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second big integer.</param>
-/// <param name="modRes">Remainder big integer.</param>
-/// <param name="resultFlags">Which operation results to return.</param>
-/// <returns>Divident big integer.</returns>
-/// <exception cref="EArgumentNilException"><paramref name="int1" /> or <paramref name="int2" /> is a null reference.</exception>
-/// <exception cref="EDivByZero"><paramref name="int2" /> equals
-// zero.</exception>
 
 function TDividerBase.DivMod(int1: TIntX; int2: TIntX; out modRes: TIntX;
   resultFlags: TDivModResultFlags): TIntX;
@@ -95,6 +110,10 @@ begin
   // Check if int2 equals zero
   if (int2._length = 0) then
   begin
+    if (int1._length = 0) then
+    begin
+      raise EArithmeticException.Create(DivisionUndefined);
+    end;
     raise EDivByZero.Create(DivideByZero);
   end;
 
@@ -131,7 +150,6 @@ begin
     if modNeeded then
       modRes := TIntX.Create(0)
     else
-
       modRes := Default (TIntX);
     if divNeeded then
     begin
@@ -226,14 +244,14 @@ begin
   divRes := Default (TIntX);
   if (divNeeded) then
   begin
-    divRes := TIntX.Create(int1._length - int2._length + UInt32(1),
+    divRes := TIntX.Create(int1._length - int2._length + UInt32(2),
       resultNegative);
   end;
 
   // Prepare mod (if needed)
   if (modNeeded) then
   begin
-    modRes := TIntX.Create(int1._length + UInt32(1), int1._negative);
+    modRes := TIntX.Create(int1._length + UInt32(2), int1._negative);
   end
   else
   begin
@@ -274,21 +292,6 @@ begin
 
 end;
 
-/// <summary>
-/// Divides two big integers.
-/// Also modifies <paramref name="digitsPtr1" /> and <paramref name="length1"/> (it will contain remainder).
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="digitsBufferPtr1">Buffer for first big integer digits. May also contain remainder.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digitsPtr2">Second big integer digits.</param>
-/// <param name="digitsBufferPtr2">Buffer for second big integer digits. Only temporarily used.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsResPtr">Resulting big integer digits.</param>
-/// <param name="resultFlags">Which operation results to return.</param>
-/// <param name="cmpResult">Big integers comparsion result (pass -2 if omitted).</param>
-/// <returns>Resulting big integer length.</returns>
-
 function TDividerBase.DivMod(digitsPtr1: PMyUInt32; digitsBufferPtr1: PMyUInt32;
   var length1: UInt32; digitsPtr2: PMyUInt32; digitsBufferPtr2: PMyUInt32;
   length2: UInt32; digitsResPtr: PMyUInt32; resultFlags: TDivModResultFlags;
@@ -306,7 +309,7 @@ begin
   // Special cases
   //
 
-  // Case when length1 == 0
+  // Case when length1 = 0
   if (length1 = 0) then
   begin
     result := 0;

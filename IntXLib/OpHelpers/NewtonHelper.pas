@@ -30,24 +30,25 @@ type
   TNewtonHelper = class
 
   public
+
+    /// <summary>
+    /// Generates integer opposite to the given one using approximation.
+    /// Uses algorithm from Knuth vol. 2 3rd Edition (4.3.3).
+    /// </summary>
+    /// <param name="digitsPtr">Initial big integer digits.</param>
+    /// <param name="mlength">Initial big integer length.</param>
+    /// <param name="maxLength">Precision length.</param>
+    /// <param name="bufferPtr">Buffer in which shifted big integer may be stored.</param>
+    /// <param name="newLength">Resulting big integer length.</param>
+    /// <param name="rightShift">How much resulting big integer is shifted to the left (or: must be shifted to the right).</param>
+    /// <returns>Resulting big integer digits.</returns>
+
     class function GetIntegerOpposite(digitsPtr: PMyUInt32;
       mlength, maxLength: UInt32; bufferPtr: PMyUInt32; out newLength: UInt32;
       out rightShift: UInt64): TMyUInt32Array; static;
   end;
 
 implementation
-
-/// <summary>
-/// Generates integer opposite to the given one using approximation.
-/// Uses algorithm from Knuth vol. 2 3rd Edition (4.3.3).
-/// </summary>
-/// <param name="digitsPtr">Initial big integer digits.</param>
-/// <param name="mlength">Initial big integer length.</param>
-/// <param name="maxLength">Precision length.</param>
-/// <param name="bufferPtr">Buffer in which shifted big integer may be stored.</param>
-/// <param name="newLength">Resulting big integer length.</param>
-/// <param name="rightShift">How much resulting big integer is shifted to the left (or: must be shifted to the right).</param>
-/// <returns>Resulting big integer digits.</returns>
 
 class function TNewtonHelper.GetIntegerOpposite(digitsPtr: PMyUInt32;
   mlength, maxLength: UInt32; bufferPtr: PMyUInt32; out newLength: UInt32;
@@ -204,7 +205,7 @@ begin
     end
     else
     begin
-      // Actually we can assume resultSqrBufPtr == 0 here and have nothing to do
+      // Actually we can assume resultSqrBufPtr = 0 here and have nothing to do
     end;
     Inc(k);
   end;

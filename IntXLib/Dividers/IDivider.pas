@@ -50,7 +50,7 @@ type
     /// <param name="length2">Second big integer length.</param>
     /// <param name="digitsRes">Resulting big integer digits.</param>
     /// <param name="resultFlags">Which operation results to return.</param>
-    /// <param name="cmpResult">Big integers comparsion result (pass -2 if omitted).</param>
+    /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
     /// <returns>Resulting big integer length.</returns>
 
     function DivMod(digits1: TMyUInt32Array; digitsBuffer1: TMyUInt32Array;
@@ -70,7 +70,7 @@ type
     /// <param name="length2">Second big integer length.</param>
     /// <param name="digitsResPtr">Resulting big integer digits.</param>
     /// <param name="resultFlags">Which operation results to return.</param>
-    /// <param name="cmpResult">Big integers comparsion result (pass -2 if omitted).</param>
+    /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
     /// <returns>Resulting big integer length.</returns>
 
     function DivMod(digitsPtr1: PMyUInt32; digitsBufferPtr1: PMyUInt32;

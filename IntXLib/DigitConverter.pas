@@ -16,7 +16,7 @@ unit DigitConverter;
 interface
 
 uses
-  SysUtils, Strings, DTypes;
+  Strings, DTypes, Utils, IntX;
 
 type
   /// <summary>
@@ -26,21 +26,32 @@ type
   TDigitConverter = class
 
   public
+    /// <summary>
+    /// Converts big integer digits to bytes.
+    /// </summary>
+    /// <param name="digits"><see cref="TIntX" /> digits.</param>
+    /// <returns>Resulting bytes.</returns>
+    /// <remarks>
+    /// Digits can be obtained using <see cref="TIntX.GetInternalState(TMyUInt32Array,Boolean,Boolean)" /> method.
+    /// </remarks>
+    /// <exception cref="EArgumentNilException"><paramref name="digits" /> is a null reference.</exception>
+
     class function ToBytes(digits: TMyUInt32Array): TMyByteArray; static;
+    /// <summary>
+    /// Converts bytes to big integer digits.
+    /// </summary>
+    /// <param name="bytes">Bytes.</param>
+    /// <returns>Resulting <see cref="TIntX" /> digits.</returns>
+    /// <remarks>
+    /// Big integer can be created from digits using <see cref="TIntX.Create(TMyUInt32Array,Boolean)" /> constructor.
+    /// </remarks>
+    /// <exception cref="EArgumentNilException"><paramref name="bytes" /> is a null reference.</exception>
+
     class function FromBytes(bytes: TMyByteArray): TMyUInt32Array; static;
 
   end;
 
 implementation
-
-/// <summary>
-/// Converts big integer digits to bytes.
-/// </summary>
-/// <param name="digits"><see cref="TIntX" /> digits.</param>
-/// <returns>Resulting bytes.</returns>
-/// <remarks>
-/// Digits can be obtained using <see cref="TIntX.GetInternalState" /> method.
-/// </remarks>
 
 class function TDigitConverter.ToBytes(digits: TMyUInt32Array): TMyByteArray;
 
@@ -53,15 +64,6 @@ begin
   SetLength(result, (Length(digits) * 4));
   Move(digits[0], result[0], Length(result) * SizeOf(UInt32));
 end;
-
-/// <summary>
-/// Converts bytes to big integer digits.
-/// </summary>
-/// <param name="bytes">Bytes.</param>
-/// <returns>Resulting <see cref="TIntX" /> digits.</returns>
-/// <remarks>
-/// Big integer can be created from digits using <see cref="TIntX.Create(TMyUInt32Array, Boolean)" /> constructor.
-/// </remarks>
 
 class function TDigitConverter.FromBytes(bytes: TMyByteArray): TMyUInt32Array;
 

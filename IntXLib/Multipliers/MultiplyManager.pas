@@ -16,7 +16,8 @@ unit MultiplyManager;
 interface
 
 uses
-  SysUtils, IMultiplier, ClassicMultiplier, AutoFhtMultiplier, Enums, IntX;
+  SysUtils, IMultiplier, ClassicMultiplier, AutoFhtMultiplier, Enums, Utils,
+  IntX;
 
 type
   /// <summary>
@@ -26,9 +27,29 @@ type
   TMultiplyManager = class
 
   public
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     class constructor Create();
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     class destructor Destroy();
+
+    /// <summary>
+    /// Returns multiplier instance for given multiply mode.
+    /// </summary>
+    /// <param name="mode">Multiply mode.</param>
+    /// <returns>Multiplier instance.</returns>
+    /// <exception cref="EArgumentOutOfRangeException"><paramref name="mode" /> is out of range.</exception>
+
     class function GetMultiplier(mode: TMultiplyMode): IIMultiplier; static;
+
+    /// <summary>
+    /// Returns current multiplier instance.
+    /// </summary>
+    /// <returns>Current multiplier instance.</returns>
+
     class function GetCurrentMultiplier(): IIMultiplier; static;
 
   class var
@@ -70,13 +91,6 @@ begin
   FAutoFhtMultiplier := Nil;
 end;
 
-/// <summary>
-/// Returns multiplier instance for given multiply mode.
-/// </summary>
-/// <param name="mode">Multiply mode.</param>
-/// <returns>Multiplier instance.</returns>
-/// <exception cref="EArgumentOutOfRangeException"><paramref name="mode" /> is out of range.</exception>
-
 class function TMultiplyManager.GetMultiplier(mode: TMultiplyMode)
   : IIMultiplier;
 begin
@@ -101,11 +115,6 @@ begin
 
   end;
 end;
-
-/// <summary>
-/// Returns current multiplier instance.
-/// </summary>
-/// <returns>Current multiplier instance.</returns>
 
 class function TMultiplyManager.GetCurrentMultiplier(): IIMultiplier;
 begin

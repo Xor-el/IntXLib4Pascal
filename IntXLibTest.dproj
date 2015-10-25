@@ -2,10 +2,10 @@
     <PropertyGroup>
         <ProjectGuid>{4CD65183-A053-4A70-913B-F3F145D5269D}</ProjectGuid>
         <ProjectVersion>16.1</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>VCL</FrameworkType>
         <MainSource>IntXLibTest.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Console</AppType>
@@ -71,7 +71,7 @@
         <DCC_UnitSearchPath>$(DUnitX);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <SanitizedProjectName>IntXLibTest</SanitizedProjectName>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
@@ -113,6 +113,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_DebugDCUs>false</DCC_DebugDCUs>
         <DCC_MapFile>3</DCC_MapFile>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -173,6 +174,9 @@
         <DCCReference Include="IntXLib\StringConverters\StringConverterBase.pas"/>
         <DCCReference Include="IntXLib\StringConverters\StringConvertManager.pas"/>
         <DCCReference Include="IntXLib\OpHelpers\OpHelper.pas"/>
+        <DCCReference Include="IntXLib\MillerRabin\MillerRabin.pas"/>
+        <DCCReference Include="IntXLib\PcgRandom\PcgRandomMinimal.pas"/>
+        <DCCReference Include="IntXLib\Utils\Utils.pas"/>
         <DCCReference Include="IntXLib.Test\AddOpTest.pas"/>
         <DCCReference Include="IntXLib.Test\BitwiseAndOpTest.pas"/>
         <DCCReference Include="IntXLib.Test\BitwiseOrOpTest.pas"/>
@@ -204,11 +208,11 @@
         <DCCReference Include="IntXLib.Test\ParseFastTest.pas"/>
         <DCCReference Include="IntXLib.Test\DivOpNewtonTest.pas"/>
         <DCCReference Include="IntXLib.Test\MulOpFhtTest.pas"/>
-        <DCCReference Include="IntXLib.Test\SquareRootTest.pas"/>
+        <DCCReference Include="IntXLib.Test\IntegerSquareRootTest.pas"/>
         <DCCReference Include="IntXLib.Test\MultiThreadingTest.pas"/>
         <DCCReference Include="IntXLib.Test\IntXZeroandOneTest.pas"/>
         <DCCReference Include="IntXLib.Test\AbsoluteValueTest.pas"/>
-        <DCCReference Include="IntXLib.Test\LogNTest.pas"/>
+        <DCCReference Include="IntXLib.Test\IntegerLogNTest.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -15,6 +15,9 @@ unit PcgRandomMinimal;
 
 interface
 
+uses
+  SysUtils;
+
 type
 
   /// <summary>
@@ -24,6 +27,21 @@ type
   TPcg = class
 
   strict private
+  type
+
+    /// <summary>
+    /// Record to help Cast a Comp to an Int64.
+    /// </summary>
+    /// <returns> Int64 </returns>
+
+    CompConverter = record
+    private
+      /// <summary>
+      /// Internal variable used for Casting.
+      /// </summary>
+      I64: Int64;
+    end;
+
   class var
     /// <summary>
     /// The RNG state. All values are possible.
@@ -37,8 +55,9 @@ type
     Fm_inc: UInt64;
 
     /// <summary>
+    /// static class constructor.
     /// Initializes a new instance of the <see cref="TPcg"/> class
-    /// <strong>FOR TESTING</strong> with a <strong>KNOWN</strong> seed.
+    /// <strong>FOR USAGE</strong> with <strong>SYSTEM TIME</strong> as initState.
     /// </summary>
 
     class constructor Create;
@@ -55,13 +74,36 @@ type
 
     /// <summary>
     /// Generates a uniformly distributed number, r,
-    /// where 0 <= r < exclusiveBound.
+    /// where 0 &lt;= r &lt; exclusiveBound.
     /// </summary>
-    /// <param name="exlusiveBound">Exlusive bound.</param>
+    /// <param name="exclusiveBound">Exclusive bound.</param>
 
     class function Range32(exclusiveBound: UInt32): UInt32; inline;
 
+    /// <summary>
+    /// Generates an Init State from System Time.
+    /// </summary>
+    /// <param name="initSeq">Calculated initSeq.</param>
+    /// <returns> UInt64 </returns>
+
+    class function GetInitState(out initSeq: UInt64): UInt64; inline;
+
+    /// <summary>
+    /// Generates an Init Sequence from GetInitState value * 181783497276652981.
+    /// <param name="tempVal">Previous value from GetInitState.</param>
+    /// </summary>
+    /// <returns> UInt64 </returns>
+
+    class function GetInitSeq(tempVal: UInt64): UInt64; inline;
+
   public
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TPcg"/> class
+    /// <strong>FOR TESTING</strong> with a <strong>KNOWN</strong> seed.
+    /// </summary>
+
+    constructor Create(); overload;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TPcg"/> class.
@@ -69,8 +111,7 @@ type
     /// <param name="initState">Initial state.</param>
     /// <param name="initSeq">Initial sequence</param>
 
-    constructor Create(initState: UInt64; initSeq: UInt64);
-    destructor Destroy; override;
+    constructor Create(initState: UInt64; initSeq: UInt64); overload;
 
     /// <summary>
     /// Generates a uniformly-distributed 32-bit random number.
@@ -80,7 +121,7 @@ type
 
     /// <summary>
     /// Generates a uniformly distributed number, r,
-    /// where minimum <= r < exclusiveBound.
+    /// where minimum &lt;= r &lt; exclusiveBound.
     /// </summary>
     /// <param name="minimum">The minimum inclusive value.</param>
     /// <param name="exclusiveBound">The maximum exclusive bound.</param>
@@ -90,7 +131,7 @@ type
 
     /// <summary>
     /// Generates a uniformly distributed number, r,
-    /// where minimum <= r < exclusiveBound.
+    /// where minimum &lt;= r &lt; exclusiveBound.
     /// </summary>
     /// <param name="minimum">The minimum inclusive value.</param>
     /// <param name="exclusiveBound">The maximum exclusive bound.</param>
@@ -101,7 +142,20 @@ type
 
 implementation
 
+// static class constructor
 class constructor TPcg.Create();
+var
+  LinitState, LinitSeq: UInt64;
+begin
+
+  LinitState := GetInitState(LinitSeq);
+  // ==> initializes using system time as initState and calculated value as
+  // initSeq
+  Seed(LinitState, LinitSeq);
+
+end;
+
+constructor TPcg.Create();
 begin
   // ==> initializes using default seeds. you can change it to any reasonable
   // value
@@ -110,13 +164,7 @@ end;
 
 constructor TPcg.Create(initState: UInt64; initSeq: UInt64);
 begin
-  Inherited Create;
   Seed(initState, initSeq);
-end;
-
-destructor TPcg.Destroy();
-begin
-  Inherited Destroy;
 end;
 
 class procedure TPcg.Seed(initState: UInt64; initSeq: UInt64);
@@ -132,6 +180,7 @@ class function TPcg.Range32(exclusiveBound: UInt32): UInt32;
 var
   r, threshold: UInt32;
 begin
+
   // To avoid bias, we need to make the range of the RNG
   // a multiple of bound, which we do by dropping output
   // less than a threshold. A naive scheme to calculate the
@@ -199,6 +248,21 @@ begin
   boundRange := exclusiveBound - minimum;
   rangeResult := Range32(boundRange);
   result := rangeResult + minimum;
+end;
+
+class function TPcg.GetInitState(out initSeq: UInt64): UInt64;
+
+begin
+  result := UInt64
+    (CompConverter(TimeStampToMsecs(DateTimeToTimeStamp(Now))).I64);
+  initSeq := GetInitSeq(result) * Int64(1000000);
+
+end;
+
+class function TPcg.GetInitSeq(tempVal: UInt64): UInt64;
+
+begin
+  result := tempVal * 181783497276652981;
 end;
 
 end.

@@ -6,9 +6,9 @@ program IntXLibTest;
 
 uses
   SysUtils,
-  {$IFDEF TESTINSIGHT}
+{$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
-  {$ENDIF }
+{$ENDIF }
   DUnitX.Init,
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
@@ -35,7 +35,8 @@ uses
   AutoNewtonDivider in 'IntXLib\Dividers\AutoNewtonDivider.pas',
   ClassicDivider in 'IntXLib\Dividers\ClassicDivider.pas',
   IStringConverter in 'IntXLib\StringConverters\IStringConverter.pas',
-  ClassicStringConverter in 'IntXLib\StringConverters\ClassicStringConverter.pas',
+  ClassicStringConverter
+    in 'IntXLib\StringConverters\ClassicStringConverter.pas',
   Pow2StringConverter in 'IntXLib\StringConverters\Pow2StringConverter.pas',
   FastStringConverter in 'IntXLib\StringConverters\FastStringConverter.pas',
   IntXGlobalSettings in 'IntXLib\Settings\IntXGlobalSettings.pas',
@@ -50,9 +51,9 @@ uses
   StringConverterBase in 'IntXLib\StringConverters\StringConverterBase.pas',
   StringConvertManager in 'IntXLib\StringConverters\StringConvertManager.pas',
   OpHelper in 'IntXLib\OpHelpers\OpHelper.pas',
-  MT19937_32 in 'IntXLib\MersenneTwister\MT19937_32.pas',
   MillerRabin in 'IntXLib\MillerRabin\MillerRabin.pas',
   PcgRandomMinimal in 'IntXLib\PcgRandom\PcgRandomMinimal.pas',
+  Utils in 'IntXLib\Utils\Utils.pas',
   AddOpTest in 'IntXLib.Test\AddOpTest.pas',
   BitwiseAndOpTest in 'IntXLib.Test\BitwiseAndOpTest.pas',
   BitwiseOrOpTest in 'IntXLib.Test\BitwiseOrOpTest.pas',
@@ -84,11 +85,11 @@ uses
   ParseFastTest in 'IntXLib.Test\ParseFastTest.pas',
   DivOpNewtonTest in 'IntXLib.Test\DivOpNewtonTest.pas',
   MulOpFhtTest in 'IntXLib.Test\MulOpFhtTest.pas',
-  SquareRootTest in 'IntXLib.Test\SquareRootTest.pas',
+  IntegerSquareRootTest in 'IntXLib.Test\IntegerSquareRootTest.pas',
   MultiThreadingTest in 'IntXLib.Test\MultiThreadingTest.pas',
   IntXZeroandOneTest in 'IntXLib.Test\IntXZeroandOneTest.pas',
   AbsoluteValueTest in 'IntXLib.Test\AbsoluteValueTest.pas',
-  LogNTest in 'IntXLib.Test\LogNTest.pas';
+  IntegerLogNTest in 'IntXLib.Test\IntegerLogNTest.pas';
 
 var
   runner: ITestRunner;

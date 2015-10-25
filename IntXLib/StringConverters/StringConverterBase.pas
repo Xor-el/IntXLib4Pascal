@@ -16,7 +16,8 @@ unit StringConverterBase;
 interface
 
 uses
-  IStringConverter, SysUtils, Strings, Math, Constants, DTypes, Bits, IntX;
+  IStringConverter, SysUtils, Strings, Math, Constants, DTypes, Bits, Utils,
+  IntX;
 
 type
   /// <summary>
@@ -27,14 +28,47 @@ type
   TStringConverterBase = class abstract(TInterfacedObject, IIStringConverter)
 
   private
-
-    F_pow2StringConverter: IIStringConverter; // converter for pow2 case
+    /// <summary>
+    /// Converter for Pow2 Case.
+    /// </summary>
+    F_pow2StringConverter: IIStringConverter;
 
   public
+
+    /// <summary>
+    /// Creates new <see cref="StringConverterBase" /> instance.
+    /// </summary>
+    /// <param name="pow2StringConverter">Converter for pow2 case.</param>
+
     constructor Create(pow2StringConverter: IIStringConverter);
+
+    /// <summary>
+    /// Destructor.
+    /// </summary>
+
     destructor Destroy(); override;
+
+    /// <summary>
+    /// Returns string representation of <see cref="TIntX" /> object in given base.
+    /// </summary>
+    /// <param name="IntX">Big integer to convert.</param>
+    /// <param name="numberBase">Base of system in which to do output.</param>
+    /// <param name="alphabet">Alphabet which contains chars used to represent big integer, char position is coresponding digit value.</param>
+    /// <returns>Object string representation.</returns>
+    /// <exception cref="EArgumentException"><paramref name="numberBase" /> is less then 2 or <paramref name="IntX" /> is too big to fit in string.</exception>
+
     function ToString(IntX: TIntX; numberBase: UInt32; alphabet: array of Char)
       : String; reintroduce; overload; virtual;
+
+    /// <summary>
+    /// Converts digits from internal representaion into given base.
+    /// </summary>
+    /// <param name="digits">Big integer digits.</param>
+    /// <param name="mlength">Big integer length.</param>
+    /// <param name="numberBase">Base to use for output.</param>
+    /// <param name="outputLength">Calculated output length (will be corrected inside).</param>
+    /// <returns>Conversion result (later will be transformed to string).</returns>
+
     function ToString(digits: TMyUInt32Array; mlength: UInt32;
       numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;
       reintroduce; overload; virtual;
@@ -42,11 +76,6 @@ type
   end;
 
 implementation
-
-/// <summary>
-/// Creates new <see cref="StringConverterBase" /> instance.
-/// </summary>
-/// <param name="pow2StringConverter">Converter for pow2 case.</param>
 
 constructor TStringConverterBase.Create(pow2StringConverter: IIStringConverter);
 
@@ -60,15 +89,6 @@ begin
   F_pow2StringConverter := Nil;
   inherited Destroy;
 end;
-
-/// <summary>
-/// Returns string representation of <see cref="TIntX" /> object in given base.
-/// </summary>
-/// <param name="TIntX">Big integer to convert.</param>
-/// <param name="numberBase">Base of system in which to do output.</param>
-/// <param name="alphabet">Alphabet which contains chars used to represent big integer, char position is coresponding digit value.</param>
-/// <returns>Object string representation.</returns>
-/// <exception cref="EArgumentException"><paramref name="numberBase" /> is less then 2 or <paramref name="IntX" /> is too big to fit in string.</exception>
 
 function TStringConverterBase.ToString(IntX: TIntX; numberBase: UInt32;
   alphabet: array of Char): String;
@@ -112,7 +132,7 @@ begin
   if (maxBuilderLength > TConstants.MaxIntValue) then
   begin
     // This big integer can't be transformed to string
-    raise EArgumentException.Create(Strings.IntegerTooBig + ' intX');
+    raise EArgumentException.Create(Strings.IntegerTooBig + ' IntX');
   end;
 
   // Transform digits into another base
@@ -139,10 +159,10 @@ begin
       end
       else
       begin
-        // Output digits in bracets for bigger bases
-        outputBuilder.Append(TConstants.DigitOpeningBracet);
+        // Output digits in brackets for bigger bases
+        outputBuilder.Append(TConstants.DigitOpeningBracket);
         outputBuilder.Append(UInttoStr(outputArray[i]));
-        outputBuilder.Append(TConstants.DigitClosingBracet);
+        outputBuilder.Append(TConstants.DigitClosingBracket);
       end;
       Dec(i);
     end;
@@ -154,15 +174,6 @@ begin
     outputBuilder.Free;
   end;
 end;
-
-/// <summary>
-/// Converts digits from internal representaion into given base.
-/// </summary>
-/// <param name="digits">Big integer digits.</param>
-/// <param name="mlength">Big integer length.</param>
-/// <param name="numberBase">Base to use for output.</param>
-/// <param name="outputLength">Calculated output length (will be corrected inside).</param>
-/// <returns>Conversion result (later will be transformed to string).</returns>
 
 function TStringConverterBase.ToString(digits: TMyUInt32Array; mlength: UInt32;
   numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;

@@ -26,20 +26,29 @@ type
   TClassicStringConverter = class sealed(TStringConverterBase)
 
   public
-
+    /// <summary>
+    /// Creates new <see cref="ClassicStringConverter" /> instance.
+    /// </summary>
+    /// <param name="pow2StringConverter">Converter for pow2 case.</param>
     constructor Create(pow2StringConverter: IIStringConverter);
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     destructor Destroy(); override;
+    /// <summary>
+    /// Converts digits from internal representaion into given base.
+    /// </summary>
+    /// <param name="digits">Big integer digits.</param>
+    /// <param name="mlength">Big integer length.</param>
+    /// <param name="numberBase">Base to use for output.</param>
+    /// <param name="outputLength">Calculated output length (will be corrected inside).</param>
+    /// <returns>Conversion result (later will be transformed to string).</returns>
     function ToString(digits: TMyUInt32Array; mlength: UInt32;
       numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array; override;
 
   end;
 
 implementation
-
-/// <summary>
-/// Creates new <see cref="ClassicStringConverter" /> instance.
-/// </summary>
-/// <param name="pow2StringConverter">Converter for pow2 case.</param>
 
 constructor TClassicStringConverter.Create(pow2StringConverter
   : IIStringConverter);
@@ -55,15 +64,6 @@ begin
 
   inherited Destroy;
 end;
-
-/// <summary>
-/// Converts digits from internal representaion into given base.
-/// </summary>
-/// <param name="digits">Big integer digits.</param>
-/// <param name="mlength">Big integer length.</param>
-/// <param name="numberBase">Base to use for output.</param>
-/// <param name="outputLength">Calculated output length (will be corrected inside).</param>
-/// <returns>Conversion result (later will be transformed to string).</returns>
 
 function TClassicStringConverter.ToString(digits: TMyUInt32Array;
   mlength: UInt32; numberBase: UInt32; var outputLength: UInt32)

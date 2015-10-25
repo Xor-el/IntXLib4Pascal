@@ -19,7 +19,7 @@ interface
 
 uses
   MultiplierBase, DTypes, DigitOpHelper, IMultiplier, FhtHelper, Constants,
-  Math, SysUtils, Strings, IntX;
+  Math, SysUtils, Strings, Utils, IntX;
 
 type
   /// <summary>
@@ -29,11 +29,35 @@ type
   TAutoFhtMultiplier = class sealed(TMultiplierBase)
 
   private
+    /// <summary>
+    /// IIMultiplier Instance.
+    /// </summary>
     F_classicMultiplier: IIMultiplier;
 
   public
+    /// <summary>
+    /// Creates new <see cref="TAutoFhtMultiplier" /> instance.
+    /// </summary>
+    /// <param name="classicMultiplier">Multiplier to use if FHT is unapplicatible.</param>
+
     constructor Create(classicMultiplier: IIMultiplier);
+
+    /// <summary>
+    /// Destructor.
+    /// </summary>
+
     destructor Destroy(); Override;
+
+    /// <summary>
+    /// Multiplies two big integers using pointers.
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digitsPtr2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsResPtr">Resulting big integer digits.</param>
+    /// <returns>Resulting big integer real length.</returns>
+
     function Multiply(digitsPtr1: PMyUInt32; length1: UInt32;
       digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32)
       : UInt32; override;
@@ -41,11 +65,6 @@ type
   end;
 
 implementation
-
-/// <summary>
-/// Creates new <see cref="TAutoFhtMultiplier" /> instance.
-/// </summary>
-/// <param name="classicMultiplier">Multiplier to use if FHT is unapplicatible.</param>
 
 constructor TAutoFhtMultiplier.Create(classicMultiplier: IIMultiplier);
 
@@ -59,16 +78,6 @@ begin
   F_classicMultiplier := Nil;
   inherited Destroy;
 end;
-
-/// <summary>
-/// Multiplies two big integers using pointers.
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digitsPtr2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsResPtr">Resulting big integer digits.</param>
-/// <returns>Resulting big integer real length.</returns>
 
 function TAutoFhtMultiplier.Multiply(digitsPtr1: PMyUInt32; length1: UInt32;
   digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
@@ -139,8 +148,8 @@ begin
       lowerDigitCount) <> 0) then
     begin
 
-      raise Exception.Create(Format(Strings.FhtMultiplicationError,
-        [length1, length2]));
+      raise EFhtMultiplicationException.Create
+        (Format(Strings.FhtMultiplicationError, [length1, length2], TIntX._FS));
     end;
 
   end;

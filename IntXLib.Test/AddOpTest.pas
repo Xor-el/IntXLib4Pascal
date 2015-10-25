@@ -275,37 +275,37 @@ begin
 end;
 
 // Simple output (hex Fibonacci numbers). Uncomment to see
- (*
-[Test]
-procedure TAddOpTest.FibonOut();
-var
+(*
+  [Test]
+  procedure TAddOpTest.FibonOut();
+  var
   numberBase: UInt32;
   Writer: TStreamWriter;
   int1, int2, int3: TIntX;
   i: Integer;
-begin
+  begin
   numberBase := 16;
   Writer := TStreamWriter.Create('fibon.txt');
   try
-    int1 := TIntX.Create(1);
-    Writer.WriteLine(int1.ToString(numberBase));
-    int2 := int1;
-    Writer.WriteLine(int2.ToString(numberBase));
-    int3 := Default (TIntX);
-    for i := 0 to Pred(1000) do
-    begin
-      int3 := int1 + int2;
-      Writer.WriteLine(int3.ToString(numberBase));
-      int1 := int2;
-      int2 := int3;
-    end;
-
-  finally
-    Writer.Free;
+  int1 := TIntX.Create(1);
+  Writer.WriteLine(int1.ToString(numberBase));
+  int2 := int1;
+  Writer.WriteLine(int2.ToString(numberBase));
+  int3 := Default (TIntX);
+  for i := 0 to Pred(1000) do
+  begin
+  int3 := int1 + int2;
+  Writer.WriteLine(int3.ToString(numberBase));
+  int1 := int2;
+  int2 := int3;
   end;
 
-end;
-     *)
+  finally
+  Writer.Free;
+  end;
+
+  end;
+*)
 
 initialization
 

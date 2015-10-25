@@ -17,8 +17,8 @@ interface
 
 uses
   IntX, Constants, DigitHelper, Strings, SysUtils, DigitOpHelper, Bits, Enums,
-  IMultiplier, MultiplyManager, DTypes, {MT19937_32} PcgRandomMinimal,
-  MillerRabin;
+  IMultiplier, MultiplyManager, DTypes, PcgRandomMinimal,
+  MillerRabin, Utils, Math;
 
 type
   /// <summary>
@@ -26,53 +26,567 @@ type
   /// </summary>
 
   TOpHelper = class sealed
+  public const
+    /// <summary>
+    /// Constant used for internal operations.
+    /// </summary>
+    kcbitUint = 32;
+
+  type
+    /// <summary>
+    /// Record used for internal operations.
+    /// </summary>
+    /// <remarks>
+    /// Both Record Fields are aligned at Zero Offsets.
+    /// </remarks>
+    TDoubleUlong = packed record
+      case Byte of
+        0:
+
+          (
+            /// <summary>
+            /// Double variable used for internal operations.
+            /// </summary>
+            dbl: Double
+          );
+
+        1:
+
+          (
+            /// <summary>
+            /// UInt64 variable used for internal operations.
+            /// </summary>
+            uu: UInt64
+          );
+
+    end;
+
+  type
+    /// <summary>
+    /// Record used for internal building operations.
+    /// </summary>
+    TBuilder = record
+    private
+    class var
+
+      /// <summary>
+      /// Integer variable used for internal operations.
+      /// </summary>
+      /// <remarks>For a single UInt32, _iuLast is 0.</remarks>
+      _iuLast: Integer;
+
+      /// <summary>
+      /// UInt32 variable used for internal operations.
+      /// </summary>
+      /// <remarks>Used if _iuLast = 0.</remarks>
+      _uSmall: UInt32;
+
+      /// <summary>
+      /// <see cref="TMyUInt32Array" /> used for internal operations.
+      /// </summary>
+      /// <remarks>Used if _iuLast > 0.</remarks>
+      _rgu: TMyUInt32Array;
+
+    public
+      /// <summary>
+      /// Used to create an Instance of <see cref="TOpHelper.TBuilder" />. for internal use only.
+      /// </summary>
+      constructor Create(bn: TIntX; var sign: Integer);
+      /// <summary>
+      /// Function used for Internal operations.
+      /// </summary>
+      class procedure GetApproxParts(out exp: Integer; out man: UInt64); static;
+
+    end;
 
   strict private
+
+    /// <summary>
+    /// Function used for Internal operations.
+    /// </summary>
+    class function MakeUlong(uHi: UInt32; uLo: UInt32): UInt64; static;
+    /// <summary>
+    /// Function used for Internal operations.
+    /// </summary>
+    class function CbitHighZero(u: UInt32): Integer; overload; static;
+    /// <summary>
+    /// Function used for Internal operations.
+    /// </summary>
+    class function CbitHighZero(uu: UInt64): Integer; overload; static;
+    /// <summary>
+    /// Helper method used in computing Integer SquareRoot.
+    /// </summary>
+    /// <param name="n">
+    /// Internal variable
+    /// </param>
+    /// <param name="g">
+    /// Internal variable
+    /// </param>
+    /// <param name="last">
+    /// Internal variable
+    /// </param>
     class function Guesser(n: TIntX; g: TIntX; last: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Returns the number of trailing 0-bits in x, starting at the least significant
+    /// bit position.
+    /// </summary>
+    /// <param name="x">value to get number of trailing zero bits.</param>
+    /// <returns>number of trailing 0-bits.</returns>
+    /// <remarks>If x is 0, the result is undefined as per GCC Implementation.</remarks>
+
     class function __builtin_ctz(x: UInt32): Integer; inline; static;
 
   public
+
+    /// <summary>
+    /// Adds two big integers.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <returns>Resulting big integer.</returns>
+    /// <exception cref="EArgumentException"><paramref name="int1" /> or <paramref name="int2" /> is too big for add operation.</exception>
+
     class function Add(int1: TIntX; int2: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Subtracts two big integers.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <returns>Resulting big integer.</returns>
+
     class function Sub(int1: TIntX; int2: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Adds/subtracts one <see cref="TIntX" /> to/from another.
+    /// Determines which operation to use basing on operands signs.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <param name="subtract">Was subtraction initially.</param>
+    /// <returns>Add/subtract operation result.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="int1" /> or <paramref name="int2" /> is a null reference.</exception>
+
     class function AddSub(int1: TIntX; int2: TIntX; subtract: Boolean)
       : TIntX; static;
+
+    /// <summary>
+    /// Returns a specified big integer raised to the specified power.
+    /// </summary>
+    /// <param name="value">Number to raise.</param>
+    /// <param name="power">Power.</param>
+    /// <param name="multiplyMode">Multiply mode set explicitly.</param>
+    /// <returns>Number in given power.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="value" /> is a null reference.</exception>
+
     class function Pow(value: TIntX; power: UInt32; multiplyMode: TMultiplyMode)
       : TIntX; static;
+
+    /// <summary>
+    /// Returns a Non-Negative Random <see cref="TIntX" /> object using Pcg Random.
+    /// </summary>
+    /// <returns>Random TIntX value.</returns>
+
     class function Random(): TIntX; static;
+
+    /// <summary>
+    /// Returns a Non-Negative Random <see cref="TIntX" /> object using Pcg Random within the specified Range. (Max not Included)
+    /// </summary>
+    /// <param name="Min">Minimum value.</param>
+    /// <param name="Max">Maximum value (Max not Included)</param>
+    /// <returns>Random TIntX value.</returns>
+
     class function RandomRange(Min: UInt32; Max: UInt32): TIntX; static;
+
+    /// <summary>
+    /// Returns a non negative big integer.
+    /// </summary>
+    /// <param name="value">value to get its absolute value.</param>
+    /// <returns>Absolute number.</returns>
+
     class function AbsoluteValue(value: TIntX): TIntX; static;
-    class function LogN(base: TIntX; number: TIntX): TIntX; static;
+
+    /// <summary>
+    /// The base-10 logarithm of the value.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>The base-10 logarithm of the value.</returns>
+    /// <remarks> Source : Microsoft .NET Reference on GitHub </remarks>
+
+    class function Log10(value: TIntX): Double; static;
+
+    /// <summary>
+    /// Calculates the natural logarithm of the value.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>The natural logarithm.</returns>
+    /// <remarks> Source : Microsoft .NET Reference on GitHub </remarks>
+
+    class function Ln(value: TIntX): Double; static;
+
+    /// <summary>
+    /// Calculates Logarithm of a number <see cref="TIntX" /> object for a specified base.
+    /// the largest power the base can be raised to that does not exceed the number.
+    /// </summary>
+    /// <param name="base">base.</param>
+    /// <param name="value">number to get log of.</param>
+    /// <returns>Log value.</returns>
+    /// <remarks> Source : Microsoft .NET Reference on GitHub </remarks>
+
+    class function LogN(base: Double; value: TIntX): Double; static;
+
+    /// <summary>
+    /// Calculates Integer Logarithm of a number <see cref="TIntX" /> object for a specified base.
+    /// the largest power the base can be raised to that does not exceed the number.
+    /// </summary>
+    /// <param name="base">base.</param>
+    /// <param name="number">number to get Integer log of.</param>
+    /// <returns>Integer Log.</returns>
+    /// <seealso href="http://gist.github.com/dharmatech/409723">[IntegerLogN Implementation]</seealso>
+
+    class function IntegerLogN(base: TIntX; number: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Returns a specified big integer raised to the power of 2.
+    /// </summary>
+    /// <param name="value">Number to get its square.</param>
+    /// <returns>Squared number.</returns>
+
     class function Square(value: TIntX): TIntX; static;
-    class function SquareRoot(value: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Calculates Integer SquareRoot of <see cref="TIntX" /> object
+    /// </summary>
+    /// <param name="value">value to get Integer squareroot of.</param>
+    /// <returns>Integer SquareRoot.</returns>
+    /// <seealso href="http://www.dahuatu.com/RkWdPBx6W8.html">[IntegerSquareRoot Implementation]</seealso>
+
+    class function IntegerSquareRoot(value: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Returns a specified big integer holding the factorial of value.
+    /// </summary>
+    /// <param name="value">Number to get its factorial.</param>
+    /// <returns>factorialed number.</returns>
+    /// <exception cref="EArgumentException"><paramref name="value" /> is a negative value.</exception>
+
     class function Factorial(value: TIntX): TIntX; static;
+
+    /// <summary>
+    /// (Optimized GCD).
+    /// Returns a specified big integer holding the GCD (Greatest common Divisor) of
+    /// two big integers using Binary GCD (Stein's algorithm).
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <returns>GCD number.</returns>
+    /// <seealso href="http://lemire.me/blog/archives/2013/12/26/fastest-way-to-compute-the-greatest-common-divisor/">[GCD Implementation]</seealso>
+    /// <seealso href="https://hbfs.wordpress.com/2013/12/10/the-speed-of-gcd/">[GCD Implementation Optimizations]</seealso>
+
     class function GCD(int1: TIntX; int2: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Calculate Modular Inverse for two <see cref="TIntX" /> objects using Euclids Extended Algorithm.
+    /// returns Zero if no Modular Inverse Exists for the Inputs
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <returns>Modular Inverse.</returns>
+    /// <seealso href="https://en.wikipedia.org/wiki/Modular_multiplicative_inverse">[Modular Inverse Explanation]</seealso>
+    /// <seealso href="http://www.di-mgt.com.au/euclidean.html">[Modular Inverse Implementation]</seealso>
+
     class function InvMod(int1: TIntX; int2: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Calculates Calculates Modular Exponentiation of <see cref="TIntX" /> object.
+    /// </summary>
+    /// <param name="value">value to compute ModPow of.</param>
+    /// <param name="exponent">exponent to use.</param>
+    /// <param name="modulus">modulus to use.</param>
+    /// <returns>Computed value.</returns>
+    /// <seealso href="https://en.wikipedia.org/wiki/Modular_exponentiation">[Modular Exponentiation Explanation]</seealso>
+
     class function ModPow(value: TIntX; exponent: TIntX; modulus: TIntX)
       : TIntX; static;
+
+    /// <summary>
+    /// Calculates Bézoutsidentity for two <see cref="TIntX" /> objects using Euclids Extended Algorithm
+    /// </summary>
+    /// <param name="int1">first value.</param>
+    /// <param name="int2">second value.</param>
+    /// <param name="bezOne">first bezout value.</param>
+    /// <param name="bezTwo">second bezout value.</param>
+    /// <returns>GCD (Greatest Common Divisor) value.</returns>
+    /// <seealso href="https://en.wikipedia.org/wiki/Bézout's_identity">[Bézout's identity Explanation]</seealso>
+    /// <seealso href="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Pseudocode">[Bézout's identity Pseudocode using Extended Euclidean algorithm]</seealso>
+
     class function Bézoutsidentity(int1: TIntX; int2: TIntX; out bezOne: TIntX;
       out bezTwo: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Checks if a <see cref="TIntX" /> object is Probably Prime using Miller–Rabin primality test.
+    /// </summary>
+    /// <param name="value">big integer to check primality.</param>
+    /// <param name="Accuracy">Accuracy parameter `k´ of the Miller-Rabin algorithm. Default is 5. The execution time is proportional to the value of the accuracy parameter.</param>
+    /// <returns>Boolean value.</returns>
+    /// <seealso href="https://en.wikipedia.org/wiki/Miller–Rabin_primality_test">[Miller–Rabin primality test Explanation]</seealso>
+    /// <seealso href="https://github.com/cslarsen/miller-rabin">[Miller–Rabin primality test Implementation in C]</seealso>
+
     class function isProbablyPrime(value: TIntX; Accuracy: Integer = 5)
       : Boolean; static;
+
+    /// <summary>
+    /// The Max Between Two TIntX values.
+    /// </summary>
+    /// <param name="left">left value.</param>
+    /// <param name="right">right value.</param>
+    /// <returns>The Maximum TIntX value.</returns>
+
     class function Max(left: TIntX; right: TIntX): TIntX; static;
+
+    /// <summary>
+    /// The Min Between Two TIntX values.
+    /// </summary>
+    /// <param name="left">left value.</param>
+    /// <param name="right">right value.</param>
+    /// <returns>The Minimum TIntX value.</returns>
+
     class function Min(left: TIntX; right: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Compares 2 <see cref="TIntX" /> objects.
+    /// Returns "-2" if any argument is null, "-1" if <paramref name="int1" /> &lt; <paramref name="int2" />,
+    /// "0" if equal and "1" if &gt;.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <param name="throwNullException">Raises or not <see cref="EArgumentNilException" />.</param>
+    /// <returns>Comparison result.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="int1" /> or <paramref name="int2" /> is a null reference and <paramref name= "throwNullException" /> is set to true.</exception>
+
     class function Cmp(int1: TIntX; int2: TIntX; throwNullException: Boolean)
       : Integer; overload; static;
+
+    /// <summary>
+    /// Compares <see cref="TIntX" /> object to int.
+    /// Returns "-1" if <paramref name="int1" /> &lt; <paramref name="int2" />, "0" if equal and "1" if &gt;.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second integer.</param>
+    /// <returns>Comparison result.</returns>
+
     class function Cmp(int1: TIntX; int2: Integer): Integer; overload; static;
+
+    /// <summary>
+    /// Compares <see cref="TIntX" /> object to unsigned int.
+    /// Returns "-1" if <paramref name="int1" /> &lt; <paramref name="int2" />, "0" if equal and "1" if &gt;.
+    /// For internal use.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second unsigned integer.</param>
+    /// <returns>Comparison result.</returns>
+
     class function Cmp(int1: TIntX; int2: UInt32): Integer; overload; static;
+
+    /// <summary>
+    /// Shifts <see cref="TIntX" /> object.
+    /// Determines which operation to use based on shift sign.
+    /// </summary>
+    /// <param name="IntX">Big integer.</param>
+    /// <param name="shift">Bits count to shift.</param>
+    /// <param name="toLeft">If true the shifting to the left.</param>
+    /// <returns>Bitwise shift operation result.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="IntX" /> is a null reference.</exception>
+
     class function Sh(IntX: TIntX; shift: Int64; toLeft: Boolean)
       : TIntX; static;
+
+    /// <summary>
+    /// Performs bitwise OR for two big integers.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <returns>Resulting big integer.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="int1" /> or <paramref name="int2" /> is a null reference.</exception>
+
     class function BitwiseOr(int1: TIntX; int2: TIntX): TIntX; static;
+    /// <summary>
+    /// Performs bitwise AND for two big integers.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <returns>Resulting big integer.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="int1" /> or <paramref name="int2" /> is a null reference.</exception>
+
     class function BitwiseAnd(int1: TIntX; int2: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Performs bitwise XOR for two big integers.
+    /// </summary>
+    /// <param name="int1">First big integer.</param>
+    /// <param name="int2">Second big integer.</param>
+    /// <returns>Resulting big integer.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="int1" /> or <paramref name="int2" /> is a null reference.</exception>
+
     class function ExclusiveOr(int1: TIntX; int2: TIntX): TIntX; static;
+
+    /// <summary>
+    /// Performs bitwise NOT for big integer.
+    /// </summary>
+    /// <param name="value">Big integer.</param>
+    /// <returns>Resulting big integer.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="value" /> is a null reference.</exception>
+
     class function OnesComplement(value: TIntX): TIntX; static;
+    /// <summary>
+    /// Function used for Internal operations.
+    /// </summary>
+    /// <param name="mdbl">
+    /// internal variable
+    /// </param>
+    /// <param name="sign">
+    /// variable used to indicate sign
+    /// </param>
+    /// <param name="exp">
+    /// internal variable
+    /// </param>
+    /// <param name="man">
+    /// internal variable
+    /// </param>
+    /// <param name="fFinite">
+    /// internal variable
+    /// </param>
+    /// <remarks>
+    /// Source : Microsoft .NET Reference on GitHub
+    /// </remarks>
+    class procedure GetDoubleParts(mdbl: Double; out sign: Integer;
+      out exp: Integer; out man: UInt64; out fFinite: Boolean); static;
+    /// <summary>
+    /// Function used for Internal operations.
+    /// </summary>
+    /// <param name="sign">
+    /// variable indicating sign
+    /// </param>
+    /// <param name="exp">
+    /// variable used for internal operations
+    /// </param>
+    /// <param name="man">
+    /// variable used for internal operations
+    /// </param>
+    /// <remarks>
+    /// Source : Microsoft .NET Reference on GitHub
+    /// </remarks>
+    class function GetDoubleFromParts(sign: Integer; exp: Integer; man: UInt64)
+      : Double; static;
 
   end;
 
 implementation
 
-/// <summary>
-/// Helper method used in computing Integer SquareRoot.
-/// </summary>
+constructor TOpHelper.TBuilder.Create(bn: TIntX; var sign: Integer);
+var
+  n, mask: Integer;
+begin
+  // used to adjust the size of TIntX digits if it is Zero
+  if bn.isZero then
+    SetLength(bn._digits, 1);
+  _rgu := bn._digits;
+  if bn._negative then
+    n := -1
+  else
+    n := 1;
+  mask := TUtils.Asr(n, (kcbitUint - 1));
+  sign := (sign xor mask) - mask;
+  if (_rgu = Nil) then
+  begin
+    _iuLast := 0;
+    _uSmall := UInt32((n xor mask) - mask);
+  end
+  else
+  begin
+    _iuLast := Length(_rgu) - 1;
+    _uSmall := _rgu[0];
+    while ((_iuLast > 0) and (_rgu[_iuLast] = 0)) do
+      Dec(_iuLast);
+  end;
+end;
+
+class procedure TOpHelper.TBuilder.GetApproxParts(out exp: Integer;
+  out man: UInt64);
+var
+  cuLeft, cbit: Integer;
+begin
+
+  if (_iuLast = 0) then
+  begin
+    man := UInt64(_uSmall);
+    exp := 0;
+    Exit;
+  end;
+
+  cuLeft := _iuLast - 1;
+  man := MakeUlong(_rgu[cuLeft + 1], _rgu[cuLeft]);
+  exp := cuLeft * kcbitUint;
+  cbit := CbitHighZero(_rgu[cuLeft + 1]);
+  if ((cuLeft > 0) and (cbit > 0)) then
+  begin
+    // Get 64 bits.
+    Assert(cbit < kcbitUint);
+    man := (man shl cbit) or (_rgu[cuLeft - 1] shr (kcbitUint - cbit));
+    exp := exp - cbit;
+  end;
+end;
+
+class function TOpHelper.MakeUlong(uHi: UInt32; uLo: UInt32): UInt64;
+begin
+  result := (UInt64(uHi) shl kcbitUint) or uLo;
+end;
+
+class function TOpHelper.CbitHighZero(u: UInt32): Integer;
+var
+  cbit: Integer;
+begin
+  if (u = 0) then
+  begin
+    result := 32;
+    Exit;
+  end;
+
+  cbit := 0;
+  if ((u and $FFFF0000) = 0) then
+  begin
+    cbit := cbit + 16;
+    u := u shl 16;
+  end;
+  if ((u and $FF000000) = 0) then
+  begin
+    cbit := cbit + 8;
+    u := u shl 8;
+  end;
+  if ((u and $F0000000) = 0) then
+  begin
+    cbit := cbit + 4;
+    u := u shl 4;
+  end;
+  if ((u and $C0000000) = 0) then
+  begin
+    cbit := cbit + 2;
+    u := u shl 2;
+  end;
+  if ((u and $80000000) = 0) then
+    cbit := cbit + 1;
+  result := cbit;
+end;
+
+class function TOpHelper.CbitHighZero(uu: UInt64): Integer;
+begin
+  if ((uu and $FFFFFFFF00000000) = 0) then
+    result := 32 + CbitHighZero(UInt32(uu))
+  else
+    result := CbitHighZero(UInt32(uu shr 32));
+end;
+
 class function TOpHelper.Guesser(n: TIntX; g: TIntX; last: TIntX): TIntX;
 begin
 
@@ -87,14 +601,6 @@ begin
     Exit;
   end;
 end;
-
-/// <summary>
-/// Adds two big integers.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second big integer.</param>
-/// <returns>Resulting big integer.</returns>
-/// <exception cref="EArgumentException"><paramref name="int1" /> or <paramref name="int2" /> is too big for add operation.</exception>
 
 class function TOpHelper.Add(int1: TIntX; int2: TIntX): TIntX;
 var
@@ -144,13 +650,6 @@ begin
 
   result := newInt;
 end;
-
-/// <summary>
-/// Subtracts two big integers.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second big integer.</param>
-/// <returns>Resulting big integer.</returns>
 
 class function TOpHelper.Sub(int1: TIntX; int2: TIntX): TIntX;
 var
@@ -211,16 +710,6 @@ begin
   result := newInt;
 end;
 
-/// <summary>
-/// Adds/subtracts one <see cref="TIntX" /> to/from another.
-/// Determines which operation to use basing on operands signs.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second big integer.</param>
-/// <param name="subtract">Was subtraction initially.</param>
-/// <returns>Add/subtract operation result.</returns>
-/// <exception cref="EArgumentNilException"><paramref name="int1" /> or <paramref name="int2" /> is a null reference.</exception>
-
 class function TOpHelper.AddSub(int1: TIntX; int2: TIntX;
   subtract: Boolean): TIntX;
 
@@ -240,15 +729,6 @@ begin
   else
     result := Sub(int1, int2);
 end;
-
-/// <summary>
-/// Returns a specified big integer raised to the specified power.
-/// </summary>
-/// <param name="value">Number to raise.</param>
-/// <param name="power">Power.</param>
-/// <param name="multiplyMode">Multiply mode set explicitly.</param>
-/// <returns>Number in given power.</returns>
-/// <exception cref="EArgumentNilException"><paramref name="value" /> is a null reference.</exception>
 
 class function TOpHelper.Pow(value: TIntX; power: UInt32;
   multiplyMode: TMultiplyMode): TIntX;
@@ -314,56 +794,17 @@ begin
   result := res;
 end;
 
-{ /// <summary>
-  /// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme Twister.
-  /// </summary>
-  /// <returns>Random TIntX value.</returns>
-
-  class function TOpHelper.Random(): TIntX;
-
-  begin
-  result := TMersenneTwister_32.NextUInt32();
-  end; }
-
-/// <summary>
-/// Returns a Non-Negative Random <see cref="TIntX" /> object using Pcg Random.
-/// </summary>
-/// <returns>Random TIntX value.</returns>
-
 class function TOpHelper.Random(): TIntX;
 
 begin
   result := TPcg.NextUInt32();
 end;
 
-{ /// <summary>
-  /// Returns a Non-Negative Random <see cref="TIntX" /> object using Mersemme
-  // Twister within the specified Range. (Max not Included)
-  /// </summary>
-  /// <returns>Random TIntX value.</returns>
-
-  class function TOpHelper.RandomRange(Min: UInt32; Max: UInt32): TIntX;
-
-  begin
-  result := TMersenneTwister_32.NextUInt32(Min, Max);
-  end; }
-
-/// <summary>
-/// Returns a Non-Negative Random <see cref="TIntX" /> object using Pcg Random within the specified Range. (Max not Included)
-/// </summary>
-/// <returns>Random TIntX value.</returns>
-
 class function TOpHelper.RandomRange(Min: UInt32; Max: UInt32): TIntX;
 
 begin
   result := TPcg.NextUInt32(Min, Max);
 end;
-
-/// <summary>
-/// Returns a non negative big integer.
-/// </summary>
-/// <param name="value">Number to get its absolute value.</param>
-/// <returns>Absolute number.</returns>
 
 class function TOpHelper.AbsoluteValue(value: TIntX): TIntX;
 begin
@@ -373,21 +814,98 @@ begin
     result := value;
 end;
 
-/// <summary>
-/// Calculates Integer Logarithm of a number <see cref="TIntX" /> object for a specified base.
-/// the largest power the base can be raised to that does not exceed the number.
-/// </summary>
-/// <param name="base">base.</param>
-/// <param name="number">number to get log of.</param>
-/// <returns>Log.</returns>
+class function TOpHelper.Log10(value: TIntX): Double;
+begin
 
-class function TOpHelper.LogN(base: TIntX; number: TIntX): TIntX;
+  result := TIntX.LogN(10, value);
+end;
+
+class function TOpHelper.Ln(value: TIntX): Double;
+begin
+
+  result := TIntX.LogN(TConstants.EulersNumber, value);
+
+end;
+
+class function TOpHelper.LogN(base: Double; value: TIntX): Double;
+var
+  c, d: Double;
+  uintLength, topbits, bitlen, index: Integer;
+  indbit: UInt32;
+const
+  DoubleZero: Double = 0;
+  constOne: Double = 1.0;
+  DoubleNaN: Double = 0.0 / 0.0;
+  DoublePositiveInfinity: Double = 1.0 / 0.0;
+  ZeroPointZero: Double = 0.0;
+  Log2: Double = 0.69314718055994529;
+  kcbitUint: Integer = 32;
+
+begin
+
+  c := 0;
+  d := 0.5;
+
+  if ((value.IsNegative) or (base = constOne)) then
+  begin
+    result := DoubleNaN;
+    Exit;
+  end;
+  if (base = DoublePositiveInfinity) then
+  begin
+    if value.isOne then
+    begin
+      result := ZeroPointZero;
+      Exit;
+    end
+    else
+    begin
+      result := DoubleNaN;
+      Exit;
+    end;
+
+  end;
+  if ((base = ZeroPointZero) and (not(value.isOne))) then
+  begin
+    result := DoubleNaN;
+    Exit;
+  end;
+  if (value._digits = Nil) then
+  begin
+    result := Math.LogN(base, DoubleZero);
+    Exit;
+  end;
+
+  uintLength := Length(value._digits);
+  topbits := TBits.BitLengthOfUInt(value._digits[uintLength - 1]);
+  bitlen := (uintLength - 1) * kcbitUint + topbits;
+  indbit := UInt32(1 shl (topbits - 1));
+
+  index := uintLength - 1;
+  while index >= 0 do
+  begin
+    while (indbit <> 0) do
+    begin
+      if ((value._digits[index] and indbit) <> 0) then
+      begin
+        c := c + d;
+      end;
+      d := d * 0.5;
+      indbit := indbit shr 1;
+    end;
+    indbit := $80000000;
+    Dec(index);
+  end;
+  result := (System.Ln(c) + Log2 * bitlen) / System.Ln(base);
+end;
+
+class function TOpHelper.IntegerLogN(base: TIntX; number: TIntX): TIntX;
 var
   lo, b_lo, hi, mid, b_mid, b_hi: TIntX;
 begin
-  lo := 0;
-  b_lo := 1;
-  hi := 1;
+  lo := TIntX.Zero;
+  b_lo := TIntX.One;
+  hi := TIntX.One;
   b_hi := base;
   while (b_hi < number) do
   begin
@@ -426,59 +944,41 @@ begin
     result := lo;
 end;
 
-/// <summary>
-/// Returns a specified big integer raised to the power of 2.
-/// </summary>
-/// <param name="value">Number to get its square.</param>
-/// <returns>Squared number.</returns>
-
 class function TOpHelper.Square(value: TIntX): TIntX;
 begin
   result := TIntX.Pow(value, 2);
 end;
 
-/// <summary>
-/// Calculates Integer SquareRoot of a TIntX object <see cref="http://www.dahuatu.com/RkWdPBx6W8.html" />
-/// </summary>
-/// <param name="value">value to get squareroot of.</param>
-/// <returns>Integer SquareRoot.</returns>
-
-class function TOpHelper.SquareRoot(value: TIntX): TIntX;
+class function TOpHelper.IntegerSquareRoot(value: TIntX): TIntX;
 var
   sn: String;
 
 begin
-  if (value = 0) then
+  if (value.isZero) then
   begin
-    result := 0;
+    result := TIntX.Zero;
     Exit;
   end;
 
-  if (value = 1) then
+  if (value.isOne) then
   begin
-    result := 1;
+    result := TIntX.One;
     Exit;
   end;
 
   if (value > 10) then
   begin
     sn := value.ToString();
-    result := Guesser(value, TIntX.Parse(Copy(sn, 1, Length(sn) shr 1)), 0);
+    result := Guesser(value, TIntX.Parse(Copy(sn, 1, Length(sn) shr 1)),
+      TIntX.Zero);
     Exit;
   end
   else
   begin
-    result := Guesser(value, value shr 1, 0);
+    result := Guesser(value, value shr 1, TIntX.Zero);
     Exit;
   end;
 end;
-
-/// <summary>
-/// Returns a specified big integer holding the factorial of value.
-/// </summary>
-/// <param name="value">Number to get its factorial.</param>
-/// <returns>factorialed number.</returns>
-/// <exception cref="EArgumentException"><paramref name="value" /> is a negative value.</exception>
 
 class function TOpHelper.Factorial(value: TIntX): TIntX;
 var
@@ -488,7 +988,7 @@ begin
   // Exception
   if (value < 0) then
     raise EArgumentException.Create(Format(Strings.NegativeFactorial,
-      [value.ToString]));
+      [value.ToString], TIntX._FS));
 
   result := 1;
   // using iterative approach
@@ -528,11 +1028,6 @@ end;
   {$ENDIF}
   end; *)
 
-// __builtin_ctz
-// Returns the number of trailing 0-bits in x, starting at the least significant
-// bit position. If x is 0, the result is undefined as per GCC Implementation.
-// PurePascal Version
-
 class function TOpHelper.__builtin_ctz(x: UInt32): Integer;
 var
   n: Integer;
@@ -561,17 +1056,6 @@ begin
   end;
   result := n - Integer(x and 1);
 end;
-
-/// <summary>
-/// Optimized GCD
-/// Returns a specified big integer holding the GCD (Greatest common Divisor) of
-/// two big integers using Binary GCD (Stein's algorithm).
-/// http://lemire.me/blog/archives/2013/12/26/fastest-way-to-compute-the-greatest-common-divisor/
-/// https://hbfs.wordpress.com/2013/12/10/the-speed-of-gcd/
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second big integer.</param>
-/// <returns>GCD number.</returns>
 
 class function TOpHelper.GCD(int1: TIntX; int2: TIntX): TIntX;
 var
@@ -621,83 +1105,6 @@ begin
   result := int1 shl shift;
 end;
 
-(*
-  /// <summary>
-  /// Returns a specified big integer holding the GCD (Greatest common Divisor) of
-  /// two big integers using Binary GCD (Stein's algorithm).
-  /// http://en.wikipedia.org/wiki/Binary_GCD_algorithm
-  /// </summary>
-  /// <param name="int1">First big integer.</param>
-  /// <param name="int2">Second big integer.</param>
-  /// <returns>GCD number.</returns>
-
-  class function TOpHelper.GCD(int1: TIntX; int2: TIntX): TIntX;
-  begin
-  // check if int1 is negative and returns the absolute value of it.
-  if int1._negative then
-  int1 := AbsoluteValue(int1);
-
-  // check if int2 is negative and returns the absolute value of it.
-  if int2._negative then
-  int2 := AbsoluteValue(int2);
-
-  // simple cases (termination)
-
-  if (int1 = int2) then
-  begin
-  result := int1;
-  Exit;
-  end;
-  if (int1 = 0) then
-  begin
-  result := int2;
-  Exit;
-  end;
-  if (int2 = 0) then
-  begin
-  result := int1;
-  Exit;
-  end;
-
-  // look for factors of 2
-
-  if not int1.IsOdd then // int1 is even
-  begin
-  if (int2.IsOdd) then // int2 is odd
-  begin
-  result := GCD(int1 shr 1, int2);
-  Exit;
-  end
-  else // both int1 and int2 are even
-  begin
-  result := GCD(int1 shr 1, int2 shr 1) shl 1;
-  Exit;
-  end;
-
-  end;
-
-  if not int2.IsOdd then // int1 is odd, int2 is even
-  begin
-  result := GCD(int1, int2 shr 1);
-  Exit;
-  end;
-
-  // reduce larger argument
-
-  if (int1 > int2) then
-  begin
-  result := GCD((int1 - int2) shr 1, int2);
-  Exit;
-  end;
-
-  result := GCD((int2 - int1) shr 1, int1);
-  end; *)
-
-// http://www.di-mgt.com.au/euclidean.html
-// https://en.wikipedia.org/wiki/Modular_multiplicative_inverse
-// Calculate Modular Inversion for two IntX Digits using Euclids Extended Algorithm
-// returns Zero if no Modular Inverse Exists for the Inputs
-
 class function TOpHelper.InvMod(int1: TIntX; int2: TIntX): TIntX;
 var
   u1, u3, v1, v3, t1, t3, q, iter: TIntX;
@@ -741,9 +1148,6 @@ begin
     result := u1;
 end;
 
-// https://en.wikipedia.org/wiki/Modular_exponentiation
-// Calculates Modular Exponentiation
-
 class function TOpHelper.ModPow(value: TIntX; exponent: TIntX;
   modulus: TIntX): TIntX;
 begin
@@ -760,10 +1164,6 @@ begin
 
   end;
 end;
-
-// https://en.wikipedia.org/wiki/Bézout's_identity
-// https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Pseudocode
-// Calculate Bézoutsidentity for two IntX Digits using Euclids Extended Algorithm
 
 class function TOpHelper.Bézoutsidentity(int1: TIntX; int2: TIntX;
   out bezOne: TIntX; out bezTwo: TIntX): TIntX;
@@ -815,22 +1215,12 @@ begin
 
 end;
 
-/// <summary>
-/// Checks if an <see cref="TIntX" /> object is Probably Prime using Miller–Rabin primality test.
-/// https://en.wikipedia.org/wiki/Miller–Rabin_primality_test
-/// https://github.com/cslarsen/miller-rabin
-/// </summary>
-/// <param name="value">big integer to check primality.</param>
-/// <param name="Accuracy">Accuracy parameter `k´ of the Miller-Rabin algorithm. Default is 5. The execution time is proportional to the value of the accuracy parameter. </param>
-/// <returns>Boolean value.</returns>
-
 class function TOpHelper.isProbablyPrime(value: TIntX;
   Accuracy: Integer = 5): Boolean;
 begin
   result := TMillerRabin.isProbablyPrimeMR(value, Accuracy);
 end;
 
-// get Maximum value between two TIntX values
 class function TOpHelper.Max(left: TIntX; right: TIntX): TIntX;
 begin
   if (left.CompareTo(right) < 0) then
@@ -839,7 +1229,6 @@ begin
     result := left;
 end;
 
-// get Minimum value between two TIntX values
 class function TOpHelper.Min(left: TIntX; right: TIntX): TIntX;
 begin
   if (left.CompareTo(right) <= 0) then
@@ -847,17 +1236,6 @@ begin
   else
     result := right;
 end;
-
-/// <summary>
-/// Compares 2 <see cref="TIntX" /> objects.
-/// Returns "-2" if any argument is null, "-1" if <paramref name="int1" /> &lt; <paramref name="int2" />,
-/// "0" if equal and "1" if &gt;.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second big integer.</param>
-/// <param name="throwNullException">Raises or not <see cref="NullReferenceException" />.</param>
-/// <returns>Comparsion result.</returns>
-/// <exception cref="EArgumentNilException"><paramref name="int1" /> or <paramref name="int2" /> is a null reference and <paramref name= "throwNullException" /> is set to true.</exception>
 
 class function TOpHelper.Cmp(int1: TIntX; int2: TIntX;
   throwNullException: Boolean): Integer;
@@ -915,14 +1293,6 @@ begin
       int2._length) * 1;
 
 end;
-
-/// <summary>
-/// Compares <see cref="TIntX" /> object to int.
-/// Returns "-1" if <paramref name="int1" /> &lt; <paramref name="int2" />, "0" if equal and "1" if &gt;.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second integer.</param>
-/// <returns>Comparsion result.</returns>
 
 class function TOpHelper.Cmp(int1: TIntX; int2: Integer): Integer;
 var
@@ -1017,15 +1387,6 @@ begin
 
 end;
 
-/// <summary>
-/// Compares <see cref="TIntX" /> object to unsigned int.
-/// Returns "-1" if <paramref name="int1" /> &lt; <paramref name="int2" />, "0" if equal and "1" if &gt;.
-/// For internal use.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second unsigned integer.</param>
-/// <returns>Comparsion result.</returns>
-
 class function TOpHelper.Cmp(int1: TIntX; int2: UInt32): Integer;
 begin
   // Special processing for zero
@@ -1088,16 +1449,6 @@ begin
 
   end;
 end;
-
-/// <summary>
-/// Shifts <see cref="TIntX" /> object.
-/// Determines which operation to use based on shift sign.
-/// </summary>
-/// <param name="IntX">Big integer.</param>
-/// <param name="shift">Bits count to shift.</param>
-/// <param name="toLeft">If true the shifting to the left.</param>
-/// <returns>Bitwise shift operation result.</returns>
-/// <exception cref="EArgumentNilException"><paramref name="IntX" /> is a null reference.</exception>
 
 class function TOpHelper.Sh(IntX: TIntX; shift: Int64; toLeft: Boolean): TIntX;
 var
@@ -1212,13 +1563,6 @@ begin
   result := newInt;
 end;
 
-/// <summary>
-/// Performs bitwise OR for two big integers.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second big integer.</param>
-/// <returns>Resulting big integer.</returns>
-
 class function TOpHelper.BitwiseOr(int1: TIntX; int2: TIntX): TIntX;
 var
   smallerInt, biggerInt, newInt: TIntX;
@@ -1257,13 +1601,6 @@ begin
   result := newInt;
 end;
 
-/// <summary>
-/// Performs bitwise AND for two big integers.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second big integer.</param>
-/// <returns>Resulting big integer.</returns>
-
 class function TOpHelper.BitwiseAnd(int1: TIntX; int2: TIntX): TIntX;
 var
   smallerInt, biggerInt, newInt: TIntX;
@@ -1300,13 +1637,6 @@ begin
 
   result := newInt;
 end;
-
-/// <summary>
-/// Performs bitwise XOR for two big integers.
-/// </summary>
-/// <param name="int1">First big integer.</param>
-/// <param name="int2">Second big integer.</param>
-/// <returns>Resulting big integer.</returns>
 
 class function TOpHelper.ExclusiveOr(int1: TIntX; int2: TIntX): TIntX;
 var
@@ -1349,12 +1679,6 @@ begin
   result := newInt;
 end;
 
-/// <summary>
-/// Performs bitwise NOT for big integer.
-/// </summary>
-/// <param name="value">Big integer.</param>
-/// <returns>Resulting big integer.</returns>
-
 class function TOpHelper.OnesComplement(value: TIntX): TIntX;
 var
   newInt: TIntX;
@@ -1385,6 +1709,102 @@ begin
   newInt.TryNormalize();
 
   result := newInt;
+end;
+
+class procedure TOpHelper.GetDoubleParts(mdbl: Double; out sign: Integer;
+  out exp: Integer; out man: UInt64; out fFinite: Boolean);
+var
+  du: TDoubleUlong;
+begin
+
+  du.uu := 0;
+  du.dbl := mdbl;
+
+  sign := 1 - (Integer(du.uu shr 62) and 2);
+
+  man := du.uu and $000FFFFFFFFFFFFF;
+  exp := Integer(du.uu shr 52) and $7FF;
+  if (exp = 0) then
+  begin
+    // Denormalized number.
+    fFinite := True;
+    if (man <> 0) then
+      exp := -1074;
+  end
+  else
+
+    if (exp = $7FF) then
+  begin
+    // NaN or Inifite.
+    fFinite := False;
+    exp := TConstants.MaxIntValue;
+  end
+  else
+  begin
+    fFinite := True;
+    man := man or $0010000000000000;
+    exp := exp - 1075;
+  end;
+
+end;
+
+class function TOpHelper.GetDoubleFromParts(sign: Integer; exp: Integer;
+  man: UInt64): Double;
+var
+  du: TDoubleUlong;
+  cbitShift: Integer;
+begin
+  du.dbl := 0;
+
+  if (man = 0) then
+    du.uu := 0
+  else
+
+  begin
+    // Normalize so that $0010 0000 0000 0000 is the highest bit set.
+    cbitShift := CbitHighZero(man) - 11;
+    if (cbitShift < 0) then
+      man := man shr - cbitShift
+    else
+    begin
+      man := man shl cbitShift;
+    end;
+    exp := exp - cbitShift;
+    Assert((man and $FFF0000000000000) = $0010000000000000);
+    // Move the point to just behind the leading 1: $001.0 0000 0000 0000
+    // (52 bits) and skew the exponent (by $3FF == 1023).
+    exp := exp + 1075;
+
+    if (exp >= $7FF) then
+    begin
+      // Infinity.
+      du.uu := $7FF0000000000000;
+    end
+    else if (exp <= 0) then
+    begin
+      // Denormalized.
+      Dec(exp);
+      if (exp < -52) then
+      begin
+        // Underflow to zero.
+        du.uu := 0;
+      end
+      else
+      begin
+        du.uu := man shr - exp;
+        Assert(du.uu <> 0);
+      end
+    end
+    else
+    begin
+      // Mask off the implicit high bit.
+      du.uu := (man and $000FFFFFFFFFFFFF) or (UInt64(exp) shl 52);
+    end;
+  end;
+  if (sign < 0) then
+    du.uu := du.uu or $8000000000000000;
+
+  result := du.dbl;
 end;
 
 end.

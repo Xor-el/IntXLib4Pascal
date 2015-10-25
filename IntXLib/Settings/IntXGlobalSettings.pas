@@ -17,7 +17,7 @@ interface
 
 uses
 
-  SyncObjs, Enums;
+  Enums, Utils;
 
 type
   /// <summary>
@@ -27,82 +27,154 @@ type
   TIntXGlobalSettings = class sealed
 
   private
+    /// <summary>
+    /// <see cref="TMultiplyMode" /> Instance.
+    /// </summary>
     F_multiplyMode: TMultiplyMode;
-
+    /// <summary>
+    /// <see cref="TDivideMode" /> Instance.
+    /// </summary>
     F_divideMode: TDivideMode;
-
+    /// <summary>
+    /// <see cref="TParseMode" /> Instance.
+    /// </summary>
     F_parseMode: TParseMode;
-
+    /// <summary>
+    /// <see cref="TToStringMode" /> Instance.
+    /// </summary>
     F_toStringMode: TToStringMode;
-
+    /// <summary>
+    /// Boolean value indicating if to apply autoNormalize.
+    /// </summary>
     F_autoNormalize: Boolean;
-
+    /// <summary>
+    /// Boolean value indicating if to apply FhtValidityCheck.
+    /// </summary>
     F_applyFhtValidityCheck: Boolean;
 
   public
-
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     constructor Create();
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     destructor Destroy(); override;
-
+    /// <summary>
+    /// Multiply operation mode used in all <see cref="TIntX" /> instances.
+    /// Set to auto-FHT by default.
+    /// </summary>
     function GetMultiplyMode: TMultiplyMode;
+    /// <summary>
+    /// Setter procedure for <see cref="TMultiplyMode" />.
+    /// </summary>
+    /// <param name="value">value to use.</param>
     procedure SetMultiplyMode(value: TMultiplyMode);
+    /// <summary>
+    /// Divide operation mode used in all <see cref="TIntX" /> instances.
+    /// Set to auto-Newton by default.
+    /// </summary>
     function GetDivideMode: TDivideMode;
+    /// <summary>
+    /// Setter procedure for <see cref="TDivideMode" />.
+    /// </summary>
+    /// <param name="value">value to use.</param>
     procedure SetDivideMode(value: TDivideMode);
+    /// <summary>
+    /// Parse mode used in all <see cref="TIntX" /> instances.
+    /// Set to Fast by default.
+    /// </summary>
     function GetParseMode: TParseMode;
+    /// <summary>
+    /// Setter procedure for <see cref="TParseMode" />.
+    /// </summary>
+    /// <param name="value">value to use.</param>
     procedure SetParseMode(value: TParseMode);
+    /// <summary>
+    /// To string conversion mode used in all <see cref="TIntX" /> instances.
+    /// Set to Fast by default.
+    /// </summary>
     function GetToStringMode: TToStringMode;
+    /// <summary>
+    /// Setter procedure for <see cref="TToStringMode" />.
+    /// </summary>
+    /// <param name="value">value to use.</param>
     procedure SetToStringMode(value: TToStringMode);
+    /// <summary>
+    /// If true then each operation is ended with big integer normalization.
+    /// Set to false by default.
+    /// </summary>
     function GetAutoNormalize: Boolean;
+    /// <summary>
+    /// Setter procedure for autoNormalize.
+    /// </summary>
+    /// <param name="value">value to use.</param>
     procedure SetAutoNormalize(value: Boolean);
+    /// <summary>
+    /// If true then FHT multiplication result is always checked for validity
+    /// by multiplying integers lower digits using classic algorithm and comparing with FHT result.
+    /// Set to true by default.
+    /// </summary>
     function GetApplyFhtValidityCheck: Boolean;
+    /// <summary>
+    /// Setter procedure for FhtValidityCheck.
+    /// </summary>
+    /// <param name="value">value to use.</param>
     procedure SetApplyFhtValidityCheck(value: Boolean);
-
+    /// <summary>
+    /// property for <see cref="TMultiplyMode" />.
+    /// </summary>
     property MultiplyMode: TMultiplyMode read GetMultiplyMode
       write SetMultiplyMode;
+    /// <summary>
+    /// property for <see cref="TDivideMode" />.
+    /// </summary>
     property DivideMode: TDivideMode read GetDivideMode write SetDivideMode;
+    /// <summary>
+    /// property for <see cref="TParseMode" />.
+    /// </summary>
     property ParseMode: TParseMode read GetParseMode write SetParseMode;
+    /// <summary>
+    /// property for <see cref="TToStringMode" />.
+    /// </summary>
     property ToStringMode: TToStringMode read GetToStringMode
       write SetToStringMode;
+    /// <summary>
+    /// property for AutoNormalize.
+    /// </summary>
     property AutoNormalize: Boolean read GetAutoNormalize
       write SetAutoNormalize;
+    /// <summary>
+    /// property for ApplyFhtValidityCheck.
+    /// </summary>
     property ApplyFhtValidityCheck: Boolean read GetApplyFhtValidityCheck
       write SetApplyFhtValidityCheck;
 
-  var
-    FLock: TCriticalSection;
   end;
 
 implementation
 
+uses
+  IntX;
+
 constructor TIntXGlobalSettings.Create();
 begin
   Inherited Create;
-  // Creating a Critical Section to make the variables Thread-Safe
-  FLock := TCriticalSection.Create;
-  FLock.Acquire;
-  try
-    F_multiplyMode := TMultiplyMode.mmAutoFht;
-    F_divideMode := TDivideMode.dmAutoNewton;
-    F_parseMode := TParseMode.pmFast;
-    F_toStringMode := TToStringMode.tsmFast;
-    F_autoNormalize := False;
-    F_applyFhtValidityCheck := True;
-  finally
-    FLock.Release;
-  end;
+
+  F_multiplyMode := TMultiplyMode.mmAutoFht;
+  F_divideMode := TDivideMode.dmAutoNewton;
+  F_parseMode := TParseMode.pmFast;
+  F_toStringMode := TToStringMode.tsmFast;
+  F_autoNormalize := False;
+  F_applyFhtValidityCheck := True;
 
 end;
 
 destructor TIntXGlobalSettings.Destroy();
 begin
-  FLock.Free;
-  Inherited Destroy;
+  inherited Destroy;
 end;
-
-/// <summary>
-/// Multiply operation mode used in all <see cref="TIntX" /> instances.
-/// Set to auto-FHT by default.
-/// </summary>
 
 function TIntXGlobalSettings.GetMultiplyMode: TMultiplyMode;
 begin
@@ -114,11 +186,6 @@ begin
   F_multiplyMode := value;
 end;
 
-/// <summary>
-/// Divide operation mode used in all <see cref="TIntX" /> instances.
-/// Set to auto-Newton by default.
-/// </summary>
-
 function TIntXGlobalSettings.GetDivideMode: TDivideMode;
 begin
   result := F_divideMode;
@@ -129,11 +196,6 @@ begin
   F_divideMode := value;
 end;
 
-/// <summary>
-/// Parse mode used in all <see cref="TIntX" /> instances.
-/// Set to Fast by default.
-/// </summary>
-
 function TIntXGlobalSettings.GetParseMode: TParseMode;
 begin
   result := F_parseMode;
@@ -143,11 +205,6 @@ procedure TIntXGlobalSettings.SetParseMode(value: TParseMode);
 begin
   F_parseMode := value;
 end;
-
-/// <summary>
-/// If true then each operation is ended with big integer normalization.
-/// Set to false by default.
-/// </summary>
 
 function TIntXGlobalSettings.GetToStringMode: TToStringMode;
 begin
@@ -168,12 +225,6 @@ procedure TIntXGlobalSettings.SetAutoNormalize(value: Boolean);
 begin
   F_autoNormalize := value;
 end;
-
-/// <summary>
-/// If true then FHT multiplication result is always checked for validity
-/// by multiplying integers lower digits using classic algorithm and comparing with FHT result.
-/// Set to true by default.
-/// </summary>
 
 function TIntXGlobalSettings.GetApplyFhtValidityCheck: Boolean;
 begin

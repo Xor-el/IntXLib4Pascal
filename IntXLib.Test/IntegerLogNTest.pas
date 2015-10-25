@@ -1,4 +1,4 @@
-unit LogNTest;
+unit IntegerLogNTest;
 
 interface
 
@@ -25,16 +25,16 @@ var
 begin
   base := 10;
   number := 100;
-  Assert.IsTrue(TIntX.LogN(base, number) = 2);
+  Assert.IsTrue(TIntX.IntegerLogN(base, number) = 2);
   base := TIntX.Create(10);
   number := TIntX.Create(10);
-  Assert.IsTrue(TIntX.LogN(base, number) = 1);
+  Assert.IsTrue(TIntX.IntegerLogN(base, number) = 1);
   base := TIntX.Create(10);
   number := TIntX.Create(500);
-  Assert.IsTrue(TIntX.LogN(base, number) = 2);
+  Assert.IsTrue(TIntX.IntegerLogN(base, number) = 2);
   base := TIntX.Create(10);
   number := TIntX.Create(1000);
-  Assert.IsTrue(TIntX.LogN(base, number) = 3);
+  Assert.IsTrue(TIntX.IntegerLogN(base, number) = 3);
 end;
 
 [Test]
@@ -44,16 +44,16 @@ var
 begin
   base := 2;
   number := 100;
-  Assert.IsTrue(TIntX.LogN(base, number) = 6);
+  Assert.IsTrue(TIntX.IntegerLogN(base, number) = 6);
   base := TIntX.Create(2);
   number := TIntX.Create(10);
-  Assert.IsTrue(TIntX.LogN(base, number) = 3);
+  Assert.IsTrue(TIntX.IntegerLogN(base, number) = 3);
   base := TIntX.Create(2);
   number := TIntX.Create(500);
-  Assert.IsTrue(TIntX.LogN(base, number) = 8);
+  Assert.IsTrue(TIntX.IntegerLogN(base, number) = 8);
   base := TIntX.Create(2);
   number := TIntX.Create(1000);
-  Assert.IsTrue(TIntX.LogN(base, number) = 9);
+  Assert.IsTrue(TIntX.IntegerLogN(base, number) = 9);
 end;
 
 initialization

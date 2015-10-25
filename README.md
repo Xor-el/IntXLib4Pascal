@@ -1,7 +1,7 @@
 TIntX
 ====
 
- **`TIntX`** is a Delphi Port of [IntX](https://github.com/devoyster/IntXLib) arbitrary precision Integers library with fast, about **`O(N * log N)`** multiplication/division algorithms implementation. It provides all the basic arithmetic operations on Integers, comparing, bitwise shifting etc. It also allows parsing numbers in different bases and converting them to string, also in any base. The advantage of this library is its fast multiplication, division and from base/to base conversion algorithms. all the fast versions of the algorithms are based on fast multiplication of big Integers using [Fast Hartley Transform](http://en.wikipedia.org/wiki/Discrete_Hartley_transform) which runs for **`O(N * log N * log log N)`** time instead of classic **`O(N^2)`**.
+ **`TIntX`** is a Delphi Port of [IntX](https://github.com/devoyster/IntXLib) arbitrary precision Integer library with fast, about **`O(N * log N)`** multiplication/division algorithms implementation. It provides all the basic arithmetic operations on Integers, comparing, bitwise shifting etc. It also allows parsing numbers in different bases and converting them to string, also in any base. The advantage of this library is its fast multiplication, division and from base/to base conversion algorithms. all the fast versions of the algorithms are based on fast multiplication of big Integers using [Fast Hartley Transform](http://en.wikipedia.org/wiki/Discrete_Hartley_transform) which runs for **`O(N * log N * log log N)`** time instead of classic **`O(N^2)`**.
 
 **`Porting guidelines:`**
 
@@ -73,14 +73,17 @@ end;
 **Some other functions implemented internally by me are**
 
   
-      SquareRoot (Integer SquareRoot) 
+      IntegerSquareRoot (Integer SquareRoot) 
       Square 
       GCD (Greatest Common Divisor) 
       AbsoluteValue (Get Absolute Value of a Negative TIntX)
       Bézouts Identity
       InvMod (Modular Inverse)
       Factorial
-      LogN(base, number) (Get Log of a number using a specified base)
+      IntegerLogN (base, number) (Gets IntegerLog of a number using a specified base)
+	  Ln (The natural logarithm)
+	  Log10 (The base-10 logarithm)
+	  LogN (Logarithm of a number for a specified base)
       Random (Now Uses PcgRandom Instead of Mersemme Twister)
       Modular Exponentiation (ModPow)
       isProbablyPrime (based on Miller Rabin Primality Test)

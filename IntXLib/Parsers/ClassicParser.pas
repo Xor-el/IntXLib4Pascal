@@ -16,7 +16,7 @@ unit ClassicParser;
 interface
 
 uses
-  ParserBase, IParser, Generics.Collections, DTypes, StrRepHelper;
+  ParserBase, IParser, Generics.Collections, DTypes, StrRepHelper, IntX;
 
 type
   /// <summary>
@@ -26,8 +26,25 @@ type
   TClassicParser = class sealed(TParserBase)
 
   public
+
+    /// <summary>
+    /// Creates new <see cref="ClassicParser" /> instance.
+    /// </summary>
+    /// <param name="pow2Parser">Parser for pow2 case.</param>
+
     constructor Create(pow2Parser: IIParser);
-    destructor Destroy(); override;
+
+    /// <summary>
+    /// Parses provided string representation of <see cref="TIntX" /> object.
+    /// </summary>
+    /// <param name="value">Number as string.</param>
+    /// <param name="startIndex">Index inside string from which to start.</param>
+    /// <param name="endIndex">Index inside string on which to end.</param>
+    /// <param name="numberBase">Number base.</param>
+    /// <param name="charToDigits">Char->digit dictionary.</param>
+    /// <param name="digitsRes">Resulting digits.</param>
+    /// <returns>Parsed integer length.</returns>
+
     function Parse(value: String; startIndex: Integer; endIndex: Integer;
       numberBase: UInt32; charToDigits: TDictionary<Char, UInt32>;
       digitsRes: TMyUint32Array): UInt32; override;
@@ -36,31 +53,10 @@ type
 
 implementation
 
-/// <summary>
-/// Creates new <see cref="ClassicParser" /> instance.
-/// </summary>
-/// <param name="pow2Parser">Parser for pow2 case.</param>
-
 constructor TClassicParser.Create(pow2Parser: IIParser);
 begin
   Inherited Create(pow2Parser);
 end;
-
-destructor TClassicParser.Destroy();
-begin
-  Inherited Destroy;
-end;
-
-/// <summary>
-/// Parses provided string representation of <see cref="TIntX" /> object.
-/// </summary>
-/// <param name="value">Number as string.</param>
-/// <param name="startIndex">Index inside string from which to start.</param>
-/// <param name="endIndex">Index inside string on which to end.</param>
-/// <param name="numberBase">Number base.</param>
-/// <param name="charToDigits">Char->digit dictionary.</param>
-/// <param name="digitsRes">Resulting digits.</param>
-/// <returns>Parsed integer length.</returns>
 
 function TClassicParser.Parse(value: String; startIndex: Integer;
   endIndex: Integer; numberBase: UInt32;

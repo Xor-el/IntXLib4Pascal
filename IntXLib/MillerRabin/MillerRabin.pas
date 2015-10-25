@@ -9,31 +9,41 @@ unit MillerRabin;
   *
 *)
 
+(*
+  * The Miller-Rabin probabilistic primality test.
+  *
+  * Returns true if ``n´´ is PROBABLY prime, false if it's composite.
+  * The parameter ``k´´ is the accuracy.
+  *
+  * The running time should be somewhere around O(k log_3 n).
+  *
+*)
+
 interface
 
 uses
   IntX;
 
 type
+  /// <summary>
+  /// Class for Checking if a Number is Prime using Miller-Rabin Probabilistic Primality test.
+  /// </summary>
+
   TMillerRabin = class
 
   public
+
+    /// <summary>
+    /// Checks if a Number is Prime using Miller-Rabin Probabilistic Primality test.
+    /// </summary>
+    /// <param name="n">value to check.</param>
+    /// <param name="k">Accuracy parameter `k´ of the Miller-Rabin algorithm. Default is 5. The execution time is proportional to the value of the accuracy parameter.</param>
 
     class function isProbablyPrimeMR(n: TIntX; k: Integer = 5): Boolean;
 
   end;
 
 implementation
-
-(*
-  * The Miller-Rabin probabilistic primality test.
-  *
-  * Returns true if ``n´´ is *PROBABLY* prime, false if it's composite.
-  * The parameter ``k´´ is the accuracy.
-  *
-  * The running time should be somewhere around O(k log_3 n).
-  *
-*)
 
 class function TMillerRabin.isProbablyPrimeMR(n: TIntX; k: Integer = 5)
   : Boolean;

@@ -19,7 +19,8 @@ interface
 
 uses
 
-  IDivider, Constants, DTypes, Enums, DividerBase, DigitHelper, DigitOpHelper;
+  IDivider, Constants, DTypes, Enums, DividerBase, DigitHelper, DigitOpHelper,
+  Utils;
 
 type
   /// <summary>
@@ -29,20 +30,70 @@ type
   TAutoNewtonDivider = class sealed(TDividerBase)
 
   private
-
-    F_classicDivider: IIDivider; // divider to use if Newton approach is
-    // unapplicable
+    /// <summary>
+    /// divider to use if Newton approach is unapplicable.
+    /// </summary>
+    F_classicDivider: IIDivider;
 
   public
+
+    /// <summary>
+    /// Creates new <see cref="AutoNewtonDivider" /> instance.
+    /// </summary>
+    /// <param name="classicDivider">Divider to use if Newton approach is unapplicable.</param>
+
     constructor Create(classicDivider: IIDivider);
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     destructor Destroy(); Override;
+
+    /// <summary>
+    /// Returns true if it's better to use classic algorithm for given big integers.
+    /// </summary>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <returns>True if classic algorithm is better.</returns>
+
     class function IsClassicAlgorithmNeeded(length1: UInt32; length2: UInt32)
       : Boolean; static; inline;
+
+    /// <summary>
+    /// Divides two big integers.
+    /// Also modifies <paramref name="digits1" /> and <paramref name="length1"/> (it will contain remainder).
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="digitsBuffer1">Buffer for first big integer digits. May also contain remainder. Can be null - in this case it's created if necessary.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digits2">Second big integer digits.</param>
+    /// <param name="digitsBuffer2">Buffer for second big integer digits. Only temporarily used. Can be null - in this case it's created if necessary.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsRes">Resulting big integer digits.</param>
+    /// <param name="resultFlags">Which operation results to return.</param>
+    /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
+    /// <returns>Resulting big integer length.</returns>
+
     function DivMod(digits1: TMyUInt32Array; digitsBuffer1: TMyUInt32Array;
       var length1: UInt32; digits2: TMyUInt32Array;
       digitsBuffer2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array;
       resultFlags: TDivModResultFlags; cmpResult: Integer): UInt32;
       overload; override;
+
+    /// <summary>
+    /// Divides two big integers.
+    /// Also modifies <paramref name="digitsPtr1" /> and <paramref name="length1"/> (it will contain remainder).
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="digitsBufferPtr1">Buffer for first big integer digits. May also contain remainder.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digitsPtr2">Second big integer digits.</param>
+    /// <param name="digitsBufferPtr2">Buffer for second big integer digits. Only temporarily used.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsResPtr">Resulting big integer digits.</param>
+    /// <param name="resultFlags">Which operation results to return.</param>
+    /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
+    /// <returns>Resulting big integer length.</returns>
+
     function DivMod(digitsPtr1: PMyUInt32; digitsBufferPtr1: PMyUInt32;
       var length1: UInt32; digitsPtr2: PMyUInt32; digitsBufferPtr2: PMyUInt32;
       length2: UInt32; digitsResPtr: PMyUInt32; resultFlags: TDivModResultFlags;
@@ -54,11 +105,6 @@ implementation
 
 uses
   NewtonHelper, MultiplyManager, IMultiplier;
-
-/// <summary>
-/// Creates new <see cref="AutoNewtonDivider" /> instance.
-/// </summary>
-/// <param name="classicDivider">Divider to use if Newton approach is unapplicable.</param>
 
 constructor TAutoNewtonDivider.Create(classicDivider: IIDivider);
 
@@ -73,13 +119,6 @@ begin
   inherited Destroy;
 end;
 
-/// <summary>
-/// Returns true if it's better to use classic algorithm for given big integers.
-/// </summary>
-/// <param name="length1">First big integer length.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <returns>True if classic algorithm is better.</returns>
-
 class function TAutoNewtonDivider.IsClassicAlgorithmNeeded(length1: UInt32;
   length2: UInt32): Boolean;
 begin
@@ -87,22 +126,8 @@ begin
     (length2 < TConstants.AutoNewtonLengthLowerBound) or
     (length1 > TConstants.AutoNewtonLengthUpperBound) or
     (length2 > TConstants.AutoNewtonLengthUpperBound));
-end;
 
-/// <summary>
-/// Divides two big integers.
-/// Also modifies <paramref name="digits1" /> and <paramref name="length1"/> (it will contain remainder).
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="digitsBuffer1">Buffer for first big integer digits. May also contain remainder. Can be null - in this case it's created if necessary.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digits2">Second big integer digits.</param>
-/// <param name="digitsBuffer2">Buffer for second big integer digits. Only temporarily used. Can be null - in this case it's created if necessary.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsRes">Resulting big integer digits.</param>
-/// <param name="resultFlags">Which operation results to return.</param>
-/// <param name="cmpResult">Big integers comparsion result (pass -2 if omitted).</param>
-/// <returns>Resulting big integer length.</returns>
+end;
 
 function TAutoNewtonDivider.DivMod(digits1: TMyUInt32Array;
   digitsBuffer1: TMyUInt32Array; var length1: UInt32; digits2: TMyUInt32Array;
@@ -162,22 +187,8 @@ begin
   result := DivMod(digitsPtr1, digitsBufferPtr1, length1, digitsPtr2, tempA,
     length2, tempB, resultFlags, cmpResult);
   Exit;
-end;
 
-/// <summary>
-/// Divides two big integers.
-/// Also modifies <paramref name="digitsPtr1" /> and <paramref name="length1"/> (it will contain remainder).
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="digitsBufferPtr1">Buffer for first big integer digits. May also contain remainder.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digitsPtr2">Second big integer digits.</param>
-/// <param name="digitsBufferPtr2">Buffer for second big integer digits. Only temporarily used.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsResPtr">Resulting big integer digits.</param>
-/// <param name="resultFlags">Which operation results to return.</param>
-/// <param name="cmpResult">Big integers comparsion result (pass -2 if omitted).</param>
-/// <returns>Resulting big integer length.</returns>
+end;
 
 function TAutoNewtonDivider.DivMod(digitsPtr1: PMyUInt32;
   digitsBufferPtr1: PMyUInt32; var length1: UInt32; digitsPtr2: PMyUInt32;

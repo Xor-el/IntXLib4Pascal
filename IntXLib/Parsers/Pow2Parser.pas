@@ -27,9 +27,29 @@ type
 
   public
 
+    /// <summary>
+    /// Parses provided string representation of <see cref="TIntX" /> object.
+    /// </summary>
+    /// <param name="value">Number as string.</param>
+    /// <param name="numberBase">Number base.</param>
+    /// <param name="charToDigits">Char->digit dictionary.</param>
+    /// <param name="checkFormat">Boolean that indicates if to check Input Format.</param>
+    /// <returns>Big Integer value.</returns>
+
     function Parse(value: String; numberBase: UInt32;
       charToDigits: TDictionary<Char, UInt32>; checkFormat: Boolean)
       : TIntX; overload;
+
+    /// <summary>
+    /// Parses provided string representation of <see cref="TIntX" /> object.
+    /// </summary>
+    /// <param name="value">Number as string.</param>
+    /// <param name="startIndex">Index inside string from which to start.</param>
+    /// <param name="endIndex">Index inside string on which to end.</param>
+    /// <param name="numberBase">Number base.</param>
+    /// <param name="charToDigits">Char->digit dictionary.</param>
+    /// <param name="digitsRes">Resulting digits.</param>
+    /// <returns>Parsed integer length.</returns>
 
     function Parse(value: String; startIndex: Integer; endIndex: Integer;
       numberBase: UInt32; charToDigits: TDictionary<Char, UInt32>;
@@ -39,7 +59,6 @@ type
 
 implementation
 
-// Not needed in this implementation
 function TPow2Parser.Parse(value: String; numberBase: UInt32;
   charToDigits: TDictionary<Char, UInt32>; checkFormat: Boolean): TIntX;
 begin
@@ -47,17 +66,6 @@ begin
   result := Default (TIntX);
   Exit;
 end;
-
-/// <summary>
-/// Parses provided string representation of <see cref="TIntX" /> object.
-/// </summary>
-/// <param name="value">Number as string.</param>
-/// <param name="startIndex">Index inside string from which to start.</param>
-/// <param name="endIndex">Index inside string on which to end.</param>
-/// <param name="numberBase">Number base.</param>
-/// <param name="charToDigits">Char->digit dictionary.</param>
-/// <param name="digitsRes">Resulting digits.</param>
-/// <returns>Parsed integer length.</returns>
 
 function TPow2Parser.Parse(value: String; startIndex: Integer;
   endIndex: Integer; numberBase: UInt32;

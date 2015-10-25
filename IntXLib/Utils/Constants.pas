@@ -1,4 +1,4 @@
-unit Constants;
+﻿unit Constants;
 
 {
   * Copyright (c) 2015 Ugochukwu Mmaduekwe ugo4brain@gmail.com
@@ -46,14 +46,14 @@ type
 
   const
     /// <summary>
-    /// Digit opening bracet (used for bases bigger than 16).
+    /// Digit opening bracket (used for bases bigger than 16).
     /// </summary>
-    DigitOpeningBracet: Char = '{';
+    DigitOpeningBracket: Char = '{';
 
     /// <summary>
-    /// Digit closing bracet (used for bases bigger than 16).
+    /// Digit closing bracket (used for bases bigger than 16).
     /// </summary>
-    DigitClosingBracet: Char = '}';
+    DigitClosingBracket: Char = '}';
 
     /// <summary>
     /// Minus char (-).
@@ -129,23 +129,54 @@ type
     MaxBitCount: UInt64 = 4294967295 * UInt64(32);
 
     /// <summary>
-    /// 2^<see cref="DigitBitCount"/>.
+    /// 2 ^ <see cref="DigitBitCount"/>.
     /// </summary>
     BitCountStepOf2: UInt64 = UInt64(1) shl 32;
 
-    MinIntValue: Integer = -2147483648;
-    MaxIntValue: Integer = 2147483647;
-    MinInt64Value: Int64 = -9223372036854775808;
-    MaxInt64Value: Int64 = 9223372036854775807;
-    MaxUInt32Value: UInt32 = 4294967295;
-    PI: Double = 3.1415926535897931;
+    /// <summary>
+    /// Euler's Number.
+    /// </summary>
 
+    EulersNumber: Double = 2.7182818284590451;
+    /// <summary>
+    /// Min Integer value.
+    /// </summary>
+    MinIntValue: Integer = -2147483648;
+    /// <summary>
+    /// Max Integer value.
+    /// </summary>
+    MaxIntValue: Integer = 2147483647;
+    /// <summary>
+    /// Min Int64 value.
+    /// </summary>
+    MinInt64Value: Int64 = -9223372036854775808;
+    /// <summary>
+    /// Max Int64 value.
+    /// </summary>
+    MaxInt64Value: Int64 = 9223372036854775807;
+    /// <summary>
+    /// Max UInt32 value.
+    /// </summary>
+    MaxUInt32Value: UInt32 = 4294967295;
+    /// <summary>
+    /// PI (π).
+    /// </summary>
+    PI: Double = 3.1415926535897931;
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     class constructor Create();
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     class destructor Destroy();
 
   end;
 
 implementation
+
+uses
+  IntX;
 
 // static class constructor
 class constructor TConstants.Create();

@@ -17,7 +17,7 @@ interface
 
 uses
   IParser, SysUtils, Math, RegularExpressions, Generics.Collections, Strings,
-  Constants, DTypes, Bits, IntX;
+  Constants, DTypes, Bits, Utils, IntX;
 
 type
   /// <summary>
@@ -28,20 +28,60 @@ type
   TParserBase = class abstract(TInterfacedObject, IIParser)
 
   const
-    // Regex pattern used on parsing stage to determine number sign and/or base
+    /// <summary>
+    /// Regex pattern used on parsing stage to determine number sign and/or base
+    /// </summary>
     ParseRegexPattern: String = '(?<Sign>[+-]?)((?<BaseHex>\$)|(?<BaseOct>0))?';
 
   private
-
-    F_pow2Parser: IIParser; // parser for pow2 case
+    /// <summary>
+    /// parser for pow2 case
+    /// </summary>
+    F_pow2Parser: IIParser;
 
   public
+    /// <summary>
+    /// Checks if Input Char is WhiteSpace
+    /// </summary>
+    /// <param name="Value">Input Char.</param>
     class function IsWhiteSpace(const Value: Char): Boolean; inline;
+    /// <summary>
+    /// Creates new <see cref="ParserBase" /> instance.
+    /// </summary>
+    /// <param name="pow2Parser">Parser for pow2 case.</param>
     constructor Create(pow2Parser: IIParser);
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     destructor Destroy(); override;
+
+    /// <summary>
+    /// Parses provided string representation of <see cref="TIntX" /> object.
+    /// </summary>
+    /// <param name="value">Number as string.</param>
+    /// <param name="numberBase">Number base.</param>
+    /// <param name="charToDigits">Char->digit dictionary.</param>
+    /// <param name="checkFormat">Check actual format of number (0 or $ at start).</param>
+    /// <returns>Parsed object.</returns>
+    /// <exception cref="EArgumentNilException"><paramref name="value" /> is a null reference.</exception>
+    /// <exception cref="EArgumentException"><paramref name="numberBase" /> is less then 2 or more then 16.</exception>
+    /// <exception cref="EFormatException"><paramref name="value" /> is not in valid format.</exception>
+
     function Parse(Value: String; numberBase: UInt32;
       charToDigits: TDictionary<Char, UInt32>; checkFormat: Boolean): TIntX;
       overload; virtual;
+
+    /// <summary>
+    /// Parses provided string representation of <see cref="TIntX" /> object.
+    /// </summary>
+    /// <param name="value">Number as string.</param>
+    /// <param name="startIndex">Index inside string from which to start.</param>
+    /// <param name="endIndex">Index inside string on which to end.</param>
+    /// <param name="numberBase">Number base.</param>
+    /// <param name="charToDigits">Char->digit dictionary.</param>
+    /// <param name="digitsRes">Resulting digits.</param>
+    /// <returns>Parsed integer length.</returns>
+
     function Parse(Value: String; startIndex: Integer; endIndex: Integer;
       numberBase: UInt32; charToDigits: TDictionary<Char, UInt32>;
       digitsRes: TMyUint32Array): UInt32; overload; virtual;
@@ -50,20 +90,10 @@ type
 
 implementation
 
-/// <summary>
-/// Checks if Input Char is WhiteSpace
-/// </summary>
-/// <param name="Value">Input Char.</param>
-
 class function TParserBase.IsWhiteSpace(const Value: Char): Boolean;
 begin
   Result := Length(Trim(Value)) = 0;
 end;
-
-/// <summary>
-/// Creates new <see cref="ParserBase" /> instance.
-/// </summary>
-/// <param name="pow2Parser">Parser for pow2 case.</param>
 
 constructor TParserBase.Create(pow2Parser: IIParser);
 begin
@@ -76,18 +106,6 @@ begin
   F_pow2Parser := Nil;
   Inherited Destroy;
 end;
-
-/// <summary>
-/// Parses provided string representation of <see cref="TIntX" /> object.
-/// </summary>
-/// <param name="value">Number as string.</param>
-/// <param name="numberBase">Number base.</param>
-/// <param name="charToDigits">Char->digit dictionary.</param>
-/// <param name="checkFormat">Check actual format of number (0 or $ at start).</param>
-/// <returns>Parsed object.</returns>
-/// <exception cref="EArgumentNilException"><paramref name="value" /> is a null reference.</exception>
-/// <exception cref="EArgumentException"><paramref name="numberBase" /> is less then 2 or more then 16.</exception>
-/// <exception cref="Exception"><paramref name="value" /> is not in valid format.</exception>
 
 {$IFNDEF _FIXINSIGHT_}  // tells FixInsight to Ignore this Function
 
@@ -146,7 +164,7 @@ begin
   // Determine sign and/or base
   sMatch := ParseRegex.Match(Value, startIndex, endIndex - startIndex + 1);
 
-  // using try and except to swallow exceptions
+  // using try and except to swallow exception(s) raised by Delphi's TRegex.
   try
     if (sMatch.Groups['Sign'].Value = '-') then
     begin
@@ -163,7 +181,7 @@ begin
       else
       begin
         // This is an error
-        raise Exception.Create(Strings.ParseInvalidChar);
+        raise EFormatException.Create(Strings.ParseInvalidChar);
       end
     end
 
@@ -186,10 +204,10 @@ begin
 
   // Skip leading sign and format
   startIndex := startIndex + sMatch.Length;
-  // If on this stage string is empty, this may mean an error
+  // If at this stage string is empty, this may mean an error
   if ((startIndex > endIndex) and (not stringNotEmpty)) then
   begin
-    raise Exception.Create(Strings.ParseNoDigits);
+    raise EFormatException.Create(Strings.ParseNoDigits);
   end;
   // Iterate through string and skip all leading zeroes
   while ((startIndex <= (endIndex)) and (Value[startIndex] = '0')) do
@@ -219,16 +237,6 @@ begin
 end;
 
 {$ENDIF}
-/// <summary>
-/// Parses provided string representation of <see cref="TIntX" /> object.
-/// </summary>
-/// <param name="value">Number as string.</param>
-/// <param name="startIndex">Index inside string from which to start.</param>
-/// <param name="endIndex">Index inside string on which to end.</param>
-/// <param name="numberBase">Number base.</param>
-/// <param name="charToDigits">Char->digit dictionary.</param>
-/// <param name="digitsRes">Resulting digits.</param>
-/// <returns>Parsed integer length.</returns>
 
 function TParserBase.Parse(Value: String; startIndex: Integer;
   endIndex: Integer; numberBase: UInt32;

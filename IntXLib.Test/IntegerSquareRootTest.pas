@@ -1,4 +1,4 @@
-unit SquareRootTest;
+unit IntegerSquareRootTest;
 
 interface
 
@@ -40,7 +40,7 @@ var
   int1: TIntX;
 begin
   int1 := TIntX.Create(0);
-  Assert.IsTrue(TIntX.SquareRoot(int1) = 0);
+  Assert.IsTrue(TIntX.IntegerSquareRoot(int1) = 0);
 end;
 
 [Test]
@@ -49,7 +49,7 @@ var
   int1: TIntX;
 begin
   int1 := TIntX.Create(1);
-  Assert.IsTrue(TIntX.SquareRoot(int1) = 1);
+  Assert.IsTrue(TIntX.IntegerSquareRoot(int1) = 1);
 end;
 
 [Test]
@@ -58,16 +58,16 @@ var
   int1: TIntX;
 begin
   int1 := TIntX.Create(4);
-  Assert.IsTrue(TIntX.SquareRoot(int1) = 2);
+  Assert.IsTrue(TIntX.IntegerSquareRoot(int1) = 2);
 end;
 
 [Test]
 procedure TSquareRootTest.SquareRootof25();
 var
-  int1, res : TIntX;
+  int1, res: TIntX;
 begin
   int1 := TIntX.Create(25);
-  res := TIntX.SquareRoot(int1);
+  res := TIntX.IntegerSquareRoot(int1);
   Assert.IsTrue(res = 5);
 end;
 
@@ -77,7 +77,7 @@ var
   int1, res: TIntX;
 begin
   int1 := TIntX.Create(27);
-  res := TIntX.SquareRoot(int1);
+  res := TIntX.IntegerSquareRoot(int1);
   Assert.IsTrue(res = 5);
 end;
 
@@ -88,7 +88,7 @@ var
 begin
   int1 := TIntX.Create
     ('783648276815623658365871365876257862874628734627835648726');
-  Assert.AreEqual(TIntX.SquareRoot(int1).ToString,
+  Assert.AreEqual(TIntX.IntegerSquareRoot(int1).ToString,
     '27993718524262253829858552106');
 end;
 
@@ -115,7 +115,7 @@ var
   int1: TIntX;
 begin
   int1 := TIntX.Create(-25);
-  TIntX.SquareRoot(int1);
+  TIntX.IntegerSquareRoot(int1);
 end;
 
 // [Test, ExpectedException(typeof(EArgumentException))]

@@ -40,6 +40,14 @@ type
     // [Test, ExpectedException(typeof(EArgumentNilException))]
     [Test]
     procedure CallConvertNullToWord();
+    procedure ConvertNullToSingle();
+    // [Test, ExpectedException(typeof(EArgumentNilException))]
+    [Test]
+    procedure CallConvertNullToSingle();
+    procedure ConvertNullToDouble();
+    // [Test, ExpectedException(typeof(EArgumentNilException))]
+    [Test]
+    procedure CallConvertNullToDouble();
 
   end;
 
@@ -271,6 +279,40 @@ var
   TempMethod: TTestLocalMethod;
 begin
   TempMethod := ConvertNullToWord;
+
+  Assert.WillRaise(TempMethod, EArgumentNilException);
+end;
+
+procedure TExplicitConvertOpTest.ConvertNullToSingle();
+
+begin
+  Single(TIntX(Default (TIntX)));
+end;
+
+// [Test, ExpectedException(typeof(EArgumentNilException))]
+[Test]
+procedure TExplicitConvertOpTest.CallConvertNullToSingle();
+var
+  TempMethod: TTestLocalMethod;
+begin
+  TempMethod := ConvertNullToSingle;
+
+  Assert.WillRaise(TempMethod, EArgumentNilException);
+end;
+
+procedure TExplicitConvertOpTest.ConvertNullToDouble();
+
+begin
+  Double(TIntX(Default (TIntX)));
+end;
+
+// [Test, ExpectedException(typeof(EArgumentNilException))]
+[Test]
+procedure TExplicitConvertOpTest.CallConvertNullToDouble();
+var
+  TempMethod: TTestLocalMethod;
+begin
+  TempMethod := ConvertNullToDouble;
 
   Assert.WillRaise(TempMethod, EArgumentNilException);
 end;

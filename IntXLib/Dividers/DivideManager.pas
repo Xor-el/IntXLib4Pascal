@@ -17,7 +17,7 @@ interface
 
 uses
 
-  SysUtils, IDivider, Enums, ClassicDivider, AutoNewtonDivider;
+  SysUtils, IDivider, Enums, ClassicDivider, AutoNewtonDivider, Utils;
 
 type
   /// <summary>
@@ -27,10 +27,29 @@ type
   TDivideManager = class
 
   public
-
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     class constructor Create();
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     class destructor Destroy();
+
+    /// <summary>
+    /// Returns divider instance for given divide mode.
+    /// </summary>
+    /// <param name="mode">Divide mode.</param>
+    /// <returns>Divider instance.</returns>
+    /// <exception cref="EArgumentOutOfRangeException"><paramref name="mode" /> is out of range.</exception>
+
     class function GetDivider(mode: TDivideMode): IIDivider;
+
+    /// <summary>
+    /// Returns current divider instance.
+    /// </summary>
+    /// <returns>Current divider instance.</returns>
+
     class function GetCurrentDivider(): IIDivider;
 
   class var
@@ -73,13 +92,6 @@ begin
   FAutoNewtonDivider := Nil;
 end;
 
-/// <summary>
-/// Returns divider instance for given divide mode.
-/// </summary>
-/// <param name="mode">Divide mode.</param>
-/// <returns>Divider instance.</returns>
-/// <exception cref="EArgumentOutOfRangeException"><paramref name="mode" /> is out of range.</exception>
-
 class function TDivideManager.GetDivider(mode: TDivideMode): IIDivider;
 begin
   case (mode) of
@@ -102,11 +114,6 @@ begin
   end;
 
 end;
-
-/// <summary>
-/// Returns current divider instance.
-/// </summary>
-/// <returns>Current divider instance.</returns>
 
 class function TDivideManager.GetCurrentDivider(): IIDivider;
 begin

@@ -91,7 +91,7 @@ procedure TModOpTest.ZeroException();
 var
   int1, int2: TIntX;
 begin
-  int1 := 0;
+  int1 := 1;
   int2 := 0;
   int1 := int1 mod int2;
 end;

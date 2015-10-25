@@ -39,6 +39,8 @@ type
     [Test]
     procedure Sub2BigIntXC4();
     [Test]
+    procedure Sub2BigIntXC5();
+    [Test]
     procedure SubAdd();
 
   end;
@@ -239,6 +241,19 @@ begin
   int2 := TIntX.Create(temp2, False);
   int3 := TIntX.Create(temp3, False);
   Assert.IsTrue(int1 = int3 - int2);
+end;
+
+[Test]
+procedure TSubOpTest.Sub2BigIntXC5();
+var
+  int1, int2, int3: TIntX;
+begin
+  int1 := TIntX.Create('40000000000000000000000000000000000000000000000000000');
+  int2 := TIntX.Create
+    ('10666666666666666666666666666666666666666666666666666666');
+  int3 := TIntX.Create
+    ('-10626666666666666666666666666666666666666666666666666666');
+  Assert.IsTrue(int1 - int2 = int3);
 end;
 
 [Test]

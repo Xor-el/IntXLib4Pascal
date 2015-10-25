@@ -40,9 +40,9 @@ uses
   StringConverterBase in 'IntXLib\StringConverters\StringConverterBase.pas',
   StringConvertManager in 'IntXLib\StringConverters\StringConvertManager.pas',
   OpHelper in 'IntXLib\OpHelpers\OpHelper.pas',
-  MT19937_32 in 'IntXLib\MersenneTwister\MT19937_32.pas',
   MillerRabin in 'IntXLib\MillerRabin\MillerRabin.pas',
-  PcgRandomMinimal in 'IntXLib\PcgRandom\PcgRandomMinimal.pas';
+  PcgRandomMinimal in 'IntXLib\PcgRandom\PcgRandomMinimal.pas',
+  Utils in 'IntXLib\Utils\Utils.pas';
 
 {$R *.res}
 

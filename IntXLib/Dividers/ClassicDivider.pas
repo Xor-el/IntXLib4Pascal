@@ -18,7 +18,8 @@ unit ClassicDivider;
 interface
 
 uses
-  DividerBase, DigitHelper, DigitOpHelper, Bits, DTypes, Enums, Constants;
+  DividerBase, DigitHelper, DigitOpHelper, Bits, DTypes, Enums, Constants,
+  Utils;
 
 type
   /// <summary>
@@ -29,13 +30,41 @@ type
 
   public
 
-    class function Asr(value: Int64; ShiftBits: integer): Int64; inline;
+    /// <summary>
+    /// Divides two big integers.
+    /// Also modifies <paramref name="digits1" /> and <paramref name="length1"/> (it will contain remainder).
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="digitsBuffer1">Buffer for first big integer digits. May also contain remainder. Can be null - in this case it's created if necessary.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digits2">Second big integer digits.</param>
+    /// <param name="digitsBuffer2">Buffer for second big integer digits. Only temporarily used. Can be null - in this case it's created if necessary.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsRes">Resulting big integer digits.</param>
+    /// <param name="resultFlags">Which operation results to return.</param>
+    /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
+    /// <returns>Resulting big integer length.</returns>
 
     function DivMod(digits1: TMyUInt32Array; digitsBuffer1: TMyUInt32Array;
       var length1: UInt32; digits2: TMyUInt32Array;
       digitsBuffer2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array;
       resultFlags: TDivModResultFlags; cmpResult: integer): UInt32;
       overload; override;
+
+    /// <summary>
+    /// Divides two big integers.
+    /// Also modifies <paramref name="digitsPtr1" /> and <paramref name="length1"/> (it will contain remainder).
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="digitsBufferPtr1">Buffer for first big integer digits. May also contain remainder.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digitsPtr2">Second big integer digits.</param>
+    /// <param name="digitsBufferPtr2">Buffer for second big integer digits. Only temporarily used.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsResPtr">Resulting big integer digits.</param>
+    /// <param name="resultFlags">Which operation results to return.</param>
+    /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
+    /// <returns>Resulting big integer length.</returns>
 
     function DivMod(digitsPtr1: PMyUInt32; digitsBufferPtr1: PMyUInt32;
       var length1: UInt32; digitsPtr2: PMyUInt32; digitsBufferPtr2: PMyUInt32;
@@ -46,36 +75,6 @@ type
 
 implementation
 
-/// <summary>
-/// Calculates Arithmetic shift right.
-/// </summary>
-/// <param name="value">Int64 value to compute 'Asr' on.</param>
-/// <param name="ShiftBits">Integer, number of bits to shift value to.</param>
-/// <returns>Shifted value.</returns>
-/// Implementation was found here <see cref="https://github.com/Spelt/ZXing.Delphi/blob/master/Lib/Classes/Common/MathUtils.pas" />
-
-class function TClassicDivider.Asr(value: Int64; ShiftBits: integer): Int64;
-begin
-  Result := value shr ShiftBits;
-  if (value and $8000000000000000) > 0 then
-    Result := Result or ($FFFFFFFFFFFFFFFF shl (64 - ShiftBits));
-end;
-
-/// <summary>
-/// Divides two big integers.
-/// Also modifies <paramref name="digits1" /> and <paramref name="length1"/> (it will contain remainder).
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="digitsBuffer1">Buffer for first big integer digits. May also contain remainder. Can be null - in this case it's created if necessary.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digits2">Second big integer digits.</param>
-/// <param name="digitsBuffer2">Buffer for second big integer digits. Only temporarily used. Can be null - in this case it's created if necessary.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsRes">Resulting big integer digits.</param>
-/// <param name="resultFlags">Which operation results to return.</param>
-/// <param name="cmpResult">Big integers comparsion result (pass -2 if omitted).</param>
-/// <returns>Resulting big integer length.</returns>
-
 function TClassicDivider.DivMod(digits1: TMyUInt32Array;
   digitsBuffer1: TMyUInt32Array; var length1: UInt32; digits2: TMyUInt32Array;
   digitsBuffer2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array;
@@ -84,6 +83,7 @@ var
   digitsPtr1, digitsBufferPtr1, digitsPtr2, digitsBufferPtr2, digitsResPtr,
     tempA: PMyUInt32;
 begin
+
   // Create some buffers if necessary
   if (digitsBuffer1 = Nil) then
   begin
@@ -98,14 +98,16 @@ begin
   digitsBufferPtr1 := @digitsBuffer1[0];
   digitsPtr2 := @digits2[0];
   digitsBufferPtr2 := @digitsBuffer2[0];
+
   if digitsRes <> Nil then
     digitsResPtr := @digitsRes[0]
   else
     digitsResPtr := @digits1[0];
-  if (digitsResPtr = digitsPtr1) then
+   if (digitsResPtr = digitsPtr1) then
+
     tempA := Nil
-  else
-  begin
+    else
+    begin
     tempA := digitsResPtr;
   end;
 
@@ -113,21 +115,6 @@ begin
     digitsBufferPtr2, length2, tempA, resultFlags, cmpResult);
 
 end;
-
-/// <summary>
-/// Divides two big integers.
-/// Also modifies <paramref name="digitsPtr1" /> and <paramref name="length1"/> (it will contain remainder).
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="digitsBufferPtr1">Buffer for first big integer digits. May also contain remainder.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digitsPtr2">Second big integer digits.</param>
-/// <param name="digitsBufferPtr2">Buffer for second big integer digits. Only temporarily used.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsResPtr">Resulting big integer digits.</param>
-/// <param name="resultFlags">Which operation results to return.</param>
-/// <param name="cmpResult">Big integers comparsion result (pass -2 if omitted).</param>
-/// <returns>Resulting big integer length.</returns>
 
 function TClassicDivider.DivMod(digitsPtr1: PMyUInt32;
   digitsBufferPtr1: PMyUInt32; var length1: UInt32; digitsPtr2: PMyUInt32;
@@ -249,7 +236,7 @@ begin
       { k := Int64(mulRes shr TConstants.DigitBitCount) -
         (t shr TConstants.DigitBitCount); } // <== produces different result
       k := Int64(mulRes shr TConstants.DigitBitCount) -
-        Asr(t, TConstants.DigitBitCount);
+        TUtils.Asr(t, TConstants.DigitBitCount);
       Inc(j);
       Inc(ji);
     end;
@@ -284,7 +271,7 @@ begin
         // to do an arithmetic shift right to handle such instances.
 
         // k := t shr TConstants.DigitBitCount; <== produces different result
-        k := Asr(t, TConstants.DigitBitCount);
+        k := TUtils.Asr(t, TConstants.DigitBitCount);
         Inc(j);
         Inc(ji);
       end;
@@ -298,6 +285,7 @@ begin
     // Maybe save div result
     if (divNeeded) then
     begin
+
       digitsResPtr[i] := divRes;
     end;
     Dec(i);

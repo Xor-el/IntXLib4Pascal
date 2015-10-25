@@ -30,11 +30,32 @@ type
   TFastParser = class sealed(TParserBase)
 
   private
-    F_classicParser: IIParser; // classic parser
+    /// <summary>
+    /// Classic Parser Instance
+    /// </summary>
+    F_classicParser: IIParser;
 
   public
+
+    /// <summary>
+    /// Creates new <see cref="FastParser" /> instance.
+    /// </summary>
+    /// <param name="pow2Parser">Parser for pow2 case.</param>
+    /// <param name="classicParser">Classic parser.</param>
+
     constructor Create(pow2Parser: IIParser; classicParser: IIParser);
-    destructor Destroy(); override;
+
+    /// <summary>
+    /// Parses provided string representation of <see cref="TIntX" /> object.
+    /// </summary>
+    /// <param name="value">Number as string.</param>
+    /// <param name="startIndex">Index inside string from which to start.</param>
+    /// <param name="endIndex">Index inside string on which to end.</param>
+    /// <param name="numberBase">Number base.</param>
+    /// <param name="charToDigits">Char->digit dictionary.</param>
+    /// <param name="digitsRes">Resulting digits.</param>
+    /// <returns>Parsed integer length.</returns>
+
     function Parse(value: String; startIndex: Integer; endIndex: Integer;
       numberBase: UInt32; charToDigits: TDictionary<Char, UInt32>;
       digitsRes: TMyUint32Array): UInt32; override;
@@ -43,34 +64,12 @@ type
 
 implementation
 
-/// <summary>
-/// Creates new <see cref="FastParser" /> instance.
-/// </summary>
-/// <param name="pow2Parser">Parser for pow2 case.</param>
-/// <param name="classicParser">Classic parser.</param>
-
 constructor TFastParser.Create(pow2Parser: IIParser; classicParser: IIParser);
 begin
   Inherited Create(pow2Parser);
   F_classicParser := classicParser;
 
 end;
-
-destructor TFastParser.Destroy();
-begin
-  Inherited Destroy;
-end;
-
-/// <summary>
-/// Parses provided string representation of <see cref="TIntX" /> object.
-/// </summary>
-/// <param name="value">Number as string.</param>
-/// <param name="startIndex">Index inside string from which to start.</param>
-/// <param name="endIndex">Index inside string on which to end.</param>
-/// <param name="numberBase">Number base.</param>
-/// <param name="charToDigits">Char->digit dictionary.</param>
-/// <param name="digitsRes">Resulting digits.</param>
-/// <returns>Parsed integer length.</returns>
 
 function TFastParser.Parse(value: String; startIndex: Integer;
   endIndex: Integer; numberBase: UInt32;

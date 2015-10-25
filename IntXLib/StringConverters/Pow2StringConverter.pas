@@ -26,8 +26,25 @@ type
   TPow2StringConverter = class sealed(TInterfacedObject, IIStringConverter)
 
   public
+    /// <summary>
+    /// Converts digits from internal representaion into given base.
+    /// </summary>
+    /// <param name="IntX">Big Integer.</param>
+    /// <param name="numberBase">Base to use for output.</param>
+    /// <param name="alphabet">alphabet array to use.</param>
+    /// <returns>Conversion result.</returns>
     function ToString(IntX: TIntX; numberBase: UInt32; alphabet: array of Char)
       : String; reintroduce; overload;
+
+    /// <summary>
+    /// Converts digits from internal representaion into given base.
+    /// </summary>
+    /// <param name="digits">Big integer digits.</param>
+    /// <param name="mlength">Big integer length.</param>
+    /// <param name="numberBase">Base to use for output.</param>
+    /// <param name="outputLength">Calculated output length (will be corrected inside).</param>
+    /// <returns>Conversion result (later will be transformed to string).</returns>
+
     function ToString(digits: TMyUInt32Array; mlength: UInt32;
       numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;
       reintroduce; overload;
@@ -36,23 +53,12 @@ type
 
 implementation
 
-// Not needed in this implementation
-
 function TPow2StringConverter.ToString(IntX: TIntX; numberBase: UInt32;
   alphabet: array of Char): String;
 begin
   result := '';
   Exit;
 end;
-
-/// <summary>
-/// Converts digits from internal representaion into given base.
-/// </summary>
-/// <param name="digits">Big integer digits.</param>
-/// <param name="length">Big integer length.</param>
-/// <param name="numberBase">Base to use for output.</param>
-/// <param name="outputLength">Calculated output length (will be corrected inside).</param>
-/// <returns>Conversion result (later will be transformed to string).</returns>
 
 function TPow2StringConverter.ToString(digits: TMyUInt32Array; mlength: UInt32;
   numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;

@@ -16,7 +16,7 @@ unit ParseManager;
 interface
 
 uses
-  SysUtils, IParser, Enums, Pow2Parser, ClassicParser, FastParser, IntX;
+  SysUtils, IParser, Enums, Pow2Parser, ClassicParser, FastParser, Utils, IntX;
 
 type
   /// <summary>
@@ -26,10 +26,29 @@ type
   TParseManager = class
 
   public
-
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     class constructor Create();
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     class destructor Destroy();
+
+    /// <summary>
+    /// Returns parser instance for given parse mode.
+    /// </summary>
+    /// <param name="mode">Parse mode.</param>
+    /// <returns>Parser instance.</returns>
+    /// <exception cref="EArgumentOutOfRangeException"><paramref name="mode" /> is out of range.</exception>
+
     class function GetParser(mode: TParseMode): IIParser;
+
+    /// <summary>
+    /// Returns current parser instance.
+    /// </summary>
+    /// <returns>Current parser instance.</returns>
+
     class function GetCurrentParser(): IIParser;
 
   class var
@@ -73,13 +92,6 @@ begin
   FFastParser := Nil;
 end;
 
-/// <summary>
-/// Returns parser instance for given parse mode.
-/// </summary>
-/// <param name="mode">Parse mode.</param>
-/// <returns>Parser instance.</returns>
-/// <exception cref="EArgumentOutOfRangeException"><paramref name="mode" /> is out of range.</exception>
-
 class function TParseManager.GetParser(mode: TParseMode): IIParser;
 begin
   case (mode) of
@@ -99,11 +111,6 @@ begin
     end;
   end;
 end;
-
-/// <summary>
-/// Returns current parser instance.
-/// </summary>
-/// <returns>Current parser instance.</returns>
 
 class function TParseManager.GetCurrentParser(): IIParser;
 begin

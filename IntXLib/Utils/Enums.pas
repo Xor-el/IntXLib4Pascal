@@ -119,4 +119,7 @@ type
 
 implementation
 
+uses
+  IntX;
+
 end.

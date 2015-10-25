@@ -26,21 +26,61 @@ type
   TIntXSettings = class sealed
 
   private
-
+    /// <summary>
+    /// <see cref="TToStringMode" /> Instance.
+    /// </summary>
     F_toStringMode: TToStringMode;
+    /// <summary>
+    /// autoNormalize Flag (Boolean value that indicates if to autoNormalize or not).
+    /// </summary>
     F_autoNormalize: Boolean;
 
   public
 
-    constructor Create(globalSettings: TIntXGlobalSettings);
-    destructor Destroy(); override;
-    function GetToStringMode: TToStringMode;
-    procedure SetToStringMode(value: TToStringMode);
-    function GetAutoNormalize: Boolean;
-    procedure SetAutoNormalize(value: Boolean);
+    /// <summary>
+    /// Creates new <see cref="IntXSettings" /> instance.
+    /// </summary>
+    /// <param name="globalSettings">IntX global settings to copy.</param>
 
+    constructor Create(globalSettings: TIntXGlobalSettings);
+
+    /// <summary>
+    /// Destructor.
+    /// </summary>
+
+    destructor Destroy(); override;
+
+    /// <summary>
+    /// To string conversion mode used in this <see cref="TIntX" /> instance.
+    /// Set to value from <see cref="TIntX.GlobalSettings" /> by default.
+    /// </summary>
+
+    function GetToStringMode: TToStringMode;
+    /// <summary>
+    /// Setter procedure for <see cref="TToStringMode" />.
+    /// </summary>
+    /// <param name="value">value to use.</param>
+    procedure SetToStringMode(value: TToStringMode);
+
+    /// <summary>
+    /// If true then each operation is ended with big integer normalization.
+    /// Set to value from <see cref="TIntX.GlobalSettings" /> by default.
+    /// </summary>
+
+    function GetAutoNormalize: Boolean;
+    /// <summary>
+    /// Setter procedure for autoNormalize.
+    /// </summary>
+    /// <param name="value">value to use.</param>
+    procedure SetAutoNormalize(value: Boolean);
+    /// <summary>
+    /// property for <see cref="TToStringMode" />.
+    /// </summary>
     property ToStringMode: TToStringMode read GetToStringMode
       write SetToStringMode;
+    /// <summary>
+    /// property for AutoNormalize.
+    /// </summary>
     property AutoNormalize: Boolean read GetAutoNormalize
       write SetAutoNormalize;
 
@@ -48,10 +88,8 @@ type
 
 implementation
 
-/// <summary>
-/// Creates new <see cref="IntXSettings" /> instance.
-/// </summary>
-/// <param name="globalSettings">IntX global settings to copy.</param>
+uses
+  IntX;
 
 constructor TIntXSettings.Create(globalSettings: TIntXGlobalSettings);
 begin
@@ -64,14 +102,8 @@ end;
 
 destructor TIntXSettings.Destroy();
 begin
-
   Inherited Destroy;
 end;
-
-/// <summary>
-/// To string conversion mode used in this <see cref="TIntX" /> instance.
-/// Set to value from <see cref="TIntX.GlobalSettings" /> by default.
-/// </summary>
 
 function TIntXSettings.GetToStringMode: TToStringMode;
 begin
@@ -82,11 +114,6 @@ procedure TIntXSettings.SetToStringMode(value: TToStringMode);
 begin
   F_toStringMode := value;
 end;
-
-/// <summary>
-/// If true then each operation is ended with big integer normalization.
-/// Set to value from <see cref="TIntX.GlobalSettings" /> by default.
-/// </summary>
 
 function TIntXSettings.GetAutoNormalize: Boolean;
 begin

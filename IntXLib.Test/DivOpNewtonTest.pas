@@ -15,7 +15,7 @@ type
     RepeatCount: Integer = 10;
     RandomStartLength: Integer = 1024;
     RandomEndLength: Integer = 2048;
-    RandomRepeatCount: Integer = 5;
+    RandomRepeatCount: Integer = 25;
 
   var
     F_length: Integer;
@@ -50,12 +50,9 @@ begin
   end;
 end;
 
-{$HINTS OFF}
-
 function TDivOpNewtonTest.GetRandomDigits(out digits2: TMyUInt32Array)
   : TMyUInt32Array;
 var
-  digit2: TMyUInt32Array;
   bytes: TMyByteArray;
   i: Integer;
 begin
@@ -75,8 +72,6 @@ begin
 
   end;
 end;
-{$HINTS ON}
-{$WARNINGS OFF}
 
 procedure TDivOpNewtonTest.NextBytes(var bytes: TMyByteArray);
 var
@@ -93,7 +88,6 @@ begin
   end;
 
 end;
-{$WARNINGS ON}
 
 [Test]
 procedure TDivOpNewtonTest.CompareWithClassic();
@@ -106,10 +100,8 @@ begin
 
       x := TIntX.Create(GetAllOneDigits(F_length), True);
       x2 := TIntX.Create(GetAllOneDigits(F_length div 2), True);
-
       classic := TIntX.DivideModulo(x, x2, classicMod, TDivideMode.dmClassic);
       fast := TIntX.DivideModulo(x, x2, fastMod, TDivideMode.dmAutoNewton);
-
       Assert.IsTrue(classic = fast);
       Assert.IsTrue(classicMod = fastMod);
 

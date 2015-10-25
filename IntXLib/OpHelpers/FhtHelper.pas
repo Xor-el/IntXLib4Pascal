@@ -18,16 +18,17 @@ unit FhtHelper;
 interface
 
 uses
-  DTypes, Math, Constants, Bits, DigitHelper, SyncObjs, IntX;
+  DTypes, Math, Constants, Bits, DigitHelper, IntX;
 
 type
   /// <summary>
-  /// Contains helping methods for work with FHT (Fast Hartley Transform).
+  /// Contains helping methods to work with FHT (Fast Hartley Transform).
   /// FHT is a better alternative of FFT (Fast Fourier Transform) - at least for <see cref="TIntX" />.
   /// </summary>
 
   TFhtHelper = class
 
+  strict private
   type
     /// <summary>
     /// Trigonometry values.
@@ -35,15 +36,15 @@ type
 
     TTrigValues = Record
 
-    public
+    private
       /// <summary>
-      /// Sin value from <see cref="SineTable" />.
+      /// Sin value from <see cref="TFhtHelper.F_sineTable" />.
       /// </summary>
 
       TableSin: Double;
 
       /// <summary>
-      /// Cos value from <see cref="SineTable" />.
+      /// Cos value from <see cref="TFhtHelper.F_sineTable" />.
       /// </summary>
 
       TableCos: Double;
@@ -60,73 +61,256 @@ type
 
       Cos: Double;
 
+      /// <summary>
+      /// Record Constructor.
+      /// </summary>
+      /// <remarks>
+      /// Since Records do not allow Parameterless Constructors, we pass a dummy value to the Constructor.
+      /// </remarks>
+
       constructor Create(Dummy: Double);
 
     end;
 
-    // Pointer to our Record
+    /// <summary>
+    /// Pointer to our Record (TTrigValues).
+    /// </summary>
 
     PTrigValues = ^TTrigValues;
 
   private
+
+    /// <summary>
+    /// Fills sine table for FHT.
+    /// </summary>
+    /// <param name="sineTable">Sine table to fill.</param>
+
     class procedure FillSineTable(var sineTable: TMyDoubleArray); static;
+
+    /// <summary>
+    /// Performs FHT "in place" for given double array slice.
+    /// Fast version for length = 4.
+    /// </summary>
+    /// <param name="slice">Double array slice.</param>
+
     class procedure Fht4(slice: PMyDouble); static;
+
+    /// <summary>
+    /// Performs reverse FHT "in place" for given double array slice.
+    /// Fast version for length = 8.
+    /// </summary>
+    /// <param name="slice">Double array slice.</param>
+
     class procedure ReverseFht8(slice: PMyDouble); static;
+
+    /// <summary>
+    /// Performs "butterfly" operation for <see cref="TFhtHelper.Fht(PMyDouble,UInt32,Integer)" />.
+    /// </summary>
+    /// <param name="slice1">First data array slice.</param>
+    /// <param name="slice2">Second data array slice.</param>
+    /// <param name="index1">First slice index.</param>
+    /// <param name="index2">Second slice index.</param>
+    /// <param name="Cos">Cos value.</param>
+    /// <param name="Sin">Sin value.</param>
+
     class procedure FhtButterfly(slice1: PMyDouble; slice2: PMyDouble;
       index1: UInt32; index2: UInt32; Cos: Double; Sin: Double); static;
+
+    /// <summary>
+    /// Performs "butterfly" operation for <see cref="TFhtHelper.ReverseFht(PMyDouble,UInt32,Integer)" />.
+    /// </summary>
+    /// <param name="slice1">First data array slice.</param>
+    /// <param name="slice2">Second data array slice.</param>
+    /// <param name="index1">First slice index.</param>
+    /// <param name="index2">Second slice index.</param>
+    /// <param name="Cos">Cos value.</param>
+    /// <param name="Sin">Sin value.</param>
+
     class procedure ReverseFhtButterfly(slice1: PMyDouble; slice2: PMyDouble;
       index1: UInt32; index2: UInt32; Cos: Double; Sin: Double); static;
+
+    /// <summary>
+    /// Performs "butterfly" operation for <see cref="TFhtHelper.ReverseFht(PMyDouble,UInt32,Integer)" />.
+    /// Another version.
+    /// </summary>
+    /// <param name="slice1">First data array slice.</param>
+    /// <param name="slice2">Second data array slice.</param>
+    /// <param name="index1">First slice index.</param>
+    /// <param name="index2">Second slice index.</param>
+    /// <param name="Cos">Cos value.</param>
+    /// <param name="Sin">Sin value.</param>
+
     class procedure ReverseFhtButterfly2(slice1: PMyDouble; slice2: PMyDouble;
       index1: UInt32; index2: UInt32; Cos: Double; Sin: Double); static;
+
+    /// <summary>
+    /// Initializes trigonometry values for FHT.
+    /// </summary>
+    /// <param name="valuesPtr">Values to init.</param>
+    /// <param name="lengthLog2">Log2(processing slice length).</param>
+
     class procedure GetInitialTrigValues(valuesPtr: PTrigValues;
       lengthLog2: Integer);
+
+    /// <summary>
+    /// Generates next trigonometry values for FHT basing on previous ones.
+    /// </summary>
+    /// <param name="valuesPtr">Current trig values.</param>
+
     class procedure NextTrigValues(valuesPtr: PTrigValues);
 
   public
-
+    /// <summary>
+    /// Class Constructor.
+    /// </summary>
     class constructor Create();
-    class destructor Destroy();
+    /// <summary>
+    /// SQRT(2.0).
+    /// </summary>
+    /// <returns>SquareRoot of 2.0</returns>
     class function Sqrt2: Double; static;
+    /// <summary>
+    /// SQRT(2.0) / 2.
+    /// </summary>
+    /// <returns>(SquareRoot of 2.0) / 2</returns>
     class function Sqrt2Div2: Double; static;
+
+    /// <summary>
+    /// Converts <see cref="TIntX" /> digits into real representation (used in FHT).
+    /// </summary>
+    /// <param name="digits">Big integer digits.</param>
+    /// <param name="mlength"><paramref name="digits" /> length.</param>
+    /// <param name="newLength">Multiplication result length (must be pow of 2).</param>
+    /// <returns>Double array.</returns>
+
     class function ConvertDigitsToDouble(digits: TMyUInt32Array;
       mlength: UInt32; newLength: UInt32): TMyDoubleArray; overload; static;
+
+    /// <summary>
+    /// Converts <see cref="TIntX" /> digits into real representation (used in FHT).
+    /// </summary>
+    /// <param name="digitsPtr">Big integer digits.</param>
+    /// <param name="mlength"><paramref name="digitsPtr" /> length.</param>
+    /// <param name="newLength">Multiplication result length (must be pow of 2).</param>
+    /// <returns>Double array.</returns>
+
     class function ConvertDigitsToDouble(digitsPtr: PMyUInt32; mlength: UInt32;
       newLength: UInt32): TMyDoubleArray; overload; static;
+
+    /// <summary>
+    /// Converts real digits representation (result of FHT) into usual <see cref="TIntX" /> digits.
+    /// </summary>
+    /// <param name="marray">Real digits representation.</param>
+    /// <param name="mlength"><paramref name="marray" /> length.</param>
+    /// <param name="digitsLength">New digits array length (we always do know the upper value for this array).</param>
+    /// <param name="digitsRes">Big integer digits.</param>
+
     class procedure ConvertDoubleToDigits(marray: TMyDoubleArray;
       mlength: UInt32; digitsLength: UInt32; digitsRes: TMyUInt32Array);
       overload; static;
+
+    /// <summary>
+    /// Converts real digits representation (result of FHT) into usual <see cref="TIntX" /> digits.
+    /// </summary>
+    /// <param name="slice">Real digits representation.</param>
+    /// <param name="mlength"><paramref name="slice" /> length.</param>
+    /// <param name="digitsLength">New digits array length (we always do know the upper value for this array).</param>
+    /// <param name="digitsResPtr">Resulting digits storage.</param>
+    /// <returns>Big integer digits (dword values).</returns>
+
     class procedure ConvertDoubleToDigits(slice: PMyDouble; mlength: UInt32;
       digitsLength: UInt32; digitsResPtr: PMyUInt32); overload; static;
+
+    /// <summary>
+    /// Performs FHT "in place" for given double array.
+    /// </summary>
+    /// <param name="marray">Double array.</param>
+    /// <param name="mlength">Array length.</param>
+
     class procedure Fht(marray: TMyDoubleArray; mlength: UInt32);
       overload; static;
+
+    /// <summary>
+    /// Performs FHT "in place" for given double array slice.
+    /// </summary>
+    /// <param name="slice">Double array slice.</param>
+    /// <param name="mlength">Slice length.</param>
+    /// <param name="lengthLog2">Log2(<paramref name="mlength" />).</param>
+
     class procedure Fht(slice: PMyDouble; mlength: UInt32; lengthLog2: Integer);
       overload; static;
+
+    /// <summary>
+    /// Multiplies two FHT results and stores multiplication in first one.
+    /// </summary>
+    /// <param name="data">First FHT result.</param>
+    /// <param name="data2">Second FHT result.</param>
+    /// <param name="mlength">FHT results length.</param>
+
     class procedure MultiplyFhtResults(data: TMyDoubleArray;
       data2: TMyDoubleArray; mlength: UInt32); overload; static;
+
+    /// <summary>
+    /// Multiplies two FHT results and stores multiplication in first one.
+    /// </summary>
+    /// <param name="slice">First FHT result.</param>
+    /// <param name="slice2">Second FHT result.</param>
+    /// <param name="mlength">FHT results length.</param>
+
     class procedure MultiplyFhtResults(slice: PMyDouble; slice2: PMyDouble;
       mlength: UInt32); overload; static;
+
+    /// <summary>
+    /// Performs FHT reverse "in place" for given double array.
+    /// </summary>
+    /// <param name="marray">Double array.</param>
+    /// <param name="mlength">Array length.</param>
+
     class procedure ReverseFht(marray: TMyDoubleArray; mlength: UInt32);
       overload; static;
+
+    /// <summary>
+    /// Performs reverse FHT "in place" for given double array slice.
+    /// </summary>
+    /// <param name="slice">Double array slice.</param>
+    /// <param name="mlength">Slice length.</param>
+    /// <param name="lengthLog2">Log2(<paramref name="mlength" />).</param>
+
     class procedure ReverseFht(slice: PMyDouble; mlength: UInt32;
       lengthLog2: Integer); overload; static;
 
-  class var
+    class var
+    /// <summary>
+    /// array used for storing sineTable. for Internal Use.
+    /// </summary>
 
-    FLock: TCriticalSection;
-    F_sineTable: TMyDoubleArray;
+      F_sineTable: TMyDoubleArray;
 
   const
-
+    /// <summary>
+    /// DoubleDataBytes. for Internal Use.
+    /// </summary>
     DoubleDataBytes: Integer = 1;
+    /// <summary>
+    /// DoubleDataLengthShift. for Internal Use.
+    /// </summary>
     DoubleDataLengthShift: Integer = 2;
-    // already calculated //2 - (DoubleDataBytes shr 1)
-    DoubleDataDigitShift: Integer = 8; // already calculated // DoubleDataBytes
-    // shl 3
-    DoubleDataBaseInt: Int64 = 256; // already calculated //Int64(1) shl
-    // DoubleDataDigitShift
-    DoubleDataBase: Double = 256.0; // already calculated // DoubleDataBaseInt
+    /// <summary>
+    /// DoubleDataDigitShift. for Internal Use.
+    /// </summary>
+    DoubleDataDigitShift: Integer = 8;
+    /// <summary>
+    /// DoubleDataBaseInt. for Internal Use.
+    /// </summary>
+    DoubleDataBaseInt: Int64 = 256;
+    /// <summary>
+    /// DoubleDataBase. for Internal Use.
+    /// </summary>
+    DoubleDataBase: Double = 256.0;
+    /// <summary>
+    /// DoubleDataBaseDiv2. for Internal Use.
+    /// </summary>
     DoubleDataBaseDiv2: Double = 128.0;
-    // already calculated //DoubleDataBase / 2.0
 
   end;
 
@@ -140,44 +324,23 @@ begin
   // Initialize SinTable
   SetLength(F_sineTable, 31);
   FillSineTable(F_sineTable);
-  // Create Critical Section
-  FLock := TCriticalSection.Create;
-end;
 
-class destructor TFhtHelper.Destroy();
-begin
-  FLock.Free;
 end;
-
-// Since Records do not allow Parameterless Constructors, we pass a
-// dummy value to the Constructor.
 
 constructor TFhtHelper.TTrigValues.Create(Dummy: Double);
 begin
 
 end;
 
-// SQRT(2)
-
 class function TFhtHelper.Sqrt2: Double;
 begin
   result := Sqrt(2.0);
 end;
 
-// SQRT(2) / 2
-
 class function TFhtHelper.Sqrt2Div2: Double;
 begin
   result := (Sqrt2 / 2.0);
 end;
-
-/// <summary>
-/// Converts <see cref="TIntX" /> digits into real representation (used in FHT).
-/// </summary>
-/// <param name="digits">Big integer digits.</param>
-/// <param name="mlength"><paramref name="digits" /> length.</param>
-/// <param name="newLength">Multiplication result length (must be pow of 2).</param>
-/// <returns>Double array.</returns>
 
 class function TFhtHelper.ConvertDigitsToDouble(digits: TMyUInt32Array;
   mlength: UInt32; newLength: UInt32): TMyDoubleArray;
@@ -190,14 +353,6 @@ begin
   result := ConvertDigitsToDouble(digitsPtr, mlength, newLength);
 
 end;
-
-/// <summary>
-/// Converts <see cref="TIntX" /> digits into real representation (used in FHT).
-/// </summary>
-/// <param name="digitsPtr">Big integer digits.</param>
-/// <param name="length"><paramref name="digitsPtr" /> length.</param>
-/// <param name="newLength">Multiplication result length (must be pow of 2).</param>
-/// <returns>Double array.</returns>
 
 class function TFhtHelper.ConvertDigitsToDouble(digitsPtr: PMyUInt32;
   mlength: UInt32; newLength: UInt32): TMyDoubleArray;
@@ -260,14 +415,6 @@ begin
   result := data;
 end;
 
-/// <summary>
-/// Converts real digits representation (result of FHT) into usual <see cref="TIntX" /> digits.
-/// </summary>
-/// <param name="array">Real digits representation.</param>
-/// <param name="mlength"><paramref name="array" /> length.</param>
-/// <param name="digitsLength">New digits array length (we always do know the upper value for this array).</param>
-/// <param name="digitsRes">Big integer digits.</param>
-
 class procedure TFhtHelper.ConvertDoubleToDigits(marray: TMyDoubleArray;
   mlength: UInt32; digitsLength: UInt32; digitsRes: TMyUInt32Array);
 var
@@ -282,20 +429,11 @@ begin
 
 end;
 
-/// <summary>
-/// Converts real digits representation (result of FHT) into usual <see cref="TIntX" /> digits.
-/// </summary>
-/// <param name="slice">Real digits representation.</param>
-/// <param name="length"><paramref name="slice" /> length.</param>
-/// <param name="digitsLength">New digits array length (we always do know the upper value for this array).</param>
-/// <param name="digitsResPtr">Resulting digits storage.</param>
-/// <returns>Big integer digits (dword values).</returns>
-
 class procedure TFhtHelper.ConvertDoubleToDigits(slice: PMyDouble;
   mlength: UInt32; digitsLength: UInt32; digitsResPtr: PMyUInt32);
 var
   normalizeMultiplier, carry, dataDigit {$IFDEF DEBUG}, error, maxError
-  {$ENDIF} : Double;
+{$ENDIF} : Double;
   unitCount, i, digitsCarry, oldDigit: UInt32;
   carryInt, dataDigitInt: Int64;
   unitDigitsPtr: PMyByte;
@@ -420,12 +558,6 @@ begin
 {$ENDIF}
 end;
 
-/// <summary>
-/// Performs FHT "in place" for given double array.
-/// </summary>
-/// <param name="array">Double array.</param>
-/// <param name="mlength">Array length.</param>
-
 class procedure TFhtHelper.Fht(marray: TMyDoubleArray; mlength: UInt32);
 var
   slice: PMyDouble;
@@ -436,13 +568,6 @@ begin
 
 end;
 
-/// <summary>
-/// Performs FHT "in place" for given double array slice.
-/// </summary>
-/// <param name="slice">Double array slice.</param>
-/// <param name="length">Slice length.</param>
-/// <param name="lengthLog2">Log2(<paramref name="mlength" />).</param>
-
 class procedure TFhtHelper.Fht(slice: PMyDouble; mlength: UInt32;
   lengthLog2: Integer);
 var
@@ -451,7 +576,7 @@ var
   leftDigit, rightDigit: Double;
   trigValues: TTrigValues;
 begin
-  // Special fast processing for mlength == 4
+  // Special fast processing for mlength = 4
   if (mlength = 4) then
   begin
     Fht4(slice);
@@ -505,12 +630,6 @@ begin
   Fht(rightSlice, mlength, lengthLog2);
 end;
 
-/// <summary>
-/// Performs FHT "in place" for given double array slice.
-/// Fast version for length == 4.
-/// </summary>
-/// <param name="slice">Double array slice.</param>
-
 class procedure TFhtHelper.Fht4(slice: PMyDouble);
 var
   d0, d1, d2, d3, d02, d13: Double;
@@ -522,7 +641,7 @@ begin
   d3 := slice[3];
 
   // Perform fast "butterfly" addition/subtraction for them.
-  // In case when length == 4 we can do it without trigonometry
+  // In case when length = 4 we can do it without trigonometry
   d02 := d0 + d2;
   d13 := d1 + d3;
   slice[0] := d02 + d13;
@@ -533,13 +652,6 @@ begin
   slice[2] := d02 + d13;
   slice[3] := d02 - d13;
 end;
-
-/// <summary>
-/// Multiplies two FHT results and stores multiplication in first one.
-/// </summary>
-/// <param name="data">First FHT result.</param>
-/// <param name="data2">Second FHT result.</param>
-/// <param name="mlength">FHT results length.</param>
 
 class procedure TFhtHelper.MultiplyFhtResults(data: TMyDoubleArray;
   data2: TMyDoubleArray; mlength: UInt32);
@@ -552,13 +664,6 @@ begin
   MultiplyFhtResults(slice, slice2, mlength);
 
 end;
-
-/// <summary>
-/// Multiplies two FHT results and stores multiplication in first one.
-/// </summary>
-/// <param name="slice">First FHT result.</param>
-/// <param name="slice2">Second FHT result.</param>
-/// <param name="mlength">FHT results length.</param>
 
 class procedure TFhtHelper.MultiplyFhtResults(slice: PMyDouble;
   slice2: PMyDouble; mlength: UInt32);
@@ -599,12 +704,6 @@ begin
 
 end;
 
-/// <summary>
-/// Performs FHT reverse "in place" for given double array.
-/// </summary>
-/// <param name="array">Double array.</param>
-/// <param name="mlength">Array length.</param>
-
 class procedure TFhtHelper.ReverseFht(marray: TMyDoubleArray; mlength: UInt32);
 var
   slice: PMyDouble;
@@ -615,13 +714,6 @@ begin
 
 end;
 
-/// <summary>
-/// Performs reverse FHT "in place" for given double array slice.
-/// </summary>
-/// <param name="slice">Double array slice.</param>
-/// <param name="length">Slice length.</param>
-/// <param name="lengthLog2">Log2(<paramref name="mlength" />).</param>
-
 class procedure TFhtHelper.ReverseFht(slice: PMyDouble; mlength: UInt32;
   lengthLog2: Integer);
 var
@@ -629,7 +721,7 @@ var
   lengthDiv2, lengthDiv4, i: UInt32;
   trigValues: TTrigValues;
 begin
-  // Special fast processing for length == 8
+  // Special fast processing for length = 8
   if (mlength = 8) then
   begin
     ReverseFht8(slice);
@@ -673,12 +765,6 @@ begin
   ReverseFhtButterfly2(slice, rightSlice, 0, 0, 1.0, 0);
   ReverseFhtButterfly2(slice, rightSlice, lengthDiv2, lengthDiv2, 0, 1.0);
 end;
-
-/// <summary>
-/// Performs reverse FHT "in place" for given double array slice.
-/// Fast version for length == 8.
-/// </summary>
-/// <param name="slice">Double array slice.</param>
 
 class procedure TFhtHelper.ReverseFht8(slice: PMyDouble);
 var
@@ -728,16 +814,6 @@ begin
   slice[7] := dss0123 - ds67;
 end;
 
-/// <summary>
-/// Performs "butterfly" operation for <see cref="Fht(PMyDouble, UInt32, Integer)" />.
-/// </summary>
-/// <param name="slice1">First data array slice.</param>
-/// <param name="slice2">Second data array slice.</param>
-/// <param name="index1">First slice index.</param>
-/// <param name="index2">Second slice index.</param>
-/// <param name="cos">Cos value.</param>
-/// <param name="sin">Sin value.</param>
-
 class procedure TFhtHelper.FhtButterfly(slice1: PMyDouble; slice2: PMyDouble;
   index1: UInt32; index2: UInt32; Cos: Double; Sin: Double);
 var
@@ -758,16 +834,6 @@ begin
   slice2[index2] := d11 * Sin - d12 * Cos;
 end;
 
-/// <summary>
-/// Performs "butterfly" operation for <see cref="ReverseFht(PMyDouble, UInt32, Integer)" />.
-/// </summary>
-/// <param name="slice1">First data array slice.</param>
-/// <param name="slice2">Second data array slice.</param>
-/// <param name="index1">First slice index.</param>
-/// <param name="index2">Second slice index.</param>
-/// <param name="cos">Cos value.</param>
-/// <param name="sin">Sin value.</param>
-
 class procedure TFhtHelper.ReverseFhtButterfly(slice1: PMyDouble;
   slice2: PMyDouble; index1: UInt32; index2: UInt32; Cos: Double; Sin: Double);
 var
@@ -787,17 +853,6 @@ begin
   slice2[index2] := temp - temp2;
 end;
 
-/// <summary>
-/// Performs "butterfly" operation for <see cref="ReverseFht(PMyDouble, UInt32, Integer)" />.
-/// Another version.
-/// </summary>
-/// <param name="slice1">First data array slice.</param>
-/// <param name="slice2">Second data array slice.</param>
-/// <param name="index1">First slice index.</param>
-/// <param name="index2">Second slice index.</param>
-/// <param name="cos">Cos value.</param>
-/// <param name="sin">Sin value.</param>
-
 class procedure TFhtHelper.ReverseFhtButterfly2(slice1: PMyDouble;
   slice2: PMyDouble; index1: UInt32; index2: UInt32; Cos: Double; Sin: Double);
 var
@@ -809,10 +864,6 @@ begin
   slice2[index2] := temp - temp2;
 end;
 
-/// <summary>
-/// Fills sine table for FHT.
-/// </summary>
-/// <param name="sineTable">Sine table to fill.</param>
 class procedure TFhtHelper.FillSineTable(var sineTable: TMyDoubleArray);
 var
   i, p: Integer;
@@ -829,12 +880,6 @@ begin
 
 end;
 
-/// <summary>
-/// Initializes trigonometry values for FHT.
-/// </summary>
-/// <param name="valuesPtr">Values to init.</param>
-/// <param name="lengthLog2">Log2(processing slice length).</param>
-
 class procedure TFhtHelper.GetInitialTrigValues(valuesPtr: PTrigValues;
   lengthLog2: Integer);
 
@@ -846,11 +891,6 @@ begin
   valuesPtr^.Sin := valuesPtr^.TableSin;
   valuesPtr^.Cos := valuesPtr^.TableCos + 1.0;
 end;
-
-/// <summary>
-/// Generates next trigonometry values for FHT basing on previous ones.
-/// </summary>
-/// <param name="valuesPtr">Current trig values.</param>
 
 class procedure TFhtHelper.NextTrigValues(valuesPtr: PTrigValues);
 var

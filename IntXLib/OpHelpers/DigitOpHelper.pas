@@ -18,7 +18,7 @@ unit DigitOpHelper;
 interface
 
 uses
-  Constants, DTypes, DigitHelper;
+  Constants, DTypes, DigitHelper, IntX;
 
 type
   /// <summary>
@@ -29,61 +29,224 @@ type
 
   public
 
+    /// <summary>
+    /// Adds two big integers.
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digits2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsRes">Resulting big integer digits.</param>
+    /// <returns>Resulting big integer length.</returns>
+
     class function Add(digits1: TMyUInt32Array; length1: UInt32;
       digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array)
       : UInt32; Overload; static;
+
+    /// <summary>
+    /// Adds two big integers using pointers.
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digitsPtr2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsResPtr">Resulting big integer digits.</param>
+    /// <returns>Resulting big integer length.</returns>
 
     class function Add(digitsPtr1: PMyUInt32; length1: UInt32;
       digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
       Overload; static;
 
+    /// <summary>
+    /// Subtracts two big integers.
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digits2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsRes">Resulting big integer digits.</param>
+    /// <returns>Resulting big integer length.</returns>
+
     class function Sub(digits1: TMyUInt32Array; length1: UInt32;
       digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array)
       : UInt32; Overload; static;
+
+    /// <summary>
+    /// Subtracts two big integers using pointers.
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digitsPtr2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsResPtr">Resulting big integer digits.</param>
+    /// <returns>Resulting big integer length.</returns>
 
     class function Sub(digitsPtr1: PMyUInt32; length1: UInt32;
       digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
       Overload; static;
 
+    /// <summary>
+    /// Divides one big integer represented by it's digits by another one big integer.
+    /// Reminder is always filled (but not the result).
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="int2">Second integer.</param>
+    /// <param name="divRes">Div result (can be null - not filled in this case).</param>
+    /// <param name="modRes">Remainder (always filled).</param>
+    /// <returns>Result length (0 if result is null).</returns>
+
     class function DivMod(digits1: TMyUInt32Array; length1: UInt32;
       int2: UInt32; divRes: TMyUInt32Array; out modRes: UInt32): UInt32;
       Overload; static;
 
+    /// <summary>
+    /// Divides one big integer represented by it's digits by another one big integer.
+    /// Remainder is always filled (but not the result).
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="int2">Second integer.</param>
+    /// <param name="divResPtr">Div result (can be null - not filled in this case).</param>
+    /// <param name="modRes">Remainder (always filled).</param>
+    /// <returns>Result length (0 if result is null).</returns>
+
     class function DivMod(digitsPtr1: PMyUInt32; length1: UInt32; int2: UInt32;
       divResPtr: PMyUInt32; out modRes: UInt32): UInt32; Overload; static;
+
+    /// <summary>
+    /// Divides one big integer represented by it's digits by another one big integer.
+    /// Only remainder is filled.
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="int2">Second integer.</param>
+    /// <returns>Remainder.</returns>
 
     class function Modulus(digits1: TMyUInt32Array; length1: UInt32;
       int2: UInt32): UInt32; Overload; static;
 
+    /// <summary>
+    /// Divides one big integer represented by it's digits by another one big integer.
+    /// Only remainder is filled.
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="int2">Second integer.</param>
+    /// <returns>Remainder.</returns>
+
     class function Modulus(digitsPtr1: PMyUInt32; length1: UInt32; int2: UInt32)
       : UInt32; Overload; static;
+
+    /// <summary>
+    /// Compares 2 <see cref="TIntX" /> objects represented by digits only (not taking sign into account).
+    /// Returns "-1" if <paramref name="digits1" /> &lt; <paramref name="digits2" />, "0" if equal and "1" if &gt;.
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digits2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <returns>Comparison result.</returns>
 
     class function Cmp(digits1: TMyUInt32Array; length1: UInt32;
       digits2: TMyUInt32Array; length2: UInt32): Integer; Overload; static;
 
+    /// <summary>
+    /// Compares 2 <see cref="TIntX" /> objects represented by pointers only (not taking sign into account).
+    /// Returns "-1" if <paramref name="digitsPtr1" /> &lt; <paramref name="digitsPtr2" />, "0" if equal and "1" if &gt;.
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digitsPtr2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <returns>Comparison result.</returns>
+
     class function Cmp(digitsPtr1: PMyUInt32; length1: UInt32;
       digitsPtr2: PMyUInt32; length2: UInt32): Integer; Overload; static;
 
+    /// <summary>
+    /// Compares two integers lengths. Returns -2 if further comparing is needed.
+    /// </summary>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <returns>Comparison result.</returns>
+
     class function CmpLen(length1: UInt32; length2: UInt32): Integer; static;
+
+    /// <summary>
+    /// Shifts big integer.
+    /// </summary>
+    /// <param name="digits">Big integer digits.</param>
+    /// <param name="offset">Big integer digits offset.</param>
+    /// <param name="mlength">Big integer length.</param>
+    /// <param name="digitsRes">Resulting big integer digits.</param>
+    /// <param name="resOffset">Resulting big integer digits offset.</param>
+    /// <param name="rightShift">Shift to the right (always between 1 an 31).</param>
 
     class procedure ShiftRight(digits: TMyUInt32Array; offset: UInt32;
       mlength: UInt32; digitsRes: TMyUInt32Array; resOffset: UInt32;
       rightShift: Integer); Overload; static;
 
+    /// <summary>
+    /// Shifts big integer.
+    /// </summary>
+    /// <param name="digitsPtr">Big integer digits.</param>
+    /// <param name="mlength">Big integer length.</param>
+    /// <param name="digitsResPtr">Resulting big integer digits.</param>
+    /// <param name="rightShift">Shift to the right (always between 1 an 31).</param>
+    /// <param name="resHasOffset">True if <paramref name="digitsResPtr" /> has offset.</param>
+    /// <returns>Resulting big integer length.</returns>
+
     class function ShiftRight(digitsPtr: PMyUInt32; mlength: UInt32;
       digitsResPtr: PMyUInt32; rightShift: Integer; resHasOffset: Boolean)
       : UInt32; Overload; static;
+
+    /// <summary>
+    /// Performs bitwise OR for two big integers.
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digits2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsRes">Resulting big integer digits.</param>
 
     class procedure BitwiseOr(digits1: TMyUInt32Array; length1: UInt32;
       digits2: TMyUInt32Array; length2: UInt32;
       digitsRes: TMyUInt32Array); static;
 
+    /// <summary>
+    /// Performs bitwise AND for two big integers.
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="digits2">Second big integer digits.</param>
+    /// <param name="mlength">Shorter big integer length.</param>
+    /// <param name="digitsRes">Resulting big integer digits.</param>
+    /// <returns>Resulting big integer length.</returns>
+
     class function BitwiseAnd(digits1: TMyUInt32Array; digits2: TMyUInt32Array;
       mlength: UInt32; digitsRes: TMyUInt32Array): UInt32; static;
+
+    /// <summary>
+    /// Performs bitwise XOR for two big integers.
+    /// </summary>
+    /// <param name="digits1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digits2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsRes">Resulting big integer digits.</param>
+    /// <returns>Resulting big integer length.</returns>
 
     class function ExclusiveOr(digits1: TMyUInt32Array; length1: UInt32;
       digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array)
       : UInt32; static;
+
+    /// <summary>
+    /// Performs bitwise NOT for big integer.
+    /// </summary>
+    /// <param name="digits">Big integer digits.</param>
+    /// <param name="mlength">Big integer length.</param>
+    /// <param name="digitsRes">Resulting big integer digits.</param>
+    /// <returns>Resulting big integer length.</returns>
 
     class function OnesComplement(digits: TMyUInt32Array; mlength: UInt32;
       digitsRes: TMyUInt32Array): UInt32; static;
@@ -91,16 +254,6 @@ type
   end;
 
 implementation
-
-/// <summary>
-/// Adds two big integers.
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digits2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsRes">Resulting big integer digits.</param>
-/// <returns>Resulting big integer length.</returns>
 
 class function TDigitOpHelper.Add(digits1: TMyUInt32Array; length1: UInt32;
   digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array): UInt32;
@@ -113,16 +266,6 @@ begin
   digitsResPtr := @digitsRes[0];
   result := Add(digitsPtr1, length1, digitsPtr2, length2, digitsResPtr);
 end;
-
-/// <summary>
-/// Adds two big integers using pointers.
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digitsPtr2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsResPtr">Resulting big integer digits.</param>
-/// <returns>Resulting big integer length.</returns>
 
 class function TDigitOpHelper.Add(digitsPtr1: PMyUInt32; length1: UInt32;
   digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
@@ -181,16 +324,6 @@ begin
 
 end;
 
-/// <summary>
-/// Subtracts two big integers.
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digits2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsRes">Resulting big integer digits.</param>
-/// <returns>Resulting big integer length.</returns>
-
 class function TDigitOpHelper.Sub(digits1: TMyUInt32Array; length1: UInt32;
   digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array): UInt32;
 var
@@ -202,16 +335,6 @@ begin
   digitsResPtr := @digitsRes[0];
   result := Sub(digitsPtr1, length1, digitsPtr2, length2, digitsResPtr);
 end;
-
-/// <summary>
-/// Subtracts two big integers using pointers.
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digitsPtr2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsResPtr">Resulting big integer digits.</param>
-/// <returns>Resulting big integer length.</returns>
 
 class function TDigitOpHelper.Sub(digitsPtr1: PMyUInt32; length1: UInt32;
   digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
@@ -249,17 +372,6 @@ begin
   result := TDigitHelper.GetRealDigitsLength(digitsResPtr, length1);
 end;
 
-/// <summary>
-/// Divides one big integer represented by it's digits on another one big integer.
-/// Reminder is always filled (but not the result).
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="int2">Second integer.</param>
-/// <param name="divRes">Div result (can be null - not filled in this case).</param>
-/// <param name="modRes">Remainder (always filled).</param>
-/// <returns>Result length (0 if result is null).</returns>
-
 class function TDigitOpHelper.DivMod(digits1: TMyUInt32Array; length1: UInt32;
   int2: UInt32; divRes: TMyUInt32Array; out modRes: UInt32): UInt32;
 var
@@ -270,17 +382,6 @@ begin
 
   result := DivMod(digits1Ptr, length1, int2, divResPtr, modRes);
 end;
-
-/// <summary>
-/// Divides one big integer represented by it's digits on another one big integer.
-/// Reminder is always filled (but not the result).
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="int2">Second integer.</param>
-/// <param name="divResPtr">Div result (can be null - not filled in this case).</param>
-/// <param name="modRes">Remainder (always filled).</param>
-/// <returns>Result length (0 if result is null).</returns>
 
 class function TDigitOpHelper.DivMod(digitsPtr1: PMyUInt32; length1: UInt32;
   int2: UInt32; divResPtr: PMyUInt32; out modRes: UInt32): UInt32;
@@ -313,15 +414,6 @@ begin
     result := length1 - UInt32(0);
 end;
 
-/// <summary>
-/// Divides one big integer represented by it's digits on another one big integer.
-/// Only remainder is filled.
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="int2">Second integer.</param>
-/// <returns>Remainder.</returns>
-
 class function TDigitOpHelper.Modulus(digits1: TMyUInt32Array; length1: UInt32;
   int2: UInt32): UInt32;
 var
@@ -330,15 +422,6 @@ begin
   digitsPtr1 := @digits1[0];
   result := Modulus(digitsPtr1, length1, int2);
 end;
-
-/// <summary>
-/// Divides one big integer represented by it's digits on another one big integer.
-/// Only remainder is filled.
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="int2">Second integer.</param>
-/// <returns>Remainder.</returns>
 
 class function TDigitOpHelper.Modulus(digitsPtr1: PMyUInt32; length1: UInt32;
   int2: UInt32): UInt32;
@@ -360,16 +443,6 @@ begin
   result := UInt32(c);
 end;
 
-/// <summary>
-/// Compares 2 <see cref="TIntX" /> objects represented by digits only (not taking sign into account).
-/// Returns "-1" if <paramref name="digits1" /> &lt; <paramref name="digits2" />, "0" if equal and "1" if &gt;.
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digits2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <returns>Comparsion result.</returns>
-
 class function TDigitOpHelper.Cmp(digits1: TMyUInt32Array; length1: UInt32;
   digits2: TMyUInt32Array; length2: UInt32): Integer;
 var
@@ -387,16 +460,6 @@ begin
 
   result := Cmp(digitsPtr1, length1, digitsPtr2, length2);
 end;
-
-/// <summary>
-/// Compares 2 <see cref="TIntX" /> objects represented by pointers only (not taking sign into account).
-/// Returns "-1" if <paramref name="digitsPtr1" /> &lt; <paramref name="digitsPtr2" />, "0" if equal and "1" if &gt;.
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digitsPtr2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <returns>Comparsion result.</returns>
 
 class function TDigitOpHelper.Cmp(digitsPtr1: PMyUInt32; length1: UInt32;
   digitsPtr2: PMyUInt32; length2: UInt32): Integer;
@@ -436,13 +499,6 @@ begin
   Exit;
 end;
 
-/// <summary>
-/// Compares two integers lengths. Returns -2 if further comparing is needed.
-/// </summary>
-/// <param name="length1">First big integer length.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <returns>Comparsion result.</returns>
-
 class function TDigitOpHelper.CmpLen(length1: UInt32; length2: UInt32): Integer;
 begin
   if (length1 < length2) then
@@ -467,16 +523,6 @@ begin
   end;
 end;
 
-/// <summary>
-/// Shifts big integer.
-/// </summary>
-/// <param name="digits">Big integer digits.</param>
-/// <param name="offset">Big integer digits offset.</param>
-/// <param name="mlength">Big integer length.</param>
-/// <param name="digitsRes">Resulting big integer digits.</param>
-/// <param name="resOffset">Resulting big integer digits offset.</param>
-/// <param name="rightShift">Shift to the right (always between 1 an 31).</param>
-
 class procedure TDigitOpHelper.ShiftRight(digits: TMyUInt32Array;
   offset: UInt32; mlength: UInt32; digitsRes: TMyUInt32Array; resOffset: UInt32;
   rightShift: Integer);
@@ -491,16 +537,6 @@ begin
 
 end;
 
-/// <summary>
-/// Shifts big integer.
-/// </summary>
-/// <param name="digitsPtr">Big integer digits.</param>
-/// <param name="mlength">Big integer length.</param>
-/// <param name="digitsResPtr">Resulting big integer digits.</param>
-/// <param name="rightShift">Shift to the right (always between 1 an 31).</param>
-/// <param name="resHasOffset">True if <paramref name="digitsResPtr" /> has offset.</param>
-/// <returns>Resulting big integer length.</returns>
-
 class function TDigitOpHelper.ShiftRight(digitsPtr: PMyUInt32; mlength: UInt32;
   digitsResPtr: PMyUInt32; rightShift: Integer; resHasOffset: Boolean): UInt32;
 var
@@ -514,6 +550,7 @@ begin
   if (resHasOffset) then
   begin
     (digitsResPtr - 1)^ := digitsPtr[0] shl rightShiftRev;
+
   end;
 
   if (rightShift = 0) then
@@ -557,15 +594,6 @@ begin
   result := mlength;
 end;
 
-/// <summary>
-/// Performs bitwise OR for two big integers.
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digits2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsRes">Resulting big integer digits.</param>
-
 class procedure TDigitOpHelper.BitwiseOr(digits1: TMyUInt32Array;
   length1: UInt32; digits2: TMyUInt32Array; length2: UInt32;
   digitsRes: TMyUInt32Array);
@@ -588,15 +616,6 @@ begin
 
 end;
 
-/// <summary>
-/// Performs bitwise AND for two big integers.
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="digits2">Second big integer digits.</param>
-/// <param name="length">Shorter big integer length.</param>
-/// <param name="digitsRes">Resulting big integer digits.</param>
-/// <returns>Resulting big integer length.</returns>
-
 class function TDigitOpHelper.BitwiseAnd(digits1: TMyUInt32Array;
   digits2: TMyUInt32Array; mlength: UInt32; digitsRes: TMyUInt32Array): UInt32;
 var
@@ -616,16 +635,6 @@ begin
   result := TDigitHelper.GetRealDigitsLength(digitsResPtr, mlength);
 
 end;
-
-/// <summary>
-/// Performs bitwise XOR for two big integers.
-/// </summary>
-/// <param name="digits1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digits2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsRes">Resulting big integer digits.</param>
-/// <returns>Resulting big integer length.</returns>
 
 class function TDigitOpHelper.ExclusiveOr(digits1: TMyUInt32Array;
   length1: UInt32; digits2: TMyUInt32Array; length2: UInt32;
@@ -650,14 +659,6 @@ begin
   result := TDigitHelper.GetRealDigitsLength(digitsResPtr, length1);
 
 end;
-
-/// <summary>
-/// Performs bitwise NOT for big integer.
-/// </summary>
-/// <param name="digits">Big integer digits.</param>
-/// <param name="length">Big integer length.</param>
-/// <param name="digitsRes">Resulting big integer digits.</param>
-/// <returns>Resulting big integer length.</returns>
 
 class function TDigitOpHelper.OnesComplement(digits: TMyUInt32Array;
   mlength: UInt32; digitsRes: TMyUInt32Array): UInt32;

@@ -32,26 +32,37 @@ type
   TFastStringConverter = class sealed(TStringConverterBase)
 
   private
-
-    F_classicStringConverter: IIStringConverter; // classic converter
+    /// <summary>
+    /// Classic Converter Instance.
+    /// </summary>
+    F_classicStringConverter: IIStringConverter;
 
   public
-
+    /// <summary>
+    /// Creates new <see cref="FastStringConverter" /> instance.
+    /// </summary>
+    /// <param name="pow2StringConverter">Converter for pow2 case.</param>
+    /// <param name="mclassicStringConverter">Classic converter.</param>
     constructor Create(pow2StringConverter: IIStringConverter;
       mclassicStringConverter: IIStringConverter);
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     destructor Destroy(); override;
+    /// <summary>
+    /// Converts digits from internal representaion into given base.
+    /// </summary>
+    /// <param name="digits">Big integer digits.</param>
+    /// <param name="mlength">Big integer length.</param>
+    /// <param name="numberBase">Base to use for output.</param>
+    /// <param name="outputLength">Calculated output length (will be corrected inside).</param>
+    /// <returns>Conversion result (later will be transformed to string).</returns>
     function ToString(digits: TMyUInt32Array; mlength: UInt32;
       numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array; override;
 
   end;
 
 implementation
-
-/// <summary>
-/// Creates new <see cref="FastStringConverter" /> instance.
-/// </summary>
-/// <param name="pow2StringConverter">Converter for pow2 case.</param>
-/// <param name="classicStringConverter">Classic converter.</param>
 
 constructor TFastStringConverter.Create(pow2StringConverter: IIStringConverter;
   mclassicStringConverter: IIStringConverter);
@@ -68,15 +79,6 @@ begin
   F_classicStringConverter := Nil;
   inherited Destroy;
 end;
-
-/// <summary>
-/// Converts digits from internal representaion into given base.
-/// </summary>
-/// <param name="digits">Big integer digits.</param>
-/// <param name="mlength">Big integer length.</param>
-/// <param name="numberBase">Base to use for output.</param>
-/// <param name="outputLength">Calculated output length (will be corrected inside).</param>
-/// <returns>Conversion result (later will be transformed to string).</returns>
 
 function TFastStringConverter.ToString(digits: TMyUInt32Array; mlength: UInt32;
   numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;

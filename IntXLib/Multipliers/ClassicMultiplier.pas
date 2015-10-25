@@ -28,6 +28,17 @@ type
   TClassicMultiplier = class sealed(TMultiplierBase)
 
   public
+
+    /// <summary>
+    /// Multiplies two big integers using pointers.
+    /// </summary>
+    /// <param name="digitsPtr1">First big integer digits.</param>
+    /// <param name="length1">First big integer length.</param>
+    /// <param name="digitsPtr2">Second big integer digits.</param>
+    /// <param name="length2">Second big integer length.</param>
+    /// <param name="digitsResPtr">Resulting big integer digits.</param>
+    /// <returns>Resulting big integer length.</returns>
+
     function Multiply(digitsPtr1: PMyUInt32; length1: UInt32;
       digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32)
       : UInt32; override;
@@ -35,16 +46,6 @@ type
   end;
 
 implementation
-
-/// <summary>
-/// Multiplies two big integers using pointers.
-/// </summary>
-/// <param name="digitsPtr1">First big integer digits.</param>
-/// <param name="length1">First big integer length.</param>
-/// <param name="digitsPtr2">Second big integer digits.</param>
-/// <param name="length2">Second big integer length.</param>
-/// <param name="digitsResPtr">Resulting big integer digits.</param>
-/// <returns>Resulting big integer length.</returns>
 
 function TClassicMultiplier.Multiply(digitsPtr1: PMyUInt32; length1: UInt32;
   digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;

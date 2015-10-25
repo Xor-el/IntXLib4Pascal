@@ -3,7 +3,7 @@ unit ParseTest;
 interface
 
 uses
-  DUnitX.TestFramework, SysUtils, IntX;
+  DUnitX.TestFramework, SysUtils, Utils, IntX;
 
 type
 
@@ -119,7 +119,7 @@ var
 begin
   TempMethod := InvalidFormat;
 
-  Assert.WillRaise(TempMethod, Exception);
+  Assert.WillRaise(TempMethod, EFormatException);
 end;
 
 procedure TParseTest.InvalidFormat2();
@@ -135,7 +135,7 @@ var
 begin
   TempMethod := InvalidFormat2;
 
-  Assert.WillRaise(TempMethod, Exception);
+  Assert.WillRaise(TempMethod, EFormatException);
 end;
 
 procedure TParseTest.InvalidFormat3();
@@ -151,7 +151,7 @@ var
 begin
   TempMethod := InvalidFormat3;
 
-  Assert.WillRaise(TempMethod, Exception);
+  Assert.WillRaise(TempMethod, EFormatException);
 end;
 
 [Test]
