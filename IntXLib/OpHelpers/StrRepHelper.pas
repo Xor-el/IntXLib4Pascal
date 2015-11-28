@@ -37,7 +37,7 @@ type
     /// </summary>
     /// <param name="InString">input string.</param>
 
-    class function ToCharArray(InString: String): TCharArray; static;
+    class function ToCharArray(Const InString: String): TCharArray; static;
 
     /// <summary>
     /// Returns digit for given char.
@@ -57,7 +57,7 @@ type
     /// <param name="alphabet">Alphabet.</param>
     /// <param name="numberBase">String representation number base.</param>
 
-    class procedure AssertAlphabet(alphabet: String;
+    class procedure AssertAlphabet(Const alphabet: String;
       numberBase: UInt32); static;
 
     /// <summary>
@@ -68,7 +68,7 @@ type
     /// <param name="FcharDigits">Already existing dictionary to work on.</param>
     /// <returns>Char->digit dictionary.</returns>
 
-    class function CharDictionaryFromAlphabet(alphabet: String;
+    class function CharDictionaryFromAlphabet(Const alphabet: String;
       numberBase: UInt32; var FcharDigits: TDictionary<Char, UInt32>)
       : TDictionary<Char, UInt32>; static;
 
@@ -76,7 +76,7 @@ type
 
 implementation
 
-class function TStrRepHelper.ToCharArray(InString: String): TCharArray;
+class function TStrRepHelper.ToCharArray(Const InString: String): TCharArray;
 
 begin
   SetLength(result, Length(InString));
@@ -109,7 +109,7 @@ begin
   result := digit;
 end;
 
-class procedure TStrRepHelper.AssertAlphabet(alphabet: String;
+class procedure TStrRepHelper.AssertAlphabet(Const alphabet: String;
   numberBase: UInt32);
 var
   sortedChars: TCharArray;
@@ -147,7 +147,7 @@ begin
   end;
 end;
 
-class function TStrRepHelper.CharDictionaryFromAlphabet(alphabet: String;
+class function TStrRepHelper.CharDictionaryFromAlphabet(Const alphabet: String;
   numberBase: UInt32; var FcharDigits: TDictionary<Char, UInt32>)
   : TDictionary<Char, UInt32>;
 var

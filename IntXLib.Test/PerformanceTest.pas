@@ -3,7 +3,7 @@ unit PerformanceTest;
 interface
 
 uses
-  DUnitX.TestFramework, SysUtils, Diagnostics, Classes, IntX, Enums, DTypes,
+  DUnitX.TestFramework, SysUtils, Diagnostics, Classes, IntX, Enums,
   TestHelper;
 
 type
@@ -22,7 +22,7 @@ implementation
 [Test]
 procedure TPerformanceTest.Multiply128BitNumbers();
 var
-  temp1, temp2: TMyUInt32Array;
+  temp1, temp2: TArray<Cardinal>;
   StopWatch: TStopwatch;
   // Writer: TStreamWriter;
 begin

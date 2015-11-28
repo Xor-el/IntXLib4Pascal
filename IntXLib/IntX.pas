@@ -16,7 +16,7 @@ unit IntX;
 interface
 
 uses
-  SysUtils, DTypes, IntXGlobalSettings, IntXSettings, Enums,
+  SysUtils, IntXGlobalSettings, IntXSettings, Enums,
   Strings, Generics.Defaults, Generics.Collections,
   Math, Utils;
 
@@ -29,7 +29,7 @@ type
     /// <summary>
     /// big integer digits.
     /// </summary>
-    _digits: TMyUint32Array;
+    _digits: TArray<Cardinal>;
     /// <summary>
     /// big integer digits length.
     /// </summary>
@@ -82,6 +82,10 @@ type
     /// </summary>
     class function GetMinusOne: TIntX; static;
     /// <summary>
+    /// Getter function for <see cref="TIntX.Ten" />
+    /// </summary>
+    class function GetTen: TIntX; static;
+    /// <summary>
     /// Initializes record instance from zero.
     /// For internal use.
     /// </summary>
@@ -116,7 +120,7 @@ type
     /// <param name="negative">Big integer sign.</param>
     /// <param name="mlength">Big integer length.</param>
 
-    procedure InitFromDigits(digits: TMyUint32Array; negative: Boolean;
+    procedure InitFromDigits(digits: TArray<Cardinal>; negative: Boolean;
       mlength: UInt32);
   public
     /// <summary>
@@ -131,6 +135,10 @@ type
     /// A Negative One.
     /// </summary>
     class property MinusOne: TIntX read GetMinusOne;
+    /// <summary>
+    /// A Ten.
+    /// </summary>
+    class property Ten: TIntX read GetTen;
     /// <summary>
     /// <see cref="TIntX" /> global settings.
     /// </summary>
@@ -194,7 +202,7 @@ type
     /// <param name="negative">True if this number is negative.</param>
     /// <exception cref="EArgumentNilException"><paramref name="digits" /> is a null reference.</exception>
 
-    constructor Create(digits: TMyUint32Array; negative: Boolean); overload;
+    constructor Create(digits: TArray<Cardinal>; negative: Boolean); overload;
 
     /// <summary>
     /// Creates new <see cref="TIntX" /> from string.
@@ -250,7 +258,7 @@ type
     /// <param name="mlength">Length to use for internal digits array.</param>
     /// <exception cref="EArgumentNilException"><paramref name="digits" /> is a null reference.</exception>
 
-    constructor Create(digits: TMyUint32Array; negative: Boolean;
+    constructor Create(digits: TArray<Cardinal>; negative: Boolean;
       mlength: UInt32); overload;
 
     /// <summary>
@@ -777,7 +785,7 @@ type
     /// <param name="negative">Is negative integer.</param>
     /// <param name="zeroinithelper">Is zero initialized?.</param>
 
-    procedure GetInternalState(out digits: TMyUint32Array;
+    procedure GetInternalState(out digits: TArray<Cardinal>;
       out negative: Boolean; out zeroinithelper: Boolean);
 
     /// <summary>
@@ -1370,17 +1378,21 @@ type
 
 var
   /// <summary>
-  /// Temporary Variable to Hold Zero <see cref="TIntX" />.
+  /// Temporary Variable to Hold <c>Zero</c><see cref="TIntX" />.
   /// </summary>
   ZeroX: TIntX;
   /// <summary>
-  /// Temporary Variable to Hold One <see cref="TIntX" />.
+  /// Temporary Variable to Hold <c>One</c><see cref="TIntX" />.
   /// </summary>
   OneX: TIntX;
   /// <summary>
-  /// Temporary Variable to Hold Minus One <see cref="TIntX" />.
+  /// Temporary Variable to Hold Minus <c>One</c><see cref="TIntX" />.
   /// </summary>
   MinusOneX: TIntX;
+  /// <summary>
+  /// Temporary Variable to Hold Ten <see cref="TIntX" />.
+  /// </summary>
+  TenX: TIntX;
 
 implementation
 
@@ -1393,6 +1405,7 @@ class constructor TIntX.Create();
 begin
   _globalSettings := TIntXGlobalSettings.Create;
   _settings := TIntXSettings.Create(GlobalSettings);
+  // Global FormatSettings
   _FS := TFormatSettings.Create;
   // Create a Zero TIntX (a big integer with value as Zero)
   ZeroX := TIntX.Create(0);
@@ -1400,7 +1413,8 @@ begin
   OneX := TIntX.Create(1);
   // Create a MinusOne TIntX (a big integer with value as Negative One)
   MinusOneX := TIntX.Create(-1);
-  // Global FormatSettings
+  // Create a Ten TIntX (a big integer with value as Ten)
+  TenX := TIntX.Create(10);
 
 {$IFDEF DEBUG}
   _maxFhtRoundErrorLock := TObject.Create;
@@ -1429,6 +1443,11 @@ end;
 class function TIntX.GetMinusOne: TIntX;
 begin
   result := MinusOneX;
+end;
+
+class function TIntX.GetTen: TIntX;
+begin
+  result := TenX;
 end;
 
 constructor TIntX.Create(value: Integer);
@@ -1466,7 +1485,7 @@ begin
     _length := 1;
     // Initialized _negative to False by default since this type does not have
     // negative values.
-    _negative := False;
+    _negative := false;
 
   end;
 end;
@@ -1500,7 +1519,7 @@ begin
     InitFromUlong(value);
     // Initialized _negative to False by default since this type does not have
     // negative values.
-    _negative := False;
+    _negative := false;
   end;
 end;
 
@@ -1528,7 +1547,7 @@ begin
 
 end;
 
-constructor TIntX.Create(digits: TMyUint32Array; negative: Boolean);
+constructor TIntX.Create(digits: TArray<Cardinal>; negative: Boolean);
 begin
   // Exception
   if (digits = Nil) then
@@ -1586,7 +1605,7 @@ begin
 
 end;
 
-constructor TIntX.Create(digits: TMyUint32Array; negative: Boolean;
+constructor TIntX.Create(digits: TArray<Cardinal>; negative: Boolean;
   mlength: UInt32);
 begin
   // Exception
@@ -1631,7 +1650,7 @@ end;
 
 class operator TIntX.Equal(int1: TIntX; int2: TIntX): Boolean;
 begin
-  result := TOpHelper.Cmp(int1, int2, False) = 0;
+  result := TOpHelper.Cmp(int1, int2, false) = 0;
 end;
 
 class operator TIntX.Equal(int1: TIntX; int2: Integer): Boolean;
@@ -1656,7 +1675,7 @@ end;
 
 class operator TIntX.NotEqual(int1: TIntX; int2: TIntX): Boolean;
 begin
-  result := TOpHelper.Cmp(int1, int2, False) <> 0;
+  result := TOpHelper.Cmp(int1, int2, false) <> 0;
 end;
 
 class operator TIntX.NotEqual(int1: TIntX; int2: Integer): Boolean;
@@ -1781,7 +1800,7 @@ end;
 
 class operator TIntX.Add(int1: TIntX; int2: TIntX): TIntX;
 begin
-  result := TOpHelper.AddSub(int1, int2, False);
+  result := TOpHelper.AddSub(int1, int2, false);
 end;
 
 class operator TIntX.Subtract(int1: TIntX; int2: TIntX): TIntX;
@@ -1818,7 +1837,7 @@ end;
 
 class operator TIntX.RightShift(IntX: TIntX; shift: Integer): TIntX;
 begin
-  result := TOpHelper.Sh(IntX, shift, False);
+  result := TOpHelper.Sh(IntX, shift, false);
 end;
 
 class operator TIntX.Positive(value: TIntX): TIntX;
@@ -2352,7 +2371,7 @@ end;
 class function TIntX.Parse(value: String; numberBase: UInt32): TIntX;
 begin
   result := TParseManager.GetCurrentParser().Parse(value, numberBase,
-    TConstants.FBaseCharToDigits, False);
+    TConstants.FBaseCharToDigits, false);
 end;
 
 class function TIntX.Parse(value: String; numberBase: UInt32;
@@ -2364,7 +2383,7 @@ begin
   try
     result := TParseManager.GetCurrentParser().Parse(value, numberBase,
       TStrRepHelper.CharDictionaryFromAlphabet(alphabet, numberBase,
-      FcharDigits), False);
+      FcharDigits), false);
   finally
     FcharDigits.Free;
   end;
@@ -2381,7 +2400,7 @@ class function TIntX.Parse(value: String; numberBase: UInt32;
   mode: TParseMode): TIntX;
 begin
   result := TParseManager.GetParser(mode).Parse(value, numberBase,
-    TConstants.FBaseCharToDigits, False);
+    TConstants.FBaseCharToDigits, false);
 end;
 
 class function TIntX.Parse(value: String; numberBase: UInt32; alphabet: String;
@@ -2393,7 +2412,7 @@ begin
   try
     result := TParseManager.GetParser(mode).Parse(value, numberBase,
       TStrRepHelper.CharDictionaryFromAlphabet(alphabet, numberBase,
-      FcharDigits), False);
+      FcharDigits), false);
   finally
     FcharDigits.Free;
   end;
@@ -2452,7 +2471,7 @@ end;
 
 procedure TIntX.Normalize();
 var
-  newDigits: TMyUint32Array;
+  newDigits: TArray<Cardinal>;
 begin
   if (UInt32(Length(_digits)) > _length) then
   begin
@@ -2463,11 +2482,11 @@ begin
 
   if (_length = 0) then
   begin
-    _negative := False;
+    _negative := false;
   end;
 end;
 
-procedure TIntX.GetInternalState(out digits: TMyUint32Array;
+procedure TIntX.GetInternalState(out digits: TArray<Cardinal>;
   out negative: Boolean; out zeroinithelper: Boolean);
 
 begin
@@ -2482,7 +2501,7 @@ begin
   _length := 0;
   SetLength(_digits, 0);
   _zeroinithelper := True;
-  _negative := False;
+  _negative := false;
 end;
 
 procedure TIntX.InitFromUlong(value: UInt64);
@@ -2522,11 +2541,11 @@ procedure TIntX.InitFromIntXAbs(value: TIntX);
 begin
   _digits := value._digits;
   _length := value._length;
-  _negative := False;
+  _negative := false;
   _zeroinithelper := value._zeroinithelper;
 end;
 
-procedure TIntX.InitFromDigits(digits: TMyUint32Array; negative: Boolean;
+procedure TIntX.InitFromDigits(digits: TArray<Cardinal>; negative: Boolean;
   mlength: UInt32);
 begin
   _length := mlength;
@@ -2552,7 +2571,7 @@ begin
 
   if Length(Rec1._digits) <> Length(Rec2._digits) then
   begin
-    result := False;
+    result := false;
     Exit;
   end;
 

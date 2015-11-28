@@ -145,7 +145,6 @@
         <DCCReference Include="IntXLib\DigitConverter.pas"/>
         <DCCReference Include="IntXLib\OpHelpers\NewtonHelper.pas"/>
         <DCCReference Include="IntXLib\OpHelpers\DigitOpHelper.pas"/>
-        <DCCReference Include="IntXLib\Utils\DTypes.pas"/>
         <DCCReference Include="IntXLib\OpHelpers\DigitHelper.pas"/>
         <DCCReference Include="IntXLib\Multipliers\IMultiplier.pas"/>
         <DCCReference Include="IntXLib\Multipliers\MultiplyManager.pas"/>
@@ -213,6 +212,8 @@
         <DCCReference Include="IntXLib.Test\IntXZeroandOneTest.pas"/>
         <DCCReference Include="IntXLib.Test\AbsoluteValueTest.pas"/>
         <DCCReference Include="IntXLib.Test\IntegerLogNTest.pas"/>
+        <DCCReference Include="IntegerXLib\IntegerX.pas"/>
+        <DCCReference Include="DecimalXLib\DecimalX.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

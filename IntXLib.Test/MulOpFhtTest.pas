@@ -3,7 +3,7 @@ unit MulOpFhtTest;
 interface
 
 uses
-  DUnitX.TestFramework, IntX, Enums, DTypes, TestHelper, Math;
+  DUnitX.TestFramework, IntX, Enums, TestHelper, Math;
 
 type
 
@@ -22,9 +22,9 @@ type
   public
     [Setup]
     procedure Setup;
-    function GetAllOneDigits(mlength: Integer): TMyUInt32Array;
-    function GetRandomDigits(mlength: Integer): TMyUInt32Array; overload;
-    function GetRandomDigits(): TMyUInt32Array; overload;
+    function GetAllOneDigits(mlength: Integer): TArray<Cardinal>;
+    function GetRandomDigits(mlength: Integer): TArray<Cardinal>; overload;
+    function GetRandomDigits(): TArray<Cardinal>; overload;
     [Test]
     procedure CompareWithClassic();
     [Test]
@@ -40,7 +40,7 @@ begin
   F_length := StartLength;
 end;
 
-function TMulOpFhtTest.GetAllOneDigits(mlength: Integer): TMyUInt32Array;
+function TMulOpFhtTest.GetAllOneDigits(mlength: Integer): TArray<Cardinal>;
 var
   i: Integer;
 begin
@@ -51,7 +51,7 @@ begin
   end;
 end;
 
-function TMulOpFhtTest.GetRandomDigits(mlength: Integer): TMyUInt32Array;
+function TMulOpFhtTest.GetRandomDigits(mlength: Integer): TArray<Cardinal>;
 var
   i: Integer;
 begin
@@ -63,7 +63,7 @@ begin
   end;
 end;
 
-function TMulOpFhtTest.GetRandomDigits(): TMyUInt32Array;
+function TMulOpFhtTest.GetRandomDigits(): TArray<Cardinal>;
 begin
   result := GetRandomDigits(RandomRange(RandomStartLength, RandomEndLength));
 end;

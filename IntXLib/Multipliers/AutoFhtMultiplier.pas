@@ -18,7 +18,7 @@ unit AutoFhtMultiplier;
 interface
 
 uses
-  MultiplierBase, DTypes, DigitOpHelper, IMultiplier, FhtHelper, Constants,
+  MultiplierBase, DigitOpHelper, IMultiplier, FhtHelper, Constants,
   Math, SysUtils, Strings, Utils, IntX;
 
 type
@@ -58,8 +58,8 @@ type
     /// <param name="digitsResPtr">Resulting big integer digits.</param>
     /// <returns>Resulting big integer real length.</returns>
 
-    function Multiply(digitsPtr1: PMyUInt32; length1: UInt32;
-      digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32)
+    function Multiply(digitsPtr1: PCardinal; length1: UInt32;
+      digitsPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal)
       : UInt32; override;
 
   end;
@@ -79,14 +79,14 @@ begin
   inherited Destroy;
 end;
 
-function TAutoFhtMultiplier.Multiply(digitsPtr1: PMyUInt32; length1: UInt32;
-  digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
+function TAutoFhtMultiplier.Multiply(digitsPtr1: PCardinal; length1: UInt32;
+  digitsPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal): UInt32;
 var
   newLength, lowerDigitCount: UInt32;
-  data1, data2: TMyDoubleArray;
-  slice1: PMyDouble;
-  validationResult: TMyUInt32Array;
-  validationResultPtr: PMyUInt32;
+  data1, data2: TArray<Double>;
+  slice1: PDouble;
+  validationResult: TArray<Cardinal>;
+  validationResultPtr: PCardinal;
 
 begin
   // Check length - maybe use classic multiplier instead

@@ -16,7 +16,7 @@ unit StringConverterBase;
 interface
 
 uses
-  IStringConverter, SysUtils, Strings, Math, Constants, DTypes, Bits, Utils,
+  IStringConverter, SysUtils, Strings, Math, Constants, Bits, Utils,
   IntX;
 
 type
@@ -69,8 +69,8 @@ type
     /// <param name="outputLength">Calculated output length (will be corrected inside).</param>
     /// <returns>Conversion result (later will be transformed to string).</returns>
 
-    function ToString(digits: TMyUInt32Array; mlength: UInt32;
-      numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;
+    function ToString(digits: TArray<Cardinal>; mlength: UInt32;
+      numberBase: UInt32; var outputLength: UInt32): TArray<Cardinal>;
       reintroduce; overload; virtual;
 
   end;
@@ -97,7 +97,7 @@ var
   outputLength, i, lengthCoef: UInt32;
   isBigBase: Boolean;
   maxBuilderLength: UInt64;
-  outputArray: TMyUInt32Array;
+  outputArray: TArray<Cardinal>;
   outputBuilder: TStringBuilder;
 begin
   // Test base
@@ -175,8 +175,9 @@ begin
   end;
 end;
 
-function TStringConverterBase.ToString(digits: TMyUInt32Array; mlength: UInt32;
-  numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;
+function TStringConverterBase.ToString(digits: TArray<Cardinal>;
+  mlength: UInt32; numberBase: UInt32; var outputLength: UInt32)
+  : TArray<Cardinal>;
 begin
   // Default implementation - always call pow2 converter if numberBase is pow of 2
 

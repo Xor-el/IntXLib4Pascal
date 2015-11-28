@@ -3,7 +3,7 @@ unit LessOpTest;
 interface
 
 uses
-  DUnitX.TestFramework, IntX, DTypes;
+  DUnitX.TestFramework, IntX;
 
 type
 
@@ -48,7 +48,7 @@ end;
 [Test]
 procedure TLessOpTest.Big();
 var
-  temp1, temp2: TMyUInt32Array;
+  temp1, temp2: TArray<Cardinal>;
   int1, int2: TIntX;
 begin
   SetLength(temp1, 2);
@@ -66,7 +66,7 @@ end;
 [Test]
 procedure TLessOpTest.BigFail();
 var
-  temp1, temp2: TMyUInt32Array;
+  temp1, temp2: TArray<Cardinal>;
   int1, int2: TIntX;
 begin
   SetLength(temp1, 2);
@@ -84,7 +84,7 @@ end;
 [Test]
 procedure TLessOpTest.EqualValues();
 var
-  temp1, temp2: TMyUInt32Array;
+  temp1, temp2: TArray<Cardinal>;
   int1, int2: TIntX;
 begin
   SetLength(temp1, 3);

@@ -18,7 +18,7 @@ unit ClassicDivider;
 interface
 
 uses
-  DividerBase, DigitHelper, DigitOpHelper, Bits, DTypes, Enums, Constants,
+  DividerBase, DigitHelper, DigitOpHelper, Bits, Enums, Constants,
   Utils;
 
 type
@@ -45,11 +45,11 @@ type
     /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
     /// <returns>Resulting big integer length.</returns>
 
-    function DivMod(digits1: TMyUInt32Array; digitsBuffer1: TMyUInt32Array;
-      var length1: UInt32; digits2: TMyUInt32Array;
-      digitsBuffer2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array;
-      resultFlags: TDivModResultFlags; cmpResult: integer): UInt32;
-      overload; override;
+    function DivMod(digits1: TArray<Cardinal>; digitsBuffer1: TArray<Cardinal>;
+      var length1: UInt32; digits2: TArray<Cardinal>;
+      digitsBuffer2: TArray<Cardinal>; length2: UInt32;
+      digitsRes: TArray<Cardinal>; resultFlags: TDivModResultFlags;
+      cmpResult: integer): UInt32; overload; override;
 
     /// <summary>
     /// Divides two big integers.
@@ -66,22 +66,23 @@ type
     /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
     /// <returns>Resulting big integer length.</returns>
 
-    function DivMod(digitsPtr1: PMyUInt32; digitsBufferPtr1: PMyUInt32;
-      var length1: UInt32; digitsPtr2: PMyUInt32; digitsBufferPtr2: PMyUInt32;
-      length2: UInt32; digitsResPtr: PMyUInt32; resultFlags: TDivModResultFlags;
+    function DivMod(digitsPtr1: PCardinal; digitsBufferPtr1: PCardinal;
+      var length1: UInt32; digitsPtr2: PCardinal; digitsBufferPtr2: PCardinal;
+      length2: UInt32; digitsResPtr: PCardinal; resultFlags: TDivModResultFlags;
       cmpResult: integer): UInt32; overload; override;
 
   end;
 
 implementation
 
-function TClassicDivider.DivMod(digits1: TMyUInt32Array;
-  digitsBuffer1: TMyUInt32Array; var length1: UInt32; digits2: TMyUInt32Array;
-  digitsBuffer2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array;
-  resultFlags: TDivModResultFlags; cmpResult: integer): UInt32;
+function TClassicDivider.DivMod(digits1: TArray<Cardinal>;
+  digitsBuffer1: TArray<Cardinal>; var length1: UInt32;
+  digits2: TArray<Cardinal>; digitsBuffer2: TArray<Cardinal>; length2: UInt32;
+  digitsRes: TArray<Cardinal>; resultFlags: TDivModResultFlags;
+  cmpResult: integer): UInt32;
 var
   digitsPtr1, digitsBufferPtr1, digitsPtr2, digitsBufferPtr2, digitsResPtr,
-    tempA: PMyUInt32;
+    tempA: PCardinal;
 begin
 
   // Create some buffers if necessary
@@ -103,11 +104,11 @@ begin
     digitsResPtr := @digitsRes[0]
   else
     digitsResPtr := @digits1[0];
-   if (digitsResPtr = digitsPtr1) then
+  if (digitsResPtr = digitsPtr1) then
 
     tempA := Nil
-    else
-    begin
+  else
+  begin
     tempA := digitsResPtr;
   end;
 
@@ -116,9 +117,9 @@ begin
 
 end;
 
-function TClassicDivider.DivMod(digitsPtr1: PMyUInt32;
-  digitsBufferPtr1: PMyUInt32; var length1: UInt32; digitsPtr2: PMyUInt32;
-  digitsBufferPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32;
+function TClassicDivider.DivMod(digitsPtr1: PCardinal;
+  digitsBufferPtr1: PCardinal; var length1: UInt32; digitsPtr2: PCardinal;
+  digitsBufferPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal;
   resultFlags: TDivModResultFlags; cmpResult: integer): UInt32;
 var
   resultLength, divRes, lastDigit2, preLastDigit2, maxLength, i, iLen2, j,

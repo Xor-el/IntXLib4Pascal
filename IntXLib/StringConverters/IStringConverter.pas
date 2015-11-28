@@ -16,7 +16,7 @@ unit IStringConverter;
 interface
 
 uses
-  DTypes, IntX, SysUtils;
+  IntX, SysUtils;
 
 type
   /// <summary>
@@ -46,8 +46,8 @@ type
     /// <param name="outputLength">Calculated output length (will be corrected inside).</param>
     /// <returns>Conversion result (later will be transformed to string).</returns>
 
-    function ToString(digits: TMyUInt32Array; mlength: UInt32;
-      numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array; overload;
+    function ToString(digits: TArray<Cardinal>; mlength: UInt32;
+      numberBase: UInt32; var outputLength: UInt32): TArray<Cardinal>; overload;
 
   end;
 

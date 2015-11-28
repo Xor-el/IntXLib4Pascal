@@ -3,7 +3,7 @@ unit ShiftOpTest;
 interface
 
 uses
-  DUnitX.TestFramework, IntX, DTypes;
+  DUnitX.TestFramework, IntX;
 
 type
 
@@ -38,7 +38,7 @@ end;
 [Test]
 procedure TShiftOpTest.SimpleAndNeg();
 var
-  temp: TMyUInt32Array;
+  temp: TArray<Cardinal>;
   int1: TIntX;
 begin
   SetLength(temp, 2);

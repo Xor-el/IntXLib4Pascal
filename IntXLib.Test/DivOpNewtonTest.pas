@@ -3,7 +3,7 @@ unit DivOpNewtonTest;
 interface
 
 uses
-  DUnitX.TestFramework, IntX, DTypes, Math, TestHelper, Enums;
+  DUnitX.TestFramework, IntX, Math, TestHelper, Enums;
 
 type
 
@@ -23,9 +23,9 @@ type
   public
     [Setup]
     procedure Setup;
-    function GetAllOneDigits(mlength: Integer): TMyUInt32Array;
-    function GetRandomDigits(out digits2: TMyUInt32Array): TMyUInt32Array;
-    procedure NextBytes(var bytes: TMyByteArray); inline;
+    function GetAllOneDigits(mlength: Integer): TArray<Cardinal>;
+    function GetRandomDigits(out digits2: TArray<Cardinal>): TArray<Cardinal>;
+    procedure NextBytes(var bytes: TArray<Byte>); inline;
     [Test]
     procedure CompareWithClassic();
     [Test]
@@ -39,7 +39,7 @@ begin
   F_length := StartLength;
 end;
 
-function TDivOpNewtonTest.GetAllOneDigits(mlength: Integer): TMyUInt32Array;
+function TDivOpNewtonTest.GetAllOneDigits(mlength: Integer): TArray<Cardinal>;
 var
   i: Integer;
 begin
@@ -50,10 +50,10 @@ begin
   end;
 end;
 
-function TDivOpNewtonTest.GetRandomDigits(out digits2: TMyUInt32Array)
-  : TMyUInt32Array;
+function TDivOpNewtonTest.GetRandomDigits(out digits2: TArray<Cardinal>)
+  : TArray<Cardinal>;
 var
-  bytes: TMyByteArray;
+  bytes: TArray<Byte>;
   i: Integer;
 begin
   Randomize;
@@ -63,17 +63,17 @@ begin
   for i := 0 to Pred(Length(result)) do
   begin
     NextBytes(bytes);
-    result[i] := PMyUInt32(@bytes[0])^;
+    result[i] := PCardinal(@bytes[0])^;
     if (i < Length(digits2)) then
     begin
       NextBytes(bytes);
-      digits2[i] := PMyUInt32(@bytes[0])^;
+      digits2[i] := PCardinal(@bytes[0])^;
     end;
 
   end;
 end;
 
-procedure TDivOpNewtonTest.NextBytes(var bytes: TMyByteArray);
+procedure TDivOpNewtonTest.NextBytes(var bytes: TArray<Byte>);
 var
   i, randValue: Integer;
 begin
@@ -114,7 +114,7 @@ end;
 procedure TDivOpNewtonTest.CompareWithClassicRandom();
 var
   x, x2, classicMod, fastMod, classic, fast: TIntX;
-  digits2: TMyUInt32Array;
+  digits2: TArray<Cardinal>;
 begin
   TTestHelper.Repeater(RandomRepeatCount,
     procedure

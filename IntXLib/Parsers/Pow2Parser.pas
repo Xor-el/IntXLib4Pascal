@@ -16,7 +16,7 @@ unit Pow2Parser;
 interface
 
 uses
-  Generics.Collections, IParser, DTypes, Bits, Constants, StrRepHelper, IntX;
+  Generics.Collections, IParser, Bits, Constants, StrRepHelper, IntX;
 
 type
   /// <summary>
@@ -36,7 +36,7 @@ type
     /// <param name="checkFormat">Boolean that indicates if to check Input Format.</param>
     /// <returns>Big Integer value.</returns>
 
-    function Parse(value: String; numberBase: UInt32;
+    function Parse(Const value: String; numberBase: UInt32;
       charToDigits: TDictionary<Char, UInt32>; checkFormat: Boolean)
       : TIntX; overload;
 
@@ -51,15 +51,15 @@ type
     /// <param name="digitsRes">Resulting digits.</param>
     /// <returns>Parsed integer length.</returns>
 
-    function Parse(value: String; startIndex: Integer; endIndex: Integer;
+    function Parse(Const value: String; startIndex: Integer; endIndex: Integer;
       numberBase: UInt32; charToDigits: TDictionary<Char, UInt32>;
-      digitsRes: TMyUInt32Array): UInt32; overload;
+      digitsRes: TArray<Cardinal>): UInt32; overload;
 
   end;
 
 implementation
 
-function TPow2Parser.Parse(value: String; numberBase: UInt32;
+function TPow2Parser.Parse(Const value: String; numberBase: UInt32;
   charToDigits: TDictionary<Char, UInt32>; checkFormat: Boolean): TIntX;
 begin
 
@@ -67,9 +67,9 @@ begin
   Exit;
 end;
 
-function TPow2Parser.Parse(value: String; startIndex: Integer;
+function TPow2Parser.Parse(Const value: String; startIndex: Integer;
   endIndex: Integer; numberBase: UInt32;
-  charToDigits: TDictionary<Char, UInt32>; digitsRes: TMyUInt32Array): UInt32;
+  charToDigits: TDictionary<Char, UInt32>; digitsRes: TArray<Cardinal>): UInt32;
 var
   bitsInChar, initialShift, i: Integer;
   valueLength, digitsLength, digitIndex, digit: UInt32;

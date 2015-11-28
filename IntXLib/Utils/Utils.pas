@@ -65,6 +65,7 @@ type
 implementation
 
 class function TUtils.Asr(value: Integer; ShiftBits: Integer): Integer;
+
 begin
   Result := value shr ShiftBits;
   if (value and $80000000) > 0 then

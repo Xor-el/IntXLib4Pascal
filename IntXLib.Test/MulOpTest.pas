@@ -3,7 +3,7 @@ unit MulOpTest;
 interface
 
 uses
-  DUnitX.TestFramework, IntX, DTypes, Enums, Constants;
+  DUnitX.TestFramework, IntX, Enums, Constants;
 
 type
 
@@ -64,7 +64,7 @@ end;
 [Test]
 procedure TMulOpTest.Big();
 var
-  temp1, temp2, tempRes: TMyUInt32Array;
+  temp1, temp2, tempRes: TArray<Cardinal>;
   int1, int2, intRes: TIntX;
 begin
   SetLength(temp1, 2);
@@ -86,7 +86,7 @@ end;
 [Test]
 procedure TMulOpTest.Big2();
 var
-  temp1, temp2, tempRes: TMyUInt32Array;
+  temp1, temp2, tempRes: TArray<Cardinal>;
   int1, int2, intRes: TIntX;
 begin
   SetLength(temp1, 2);
@@ -107,7 +107,7 @@ end;
 [Test]
 procedure TMulOpTest.Big3();
 var
-  temp1, temp2, tempRes: TMyUInt32Array;
+  temp1, temp2, tempRes: TArray<Cardinal>;
   int1, int2, intRes: TIntX;
 begin
   SetLength(temp1, 2);
@@ -131,7 +131,7 @@ end;
 procedure TMulOpTest.Performance();
 var
   i: Integer;
-  temp1: TMyUInt32Array;
+  temp1: TArray<Cardinal>;
   IntX, intX2: TIntX;
 begin
   SetLength(temp1, 2);

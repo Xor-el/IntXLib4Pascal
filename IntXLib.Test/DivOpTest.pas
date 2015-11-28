@@ -3,7 +3,7 @@ unit DivOpTest;
 interface
 
 uses
-  DUnitX.TestFramework, SysUtils, IntX, DTypes;
+  DUnitX.TestFramework, SysUtils, IntX;
 
 type
 
@@ -106,7 +106,7 @@ end;
 [Test]
 procedure TDivOpTest.Big();
 var
-  temp1, temp2: TMyUInt32Array;
+  temp1, temp2: TArray<Cardinal>;
   int1, int2: TIntX;
 begin
   SetLength(temp1, 4);

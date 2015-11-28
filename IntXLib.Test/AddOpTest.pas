@@ -3,7 +3,7 @@ unit AddOpTest;
 interface
 
 uses
-  DUnitX.TestFramework, SysUtils, Classes, IntX, DTypes, Constants;
+  DUnitX.TestFramework, SysUtils, Classes, IntX, Constants;
 
 type
 
@@ -135,7 +135,7 @@ end;
 [Test]
 procedure TAddOpTest.Add2BigIntX();
 var
-  temp1, temp2, temp3: TMyUInt32Array;
+  temp1, temp2, temp3: TArray<Cardinal>;
   int1, int2, int3: TIntX;
 begin
   SetLength(temp1, 3);
@@ -159,7 +159,7 @@ end;
 [Test]
 procedure TAddOpTest.Add2BigIntXC();
 var
-  temp1, temp2, temp3: TMyUInt32Array;
+  temp1, temp2, temp3: TArray<Cardinal>;
   int1, int2, int3: TIntX;
 begin
   SetLength(temp1, 2);
@@ -181,7 +181,7 @@ end;
 [Test]
 procedure TAddOpTest.Add2BigIntXC2();
 var
-  temp1, temp2, temp3: TMyUInt32Array;
+  temp1, temp2, temp3: TArray<Cardinal>;
   int1, int2, int3: TIntX;
 begin
   SetLength(temp1, 2);
@@ -202,7 +202,7 @@ end;
 [Test]
 procedure TAddOpTest.Add2BigIntXC3();
 var
-  temp1, temp2, temp3: TMyUInt32Array;
+  temp1, temp2, temp3: TArray<Cardinal>;
   int1, int2, int3: TIntX;
 begin
   SetLength(temp1, 2);
@@ -224,7 +224,7 @@ end;
 [Test]
 procedure TAddOpTest.Add2BigIntXC4();
 var
-  temp1, temp2, temp3: TMyUInt32Array;
+  temp1, temp2, temp3: TArray<Cardinal>;
   int1, int2, int3: TIntX;
 begin
   SetLength(temp1, 4);

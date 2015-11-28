@@ -18,7 +18,7 @@ unit ClassicMultiplier;
 interface
 
 uses
-  MultiplierBase, DTypes, DigitHelper;
+  MultiplierBase, DigitHelper;
 
 type
   /// <summary>
@@ -39,20 +39,20 @@ type
     /// <param name="digitsResPtr">Resulting big integer digits.</param>
     /// <returns>Resulting big integer length.</returns>
 
-    function Multiply(digitsPtr1: PMyUInt32; length1: UInt32;
-      digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32)
+    function Multiply(digitsPtr1: PCardinal; length1: UInt32;
+      digitsPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal)
       : UInt32; override;
 
   end;
 
 implementation
 
-function TClassicMultiplier.Multiply(digitsPtr1: PMyUInt32; length1: UInt32;
-  digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
+function TClassicMultiplier.Multiply(digitsPtr1: PCardinal; length1: UInt32;
+  digitsPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal): UInt32;
 var
   c: UInt64;
   lengthTemp, newLength: UInt32;
-  ptrTemp, digitsPtr1End, digitsPtr2End, ptr1, ptrRes: PMyUInt32;
+  ptrTemp, digitsPtr1End, digitsPtr2End, ptr1, ptrRes: PCardinal;
 
 begin
 

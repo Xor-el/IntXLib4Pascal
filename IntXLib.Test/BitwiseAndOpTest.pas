@@ -3,7 +3,7 @@ unit BitwiseAndOpTest;
 interface
 
 uses
-  DUnitX.TestFramework, IntX, DTypes, Constants;
+  DUnitX.TestFramework, IntX, Constants;
 
 type
 
@@ -76,7 +76,7 @@ end;
 [Test]
 procedure TBitwiseAndOpTest.ShouldBitwiseAndTwoBigIntX();
 var
-  temp1, temp2, temp3: TMyUInt32Array;
+  temp1, temp2, temp3: TArray<Cardinal>;
   int1, int2, result: TIntX;
 begin
   SetLength(temp1, 4);

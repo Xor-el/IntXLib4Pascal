@@ -3,7 +3,7 @@ unit ConstructorTest;
 interface
 
 uses
-  DUnitX.TestFramework, SysUtils, IntX, DTypes, Constants;
+  DUnitX.TestFramework, SysUtils, IntX, Constants;
 
 type
 
@@ -49,7 +49,7 @@ end;
 [Test]
 procedure TConstructorTest.IntArrayCtor();
 var
-  temp: TMyUInt32Array;
+  temp: TArray<Cardinal>;
 begin
   SetLength(temp, 3);
   temp[0] := 1;
@@ -60,7 +60,7 @@ end;
 
 procedure TConstructorTest.IntArrayNullCtor();
 var
-  temp: TMyUInt32Array;
+  temp: TArray<Cardinal>;
 begin
   temp := Nil;
   TIntX.Create(temp, False);

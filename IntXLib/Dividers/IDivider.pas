@@ -16,7 +16,7 @@ unit IDivider;
 interface
 
 uses
-  DTypes, Enums, IntX;
+  Enums, IntX;
 
 type
   /// <summary>
@@ -53,10 +53,11 @@ type
     /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
     /// <returns>Resulting big integer length.</returns>
 
-    function DivMod(digits1: TMyUInt32Array; digitsBuffer1: TMyUInt32Array;
-      var length1: UInt32; digits2: TMyUInt32Array;
-      digitsBuffer2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array;
-      resultFlags: TDivModResultFlags; cmpResult: Integer): UInt32; overload;
+    function DivMod(digits1: TArray<Cardinal>; digitsBuffer1: TArray<Cardinal>;
+      var length1: UInt32; digits2: TArray<Cardinal>;
+      digitsBuffer2: TArray<Cardinal>; length2: UInt32;
+      digitsRes: TArray<Cardinal>; resultFlags: TDivModResultFlags;
+      cmpResult: Integer): UInt32; overload;
 
     /// <summary>
     /// Divides two big integers.
@@ -73,9 +74,9 @@ type
     /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
     /// <returns>Resulting big integer length.</returns>
 
-    function DivMod(digitsPtr1: PMyUInt32; digitsBufferPtr1: PMyUInt32;
-      var length1: UInt32; digitsPtr2: PMyUInt32; digitsBufferPtr2: PMyUInt32;
-      length2: UInt32; digitsResPtr: PMyUInt32; resultFlags: TDivModResultFlags;
+    function DivMod(digitsPtr1: PCardinal; digitsBufferPtr1: PCardinal;
+      var length1: UInt32; digitsPtr2: PCardinal; digitsBufferPtr2: PCardinal;
+      length2: UInt32; digitsResPtr: PCardinal; resultFlags: TDivModResultFlags;
       cmpResult: Integer): UInt32; overload;
 
   end;

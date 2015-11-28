@@ -20,7 +20,7 @@ interface
 uses
   SysUtils, Generics.Collections, Enums, DigitHelper, StringConverterBase,
   IMultiplier,
-  IDivider, MultiplyManager, DivideManager, IStringConverter, DTypes, Constants,
+  IDivider, MultiplyManager, DivideManager, IStringConverter, Constants,
   Bits, IntX;
 
 type
@@ -57,8 +57,8 @@ type
     /// <param name="numberBase">Base to use for output.</param>
     /// <param name="outputLength">Calculated output length (will be corrected inside).</param>
     /// <returns>Conversion result (later will be transformed to string).</returns>
-    function ToString(digits: TMyUInt32Array; mlength: UInt32;
-      numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array; override;
+    function ToString(digits: TArray<Cardinal>; mlength: UInt32;
+      numberBase: UInt32; var outputLength: UInt32): TArray<Cardinal>; override;
 
   end;
 
@@ -80,10 +80,12 @@ begin
   inherited Destroy;
 end;
 
-function TFastStringConverter.ToString(digits: TMyUInt32Array; mlength: UInt32;
-  numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;
+function TFastStringConverter.ToString(digits: TArray<Cardinal>;
+  mlength: UInt32; numberBase: UInt32; var outputLength: UInt32)
+  : TArray<Cardinal>;
 var
-  outputArray, resultArray, resultArray2, tempBuffer, tempArray: TMyUInt32Array;
+  outputArray, resultArray, resultArray2, tempBuffer,
+    tempArray: TArray<Cardinal>;
   resultLengthLog2, i: Integer;
   resultLength, loLength, innerStep, outerStep, j: UInt32;
   multiplier: IIMultiplier;
@@ -91,7 +93,7 @@ var
   baseIntStack: TStack<TIntX>;
   baseInt: TIntX;
   resultPtr1Const, resultPtr2Const, tempBufferPtr, resultPtr1, resultPtr2,
-    tempPtr, ptr1, ptr2, ptr1end, baseIntPtr, outputPtr: PMyUInt32;
+    tempPtr, ptr1, ptr2, ptr1end, baseIntPtr, outputPtr: PCardinal;
 
 begin
   outputArray := Inherited ToString(digits, mlength, numberBase, outputLength);

@@ -3,7 +3,7 @@ unit OnesComplementOpTest;
 interface
 
 uses
-  DUnitX.TestFramework, IntX, DTypes, Constants;
+  DUnitX.TestFramework, IntX, Constants;
 
 type
 
@@ -55,7 +55,7 @@ end;
 [Test]
 procedure TOnesComplementOpTest.ShouldOnesComplementBigIntX();
 var
-  temp1, temp2: TMyUInt32Array;
+  temp1, temp2: TArray<Cardinal>;
   value, result: TIntX;
 begin
   SetLength(temp1, 3);

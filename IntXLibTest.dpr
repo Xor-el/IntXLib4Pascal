@@ -6,9 +6,9 @@ program IntXLibTest;
 
 uses
   SysUtils,
-{$IFDEF TESTINSIGHT}
+  {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
-{$ENDIF }
+  {$ENDIF }
   DUnitX.Init,
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
@@ -21,7 +21,6 @@ uses
   DigitConverter in 'IntXLib\DigitConverter.pas',
   NewtonHelper in 'IntXLib\OpHelpers\NewtonHelper.pas',
   DigitOpHelper in 'IntXLib\OpHelpers\DigitOpHelper.pas',
-  DTypes in 'IntXLib\Utils\DTypes.pas',
   DigitHelper in 'IntXLib\OpHelpers\DigitHelper.pas',
   IMultiplier in 'IntXLib\Multipliers\IMultiplier.pas',
   MultiplyManager in 'IntXLib\Multipliers\MultiplyManager.pas',
@@ -35,8 +34,7 @@ uses
   AutoNewtonDivider in 'IntXLib\Dividers\AutoNewtonDivider.pas',
   ClassicDivider in 'IntXLib\Dividers\ClassicDivider.pas',
   IStringConverter in 'IntXLib\StringConverters\IStringConverter.pas',
-  ClassicStringConverter
-    in 'IntXLib\StringConverters\ClassicStringConverter.pas',
+  ClassicStringConverter in 'IntXLib\StringConverters\ClassicStringConverter.pas',
   Pow2StringConverter in 'IntXLib\StringConverters\Pow2StringConverter.pas',
   FastStringConverter in 'IntXLib\StringConverters\FastStringConverter.pas',
   IntXGlobalSettings in 'IntXLib\Settings\IntXGlobalSettings.pas',

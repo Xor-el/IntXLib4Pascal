@@ -17,7 +17,7 @@ interface
 
 uses
   IntX, Constants, DigitHelper, Strings, SysUtils, DigitOpHelper, Bits, Enums,
-  IMultiplier, MultiplyManager, DTypes, PcgRandomMinimal,
+  IMultiplier, MultiplyManager, PcgRandomMinimal,
   MillerRabin, Utils, Math;
 
 type
@@ -82,10 +82,10 @@ type
       _uSmall: UInt32;
 
       /// <summary>
-      /// <see cref="TMyUInt32Array" /> used for internal operations.
+      /// <see cref="TArray&lt;Cardinal&gt;" /> used for internal operations.
       /// </summary>
       /// <remarks>Used if _iuLast > 0.</remarks>
-      _rgu: TMyUInt32Array;
+      _rgu: TArray<Cardinal>;
 
     public
       /// <summary>

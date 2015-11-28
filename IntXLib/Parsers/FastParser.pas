@@ -20,7 +20,7 @@ interface
 uses
 
   ParserBase, DigitOpHelper, IMultiplier, MultiplyManager, IParser, Constants,
-  Generics.Collections, DTypes, Bits, StrRepHelper, DigitHelper, IntX;
+  Generics.Collections, Bits, StrRepHelper, DigitHelper, IntX;
 
 type
   /// <summary>
@@ -56,9 +56,9 @@ type
     /// <param name="digitsRes">Resulting digits.</param>
     /// <returns>Parsed integer length.</returns>
 
-    function Parse(value: String; startIndex: Integer; endIndex: Integer;
+    function Parse(Const value: String; startIndex: Integer; endIndex: Integer;
       numberBase: UInt32; charToDigits: TDictionary<Char, UInt32>;
-      digitsRes: TMyUint32Array): UInt32; override;
+      digitsRes: TArray<Cardinal>): UInt32; override;
 
   end;
 
@@ -71,15 +71,15 @@ begin
 
 end;
 
-function TFastParser.Parse(value: String; startIndex: Integer;
+function TFastParser.Parse(Const value: String; startIndex: Integer;
   endIndex: Integer; numberBase: UInt32;
-  charToDigits: TDictionary<Char, UInt32>; digitsRes: TMyUint32Array): UInt32;
+  charToDigits: TDictionary<Char, UInt32>; digitsRes: TArray<Cardinal>): UInt32;
 var
   newLength, initialLength, valueLength, digitsLength, loLength, hiLength,
     innerStep, outerStep, realLength: UInt32;
-  valueDigits, valueDigits2, tempDigits: TMyUint32Array;
+  valueDigits, valueDigits2, tempDigits: TArray<Cardinal>;
   valueDigitsStartPtr, valueDigitsStartPtr2, valueDigitsPtr, valueDigitsPtr2,
-    tempPtr, ptr1, ptr2, valueDigitsPtrEnd, baseDigitsPtr: PMyUInt32;
+    tempPtr, ptr1, ptr2, valueDigitsPtrEnd, baseDigitsPtr: PCardinal;
   valueStartPtr, valuePtr, valueEndPtr: PChar;
   multiplier: IIMultiplier;
   baseInt: TIntX;

@@ -18,7 +18,7 @@ unit DigitOpHelper;
 interface
 
 uses
-  Constants, DTypes, DigitHelper, IntX;
+  Constants, DigitHelper, IntX;
 
 type
   /// <summary>
@@ -39,8 +39,8 @@ type
     /// <param name="digitsRes">Resulting big integer digits.</param>
     /// <returns>Resulting big integer length.</returns>
 
-    class function Add(digits1: TMyUInt32Array; length1: UInt32;
-      digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array)
+    class function Add(digits1: TArray<Cardinal>; length1: UInt32;
+      digits2: TArray<Cardinal>; length2: UInt32; digitsRes: TArray<Cardinal>)
       : UInt32; Overload; static;
 
     /// <summary>
@@ -53,8 +53,8 @@ type
     /// <param name="digitsResPtr">Resulting big integer digits.</param>
     /// <returns>Resulting big integer length.</returns>
 
-    class function Add(digitsPtr1: PMyUInt32; length1: UInt32;
-      digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
+    class function Add(digitsPtr1: PCardinal; length1: UInt32;
+      digitsPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal): UInt32;
       Overload; static;
 
     /// <summary>
@@ -67,8 +67,8 @@ type
     /// <param name="digitsRes">Resulting big integer digits.</param>
     /// <returns>Resulting big integer length.</returns>
 
-    class function Sub(digits1: TMyUInt32Array; length1: UInt32;
-      digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array)
+    class function Sub(digits1: TArray<Cardinal>; length1: UInt32;
+      digits2: TArray<Cardinal>; length2: UInt32; digitsRes: TArray<Cardinal>)
       : UInt32; Overload; static;
 
     /// <summary>
@@ -81,13 +81,13 @@ type
     /// <param name="digitsResPtr">Resulting big integer digits.</param>
     /// <returns>Resulting big integer length.</returns>
 
-    class function Sub(digitsPtr1: PMyUInt32; length1: UInt32;
-      digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
+    class function Sub(digitsPtr1: PCardinal; length1: UInt32;
+      digitsPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal): UInt32;
       Overload; static;
 
     /// <summary>
     /// Divides one big integer represented by it's digits by another one big integer.
-    /// Reminder is always filled (but not the result).
+    /// Remainder is always filled (but not the result).
     /// </summary>
     /// <param name="digits1">First big integer digits.</param>
     /// <param name="length1">First big integer length.</param>
@@ -96,8 +96,8 @@ type
     /// <param name="modRes">Remainder (always filled).</param>
     /// <returns>Result length (0 if result is null).</returns>
 
-    class function DivMod(digits1: TMyUInt32Array; length1: UInt32;
-      int2: UInt32; divRes: TMyUInt32Array; out modRes: UInt32): UInt32;
+    class function DivMod(digits1: TArray<Cardinal>; length1: UInt32;
+      int2: UInt32; divRes: TArray<Cardinal>; out modRes: UInt32): UInt32;
       Overload; static;
 
     /// <summary>
@@ -111,8 +111,8 @@ type
     /// <param name="modRes">Remainder (always filled).</param>
     /// <returns>Result length (0 if result is null).</returns>
 
-    class function DivMod(digitsPtr1: PMyUInt32; length1: UInt32; int2: UInt32;
-      divResPtr: PMyUInt32; out modRes: UInt32): UInt32; Overload; static;
+    class function DivMod(digitsPtr1: PCardinal; length1: UInt32; int2: UInt32;
+      divResPtr: PCardinal; out modRes: UInt32): UInt32; Overload; static;
 
     /// <summary>
     /// Divides one big integer represented by it's digits by another one big integer.
@@ -123,7 +123,7 @@ type
     /// <param name="int2">Second integer.</param>
     /// <returns>Remainder.</returns>
 
-    class function Modulus(digits1: TMyUInt32Array; length1: UInt32;
+    class function Modulus(digits1: TArray<Cardinal>; length1: UInt32;
       int2: UInt32): UInt32; Overload; static;
 
     /// <summary>
@@ -135,7 +135,7 @@ type
     /// <param name="int2">Second integer.</param>
     /// <returns>Remainder.</returns>
 
-    class function Modulus(digitsPtr1: PMyUInt32; length1: UInt32; int2: UInt32)
+    class function Modulus(digitsPtr1: PCardinal; length1: UInt32; int2: UInt32)
       : UInt32; Overload; static;
 
     /// <summary>
@@ -148,8 +148,8 @@ type
     /// <param name="length2">Second big integer length.</param>
     /// <returns>Comparison result.</returns>
 
-    class function Cmp(digits1: TMyUInt32Array; length1: UInt32;
-      digits2: TMyUInt32Array; length2: UInt32): Integer; Overload; static;
+    class function Cmp(digits1: TArray<Cardinal>; length1: UInt32;
+      digits2: TArray<Cardinal>; length2: UInt32): Integer; Overload; static;
 
     /// <summary>
     /// Compares 2 <see cref="TIntX" /> objects represented by pointers only (not taking sign into account).
@@ -161,8 +161,8 @@ type
     /// <param name="length2">Second big integer length.</param>
     /// <returns>Comparison result.</returns>
 
-    class function Cmp(digitsPtr1: PMyUInt32; length1: UInt32;
-      digitsPtr2: PMyUInt32; length2: UInt32): Integer; Overload; static;
+    class function Cmp(digitsPtr1: PCardinal; length1: UInt32;
+      digitsPtr2: PCardinal; length2: UInt32): Integer; Overload; static;
 
     /// <summary>
     /// Compares two integers lengths. Returns -2 if further comparing is needed.
@@ -183,8 +183,8 @@ type
     /// <param name="resOffset">Resulting big integer digits offset.</param>
     /// <param name="rightShift">Shift to the right (always between 1 an 31).</param>
 
-    class procedure ShiftRight(digits: TMyUInt32Array; offset: UInt32;
-      mlength: UInt32; digitsRes: TMyUInt32Array; resOffset: UInt32;
+    class procedure ShiftRight(digits: TArray<Cardinal>; offset: UInt32;
+      mlength: UInt32; digitsRes: TArray<Cardinal>; resOffset: UInt32;
       rightShift: Integer); Overload; static;
 
     /// <summary>
@@ -197,8 +197,8 @@ type
     /// <param name="resHasOffset">True if <paramref name="digitsResPtr" /> has offset.</param>
     /// <returns>Resulting big integer length.</returns>
 
-    class function ShiftRight(digitsPtr: PMyUInt32; mlength: UInt32;
-      digitsResPtr: PMyUInt32; rightShift: Integer; resHasOffset: Boolean)
+    class function ShiftRight(digitsPtr: PCardinal; mlength: UInt32;
+      digitsResPtr: PCardinal; rightShift: Integer; resHasOffset: Boolean)
       : UInt32; Overload; static;
 
     /// <summary>
@@ -210,9 +210,9 @@ type
     /// <param name="length2">Second big integer length.</param>
     /// <param name="digitsRes">Resulting big integer digits.</param>
 
-    class procedure BitwiseOr(digits1: TMyUInt32Array; length1: UInt32;
-      digits2: TMyUInt32Array; length2: UInt32;
-      digitsRes: TMyUInt32Array); static;
+    class procedure BitwiseOr(digits1: TArray<Cardinal>; length1: UInt32;
+      digits2: TArray<Cardinal>; length2: UInt32;
+      digitsRes: TArray<Cardinal>); static;
 
     /// <summary>
     /// Performs bitwise AND for two big integers.
@@ -223,8 +223,9 @@ type
     /// <param name="digitsRes">Resulting big integer digits.</param>
     /// <returns>Resulting big integer length.</returns>
 
-    class function BitwiseAnd(digits1: TMyUInt32Array; digits2: TMyUInt32Array;
-      mlength: UInt32; digitsRes: TMyUInt32Array): UInt32; static;
+    class function BitwiseAnd(digits1: TArray<Cardinal>;
+      digits2: TArray<Cardinal>; mlength: UInt32; digitsRes: TArray<Cardinal>)
+      : UInt32; static;
 
     /// <summary>
     /// Performs bitwise XOR for two big integers.
@@ -236,8 +237,8 @@ type
     /// <param name="digitsRes">Resulting big integer digits.</param>
     /// <returns>Resulting big integer length.</returns>
 
-    class function ExclusiveOr(digits1: TMyUInt32Array; length1: UInt32;
-      digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array)
+    class function ExclusiveOr(digits1: TArray<Cardinal>; length1: UInt32;
+      digits2: TArray<Cardinal>; length2: UInt32; digitsRes: TArray<Cardinal>)
       : UInt32; static;
 
     /// <summary>
@@ -248,17 +249,18 @@ type
     /// <param name="digitsRes">Resulting big integer digits.</param>
     /// <returns>Resulting big integer length.</returns>
 
-    class function OnesComplement(digits: TMyUInt32Array; mlength: UInt32;
-      digitsRes: TMyUInt32Array): UInt32; static;
+    class function OnesComplement(digits: TArray<Cardinal>; mlength: UInt32;
+      digitsRes: TArray<Cardinal>): UInt32; static;
 
   end;
 
 implementation
 
-class function TDigitOpHelper.Add(digits1: TMyUInt32Array; length1: UInt32;
-  digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array): UInt32;
+class function TDigitOpHelper.Add(digits1: TArray<Cardinal>; length1: UInt32;
+  digits2: TArray<Cardinal>; length2: UInt32;
+  digitsRes: TArray<Cardinal>): UInt32;
 var
-  digitsPtr1, digitsPtr2, digitsResPtr: PMyUInt32;
+  digitsPtr1, digitsPtr2, digitsResPtr: PCardinal;
 begin
 
   digitsPtr1 := @digits1[0];
@@ -267,12 +269,12 @@ begin
   result := Add(digitsPtr1, length1, digitsPtr2, length2, digitsResPtr);
 end;
 
-class function TDigitOpHelper.Add(digitsPtr1: PMyUInt32; length1: UInt32;
-  digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
+class function TDigitOpHelper.Add(digitsPtr1: PCardinal; length1: UInt32;
+  digitsPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal): UInt32;
 var
   lengthTemp, i: UInt32;
   c: UInt64;
-  ptrTemp: PMyUInt32;
+  ptrTemp: PCardinal;
 
 begin
   c := 0;
@@ -324,10 +326,11 @@ begin
 
 end;
 
-class function TDigitOpHelper.Sub(digits1: TMyUInt32Array; length1: UInt32;
-  digits2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array): UInt32;
+class function TDigitOpHelper.Sub(digits1: TArray<Cardinal>; length1: UInt32;
+  digits2: TArray<Cardinal>; length2: UInt32;
+  digitsRes: TArray<Cardinal>): UInt32;
 var
-  digitsPtr1, digitsPtr2, digitsResPtr: PMyUInt32;
+  digitsPtr1, digitsPtr2, digitsResPtr: PCardinal;
 begin
 
   digitsPtr1 := @digits1[0];
@@ -336,8 +339,8 @@ begin
   result := Sub(digitsPtr1, length1, digitsPtr2, length2, digitsResPtr);
 end;
 
-class function TDigitOpHelper.Sub(digitsPtr1: PMyUInt32; length1: UInt32;
-  digitsPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32): UInt32;
+class function TDigitOpHelper.Sub(digitsPtr1: PCardinal; length1: UInt32;
+  digitsPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal): UInt32;
 var
   c: UInt64;
   i: UInt32;
@@ -372,10 +375,10 @@ begin
   result := TDigitHelper.GetRealDigitsLength(digitsResPtr, length1);
 end;
 
-class function TDigitOpHelper.DivMod(digits1: TMyUInt32Array; length1: UInt32;
-  int2: UInt32; divRes: TMyUInt32Array; out modRes: UInt32): UInt32;
+class function TDigitOpHelper.DivMod(digits1: TArray<Cardinal>; length1: UInt32;
+  int2: UInt32; divRes: TArray<Cardinal>; out modRes: UInt32): UInt32;
 var
-  digits1Ptr, divResPtr: PMyUInt32;
+  digits1Ptr, divResPtr: PCardinal;
 begin
   digits1Ptr := @digits1[0];
   divResPtr := @divRes[0];
@@ -383,8 +386,8 @@ begin
   result := DivMod(digits1Ptr, length1, int2, divResPtr, modRes);
 end;
 
-class function TDigitOpHelper.DivMod(digitsPtr1: PMyUInt32; length1: UInt32;
-  int2: UInt32; divResPtr: PMyUInt32; out modRes: UInt32): UInt32;
+class function TDigitOpHelper.DivMod(digitsPtr1: PCardinal; length1: UInt32;
+  int2: UInt32; divResPtr: PCardinal; out modRes: UInt32): UInt32;
 var
   c: UInt64;
   index, res: UInt32;
@@ -414,21 +417,21 @@ begin
     result := length1 - UInt32(0);
 end;
 
-class function TDigitOpHelper.Modulus(digits1: TMyUInt32Array; length1: UInt32;
-  int2: UInt32): UInt32;
+class function TDigitOpHelper.Modulus(digits1: TArray<Cardinal>;
+  length1: UInt32; int2: UInt32): UInt32;
 var
-  digitsPtr1: PMyUInt32;
+  digitsPtr1: PCardinal;
 begin
   digitsPtr1 := @digits1[0];
   result := Modulus(digitsPtr1, length1, int2);
 end;
 
-class function TDigitOpHelper.Modulus(digitsPtr1: PMyUInt32; length1: UInt32;
+class function TDigitOpHelper.Modulus(digitsPtr1: PCardinal; length1: UInt32;
   int2: UInt32): UInt32;
 var
   c: UInt64;
   res: UInt32;
-  ptr1: PMyUInt32;
+  ptr1: PCardinal;
 begin
   c := 0;
   ptr1 := digitsPtr1 + length1 - 1;
@@ -443,10 +446,10 @@ begin
   result := UInt32(c);
 end;
 
-class function TDigitOpHelper.Cmp(digits1: TMyUInt32Array; length1: UInt32;
-  digits2: TMyUInt32Array; length2: UInt32): Integer;
+class function TDigitOpHelper.Cmp(digits1: TArray<Cardinal>; length1: UInt32;
+  digits2: TArray<Cardinal>; length2: UInt32): Integer;
 var
-  digitsPtr1, digitsPtr2: PMyUInt32;
+  digitsPtr1, digitsPtr2: PCardinal;
 begin
   // Always compare length if one of the integers has zero length
   if (length1 = 0) or (length2 = 0) then
@@ -461,8 +464,8 @@ begin
   result := Cmp(digitsPtr1, length1, digitsPtr2, length2);
 end;
 
-class function TDigitOpHelper.Cmp(digitsPtr1: PMyUInt32; length1: UInt32;
-  digitsPtr2: PMyUInt32; length2: UInt32): Integer;
+class function TDigitOpHelper.Cmp(digitsPtr1: PCardinal; length1: UInt32;
+  digitsPtr2: PCardinal; length2: UInt32): Integer;
 var
   res: Integer;
   index: UInt32;
@@ -523,11 +526,11 @@ begin
   end;
 end;
 
-class procedure TDigitOpHelper.ShiftRight(digits: TMyUInt32Array;
-  offset: UInt32; mlength: UInt32; digitsRes: TMyUInt32Array; resOffset: UInt32;
-  rightShift: Integer);
+class procedure TDigitOpHelper.ShiftRight(digits: TArray<Cardinal>;
+  offset: UInt32; mlength: UInt32; digitsRes: TArray<Cardinal>;
+  resOffset: UInt32; rightShift: Integer);
 var
-  digitsPtr, digitsResPtr: PMyUInt32;
+  digitsPtr, digitsResPtr: PCardinal;
 begin
   digitsPtr := @digits[0];
   digitsResPtr := @digitsRes[0];
@@ -537,11 +540,11 @@ begin
 
 end;
 
-class function TDigitOpHelper.ShiftRight(digitsPtr: PMyUInt32; mlength: UInt32;
-  digitsResPtr: PMyUInt32; rightShift: Integer; resHasOffset: Boolean): UInt32;
+class function TDigitOpHelper.ShiftRight(digitsPtr: PCardinal; mlength: UInt32;
+  digitsResPtr: PCardinal; rightShift: Integer; resHasOffset: Boolean): UInt32;
 var
   rightShiftRev: Integer;
-  digitsPtrEndPrev, digitsPtrNext: PMyUInt32;
+  digitsPtrEndPrev, digitsPtrNext: PCardinal;
   lastValue: UInt32;
 begin
   rightShiftRev := TConstants.DigitBitCount - rightShift;
@@ -594,11 +597,11 @@ begin
   result := mlength;
 end;
 
-class procedure TDigitOpHelper.BitwiseOr(digits1: TMyUInt32Array;
-  length1: UInt32; digits2: TMyUInt32Array; length2: UInt32;
-  digitsRes: TMyUInt32Array);
+class procedure TDigitOpHelper.BitwiseOr(digits1: TArray<Cardinal>;
+  length1: UInt32; digits2: TArray<Cardinal>; length2: UInt32;
+  digitsRes: TArray<Cardinal>);
 var
-  digitsPtr1, digitsPtr2, digitsResPtr: PMyUInt32;
+  digitsPtr1, digitsPtr2, digitsResPtr: PCardinal;
   i: UInt32;
 begin
   digitsPtr1 := @digits1[0];
@@ -616,10 +619,11 @@ begin
 
 end;
 
-class function TDigitOpHelper.BitwiseAnd(digits1: TMyUInt32Array;
-  digits2: TMyUInt32Array; mlength: UInt32; digitsRes: TMyUInt32Array): UInt32;
+class function TDigitOpHelper.BitwiseAnd(digits1: TArray<Cardinal>;
+  digits2: TArray<Cardinal>; mlength: UInt32;
+  digitsRes: TArray<Cardinal>): UInt32;
 var
-  digitsPtr1, digitsPtr2, digitsResPtr: PMyUInt32;
+  digitsPtr1, digitsPtr2, digitsResPtr: PCardinal;
   i: UInt32;
 begin
   digitsPtr1 := @digits1[0];
@@ -636,11 +640,11 @@ begin
 
 end;
 
-class function TDigitOpHelper.ExclusiveOr(digits1: TMyUInt32Array;
-  length1: UInt32; digits2: TMyUInt32Array; length2: UInt32;
-  digitsRes: TMyUInt32Array): UInt32;
+class function TDigitOpHelper.ExclusiveOr(digits1: TArray<Cardinal>;
+  length1: UInt32; digits2: TArray<Cardinal>; length2: UInt32;
+  digitsRes: TArray<Cardinal>): UInt32;
 var
-  digitsPtr1, digitsPtr2, digitsResPtr: PMyUInt32;
+  digitsPtr1, digitsPtr2, digitsResPtr: PCardinal;
   i: UInt32;
 begin
   digitsPtr1 := @digits1[0];
@@ -660,10 +664,10 @@ begin
 
 end;
 
-class function TDigitOpHelper.OnesComplement(digits: TMyUInt32Array;
-  mlength: UInt32; digitsRes: TMyUInt32Array): UInt32;
+class function TDigitOpHelper.OnesComplement(digits: TArray<Cardinal>;
+  mlength: UInt32; digitsRes: TArray<Cardinal>): UInt32;
 var
-  digitsPtr, digitsResPtr: PMyUInt32;
+  digitsPtr, digitsResPtr: PCardinal;
   i: UInt32;
 begin
   digitsPtr := @digits[0];

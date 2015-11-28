@@ -19,7 +19,7 @@ interface
 
 uses
 
-  IDivider, Constants, DTypes, Enums, DividerBase, DigitHelper, DigitOpHelper,
+  IDivider, Constants, Enums, DividerBase, DigitHelper, DigitOpHelper,
   Utils;
 
 type
@@ -73,11 +73,11 @@ type
     /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
     /// <returns>Resulting big integer length.</returns>
 
-    function DivMod(digits1: TMyUInt32Array; digitsBuffer1: TMyUInt32Array;
-      var length1: UInt32; digits2: TMyUInt32Array;
-      digitsBuffer2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array;
-      resultFlags: TDivModResultFlags; cmpResult: Integer): UInt32;
-      overload; override;
+    function DivMod(digits1: TArray<Cardinal>; digitsBuffer1: TArray<Cardinal>;
+      var length1: UInt32; digits2: TArray<Cardinal>;
+      digitsBuffer2: TArray<Cardinal>; length2: UInt32;
+      digitsRes: TArray<Cardinal>; resultFlags: TDivModResultFlags;
+      cmpResult: Integer): UInt32; overload; override;
 
     /// <summary>
     /// Divides two big integers.
@@ -94,9 +94,9 @@ type
     /// <param name="cmpResult">Big integers comparison result (pass -2 if omitted).</param>
     /// <returns>Resulting big integer length.</returns>
 
-    function DivMod(digitsPtr1: PMyUInt32; digitsBufferPtr1: PMyUInt32;
-      var length1: UInt32; digitsPtr2: PMyUInt32; digitsBufferPtr2: PMyUInt32;
-      length2: UInt32; digitsResPtr: PMyUInt32; resultFlags: TDivModResultFlags;
+    function DivMod(digitsPtr1: PCardinal; digitsBufferPtr1: PCardinal;
+      var length1: UInt32; digitsPtr2: PCardinal; digitsBufferPtr2: PCardinal;
+      length2: UInt32; digitsResPtr: PCardinal; resultFlags: TDivModResultFlags;
       cmpResult: Integer): UInt32; overload; override;
 
   end;
@@ -129,13 +129,14 @@ begin
 
 end;
 
-function TAutoNewtonDivider.DivMod(digits1: TMyUInt32Array;
-  digitsBuffer1: TMyUInt32Array; var length1: UInt32; digits2: TMyUInt32Array;
-  digitsBuffer2: TMyUInt32Array; length2: UInt32; digitsRes: TMyUInt32Array;
-  resultFlags: TDivModResultFlags; cmpResult: Integer): UInt32;
+function TAutoNewtonDivider.DivMod(digits1: TArray<Cardinal>;
+  digitsBuffer1: TArray<Cardinal>; var length1: UInt32;
+  digits2: TArray<Cardinal>; digitsBuffer2: TArray<Cardinal>; length2: UInt32;
+  digitsRes: TArray<Cardinal>; resultFlags: TDivModResultFlags;
+  cmpResult: Integer): UInt32;
 var
   digitsPtr1, digitsBufferPtr1, digitsPtr2, digitsBufferPtr2, digitsResPtr,
-    tempA, tempB: PMyUInt32;
+    tempA, tempB: PCardinal;
 
 begin
   // Maybe immediately use classic algorithm here
@@ -190,17 +191,17 @@ begin
 
 end;
 
-function TAutoNewtonDivider.DivMod(digitsPtr1: PMyUInt32;
-  digitsBufferPtr1: PMyUInt32; var length1: UInt32; digitsPtr2: PMyUInt32;
-  digitsBufferPtr2: PMyUInt32; length2: UInt32; digitsResPtr: PMyUInt32;
+function TAutoNewtonDivider.DivMod(digitsPtr1: PCardinal;
+  digitsBufferPtr1: PCardinal; var length1: UInt32; digitsPtr2: PCardinal;
+  digitsBufferPtr2: PCardinal; length2: UInt32; digitsResPtr: PCardinal;
   resultFlags: TDivModResultFlags; cmpResult: Integer): UInt32;
 var
   resultLength, int2OppositeLength, quotLength, shiftOffset, highestLostBit,
     quotDivLength: UInt32;
   int2OppositeRightShift: UInt64;
-  int2OppositeDigits, quotDigits, quotDivDigits: TMyUInt32Array;
+  int2OppositeDigits, quotDigits, quotDivDigits: TArray<Cardinal>;
   multiplier: IIMultiplier;
-  oppositePtr, quotPtr, quotDivPtr: PMyUInt32;
+  oppositePtr, quotPtr, quotDivPtr: PCardinal;
   shiftCount, cmpRes: Integer;
 begin
   // Maybe immediately use classic algorithm here

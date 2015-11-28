@@ -17,7 +17,7 @@ interface
 
 uses
   IParser, SysUtils, Math, RegularExpressions, Generics.Collections, Strings,
-  Constants, DTypes, Bits, Utils, IntX;
+  Constants, Bits, Utils, IntX;
 
 type
   /// <summary>
@@ -67,7 +67,7 @@ type
     /// <exception cref="EArgumentException"><paramref name="numberBase" /> is less then 2 or more then 16.</exception>
     /// <exception cref="EFormatException"><paramref name="value" /> is not in valid format.</exception>
 
-    function Parse(Value: String; numberBase: UInt32;
+    function Parse(Const Value: String; numberBase: UInt32;
       charToDigits: TDictionary<Char, UInt32>; checkFormat: Boolean): TIntX;
       overload; virtual;
 
@@ -82,9 +82,9 @@ type
     /// <param name="digitsRes">Resulting digits.</param>
     /// <returns>Parsed integer length.</returns>
 
-    function Parse(Value: String; startIndex: Integer; endIndex: Integer;
+    function Parse(Const Value: String; startIndex: Integer; endIndex: Integer;
       numberBase: UInt32; charToDigits: TDictionary<Char, UInt32>;
-      digitsRes: TMyUint32Array): UInt32; overload; virtual;
+      digitsRes: TArray<Cardinal>): UInt32; overload; virtual;
 
   end;
 
@@ -109,7 +109,7 @@ end;
 
 {$IFNDEF _FIXINSIGHT_}  // tells FixInsight to Ignore this Function
 
-function TParserBase.Parse(Value: String; numberBase: UInt32;
+function TParserBase.Parse(Const Value: String; numberBase: UInt32;
   charToDigits: TDictionary<Char, UInt32>; checkFormat: Boolean): TIntX;
 var
   startIndex, endIndex, valueLength: Integer;
@@ -238,9 +238,9 @@ end;
 
 {$ENDIF}
 
-function TParserBase.Parse(Value: String; startIndex: Integer;
+function TParserBase.Parse(Const Value: String; startIndex: Integer;
   endIndex: Integer; numberBase: UInt32;
-  charToDigits: TDictionary<Char, UInt32>; digitsRes: TMyUint32Array): UInt32;
+  charToDigits: TDictionary<Char, UInt32>; digitsRes: TArray<Cardinal>): UInt32;
 begin
   // Default implementation - always call pow2 parser if numberBase is pow of 2
   if numberBase = UInt32(1) shl TBits.Msb(numberBase) then

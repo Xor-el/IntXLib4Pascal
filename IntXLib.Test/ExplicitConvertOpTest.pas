@@ -3,7 +3,7 @@ unit ExplicitConvertOpTest;
 interface
 
 uses
-  DUnitX.TestFramework, SysUtils, IntX, DTypes;
+  DUnitX.TestFramework, SysUtils, IntX;
 
 type
 
@@ -56,7 +56,7 @@ implementation
 [Test]
 procedure TExplicitConvertOpTest.ConvertToInteger();
 var
-  temp: TMyUInt32Array;
+  temp: TArray<Cardinal>;
   n: Integer;
   IntX: TIntX;
   un: UInt32;
@@ -88,7 +88,7 @@ end;
 [Test]
 procedure TExplicitConvertOpTest.ConvertToUInt32();
 var
-  temp: TMyUInt32Array;
+  temp: TArray<Cardinal>;
   IntX: TIntX;
   n: UInt32;
 begin
@@ -112,7 +112,7 @@ end;
 [Test]
 procedure TExplicitConvertOpTest.ConvertToInt64();
 var
-  temp: TMyUInt32Array;
+  temp: TArray<Cardinal>;
   IntX: TIntX;
   n: Int64;
   un: UInt32;
@@ -152,7 +152,7 @@ end;
 [Test]
 procedure TExplicitConvertOpTest.ConvertToUInt64();
 var
-  temp: TMyUInt32Array;
+  temp: TArray<Cardinal>;
   IntX: TIntX;
   n: UInt64;
   un: UInt32;

@@ -18,11 +18,11 @@ unit DigitHelper;
 interface
 
 uses
-  DTypes, Constants, IntX;
+  Constants, IntX;
 
 type
   /// <summary>
-  /// Contains big integer <see cref="TMyUInt32Array" /> digits utilitary methods.
+  /// Contains big integer <see cref="TArray&lt;Cardinal&gt;" /> digits utilitary methods.
   /// </summary>
 
   TDigitHelper = class
@@ -36,8 +36,8 @@ type
     /// <param name="mlength">Initial big integers length.</param>
     /// <returns>Real length.</returns>
 
-    class function GetRealDigitsLength(digits: TMyUInt32Array; mlength: UInt32)
-      : UInt32; Overload; static;
+    class function GetRealDigitsLength(digits: TArray<Cardinal>;
+      mlength: UInt32): UInt32; Overload; static;
 
     /// <summary>
     /// Returns real length of digits array (excluding leading zeroes).
@@ -46,7 +46,7 @@ type
     /// <param name="mlength">Initial big integers length.</param>
     /// <returns>Real length.</returns>
 
-    class function GetRealDigitsLength(digits: PMyUInt32; mlength: UInt32)
+    class function GetRealDigitsLength(digits: PCardinal; mlength: UInt32)
       : UInt32; Overload; static;
 
     /// <summary>
@@ -89,7 +89,7 @@ type
     /// <param name="blockLength">Block length.</param>
     /// <param name="value">Value to set.</param>
 
-    class procedure SetBlockDigits(block: PMyUInt32; blockLength: UInt32;
+    class procedure SetBlockDigits(block: PCardinal; blockLength: UInt32;
       value: UInt32); Overload; static;
 
     /// <summary>
@@ -99,7 +99,7 @@ type
     /// <param name="blockLength">Block length.</param>
     /// <param name="value">Value to set.</param>
 
-    class procedure SetBlockDigits(block: PMyDouble; blockLength: UInt32;
+    class procedure SetBlockDigits(block: PDouble; blockLength: UInt32;
       value: Double); Overload; static;
 
     /// <summary>
@@ -109,7 +109,7 @@ type
     /// <param name="blockTo">To block start pointer.</param>
     /// <param name="count">Count of dwords to copy.</param>
 
-    class procedure DigitsBlockCopy(blockFrom: PMyUInt32; blockTo: PMyUInt32;
+    class procedure DigitsBlockCopy(blockFrom: PCardinal; blockTo: PCardinal;
       count: UInt32); static;
 
     /// <summary>
@@ -128,7 +128,7 @@ type
     /// Source : Microsoft .NET Reference on GitHub
     /// </remarks>
     class procedure SetDigitsFromDouble(value: Double;
-      var digits: TMyUInt32Array; out newInt: TIntX);
+      var digits: TArray<Cardinal>; out newInt: TIntX);
   end;
 
 implementation
@@ -136,7 +136,7 @@ implementation
 uses
   OpHelper;
 
-class function TDigitHelper.GetRealDigitsLength(digits: TMyUInt32Array;
+class function TDigitHelper.GetRealDigitsLength(digits: TArray<Cardinal>;
   mlength: UInt32): UInt32;
 begin
   while ((mlength) > 0) and (digits[mlength - 1] = 0) do
@@ -146,7 +146,7 @@ begin
   result := mlength;
 end;
 
-class function TDigitHelper.GetRealDigitsLength(digits: PMyUInt32;
+class function TDigitHelper.GetRealDigitsLength(digits: PCardinal;
   mlength: UInt32): UInt32;
 begin
   while ((mlength) > 0) and (digits[mlength - 1] = 0) do
@@ -219,10 +219,10 @@ begin
   end;
 end;
 
-class procedure TDigitHelper.SetBlockDigits(block: PMyUInt32;
+class procedure TDigitHelper.SetBlockDigits(block: PCardinal;
   blockLength: UInt32; value: UInt32);
 var
-  blockEnd: PMyUInt32;
+  blockEnd: PCardinal;
 begin
   blockEnd := block + blockLength;
   while block < (blockEnd) do
@@ -233,10 +233,10 @@ begin
 
 end;
 
-class procedure TDigitHelper.SetBlockDigits(block: PMyDouble;
-  blockLength: UInt32; value: Double);
+class procedure TDigitHelper.SetBlockDigits(block: PDouble; blockLength: UInt32;
+  value: Double);
 var
-  blockEnd: PMyDouble;
+  blockEnd: PDouble;
 begin
   blockEnd := block + blockLength;
 
@@ -248,10 +248,10 @@ begin
 
 end;
 
-class procedure TDigitHelper.DigitsBlockCopy(blockFrom: PMyUInt32;
-  blockTo: PMyUInt32; count: UInt32);
+class procedure TDigitHelper.DigitsBlockCopy(blockFrom: PCardinal;
+  blockTo: PCardinal; count: UInt32);
 var
-  blockFromEnd: PMyUInt32;
+  blockFromEnd: PCardinal;
 begin
   blockFromEnd := blockFrom + count;
   while blockFrom < (blockFromEnd) do
@@ -264,7 +264,7 @@ begin
 end;
 
 class procedure TDigitHelper.SetDigitsFromDouble(value: Double;
-  var digits: TMyUInt32Array; out newInt: TIntX);
+  var digits: TArray<Cardinal>; out newInt: TIntX);
 var
   sign, exp, kcbitUlong, kcbitUint, cu, cbit: Integer;
   man: UInt64;

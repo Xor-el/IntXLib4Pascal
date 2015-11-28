@@ -16,7 +16,7 @@ unit Pow2StringConverter;
 interface
 
 uses
-  IStringConverter, DTypes, SysUtils, Constants, Bits, IntX;
+  IStringConverter, SysUtils, Constants, Bits, IntX;
 
 type
   /// <summary>
@@ -45,8 +45,8 @@ type
     /// <param name="outputLength">Calculated output length (will be corrected inside).</param>
     /// <returns>Conversion result (later will be transformed to string).</returns>
 
-    function ToString(digits: TMyUInt32Array; mlength: UInt32;
-      numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;
+    function ToString(digits: TArray<Cardinal>; mlength: UInt32;
+      numberBase: UInt32; var outputLength: UInt32): TArray<Cardinal>;
       reintroduce; overload;
 
   end;
@@ -60,13 +60,14 @@ begin
   Exit;
 end;
 
-function TPow2StringConverter.ToString(digits: TMyUInt32Array; mlength: UInt32;
-  numberBase: UInt32; var outputLength: UInt32): TMyUInt32Array;
+function TPow2StringConverter.ToString(digits: TArray<Cardinal>;
+  mlength: UInt32; numberBase: UInt32; var outputLength: UInt32)
+  : TArray<Cardinal>;
 var
   bitsInChar, nextDigitShift, initialShift: Integer;
   digitsBitLength: UInt64;
   realOutputLength, digitBitMask, outputDigit, outputIndex, digitIndex: UInt32;
-  outputArray: TMyUInt32Array;
+  outputArray: TArray<Cardinal>;
 
 begin
   // Calculate real output length

@@ -18,7 +18,7 @@ unit NewtonHelper;
 interface
 
 uses
-  Math, Bits, Constants, DigitOpHelper, DTypes, DigitHelper, IMultiplier,
+  Math, Bits, Constants, DigitOpHelper, DigitHelper, IMultiplier,
   MultiplyManager;
 
 type
@@ -43,16 +43,16 @@ type
     /// <param name="rightShift">How much resulting big integer is shifted to the left (or: must be shifted to the right).</param>
     /// <returns>Resulting big integer digits.</returns>
 
-    class function GetIntegerOpposite(digitsPtr: PMyUInt32;
-      mlength, maxLength: UInt32; bufferPtr: PMyUInt32; out newLength: UInt32;
-      out rightShift: UInt64): TMyUInt32Array; static;
+    class function GetIntegerOpposite(digitsPtr: PCardinal;
+      mlength, maxLength: UInt32; bufferPtr: PCardinal; out newLength: UInt32;
+      out rightShift: UInt64): TArray<Cardinal>; static;
   end;
 
 implementation
 
-class function TNewtonHelper.GetIntegerOpposite(digitsPtr: PMyUInt32;
-  mlength, maxLength: UInt32; bufferPtr: PMyUInt32; out newLength: UInt32;
-  out rightShift: UInt64): TMyUInt32Array;
+class function TNewtonHelper.GetIntegerOpposite(digitsPtr: PCardinal;
+  mlength, maxLength: UInt32; bufferPtr: PCardinal; out newLength: UInt32;
+  out rightShift: UInt64): TArray<Cardinal>;
 var
   msb, LeftShift, lengthLog2, lengthLog2Bits, nextBufferTempShift, k: Integer;
   newLengthMax, resultLength, resultLengthSqr, resultLengthSqrBuf,
@@ -60,9 +60,10 @@ var
     shiftOffset: UInt32;
   bitsAfterDotResult, bitsAfterDotResultSqr, bitsAfterDotNextBuffer,
     bitShift: UInt64;
-  resultDigits, resultDigitsSqr, resultDigitsSqrBuf, tempDigits: TMyUInt32Array;
+  resultDigits, resultDigitsSqr, resultDigitsSqrBuf,
+    tempDigits: TArray<Cardinal>;
   resultPtrFixed, resultSqrPtrFixed, resultSqrBufPtr, resultPtr, resultSqrPtr,
-    nextBufferPtr, tempPtr: PMyUInt32;
+    nextBufferPtr, tempPtr: PCardinal;
   multiplier: IIMultiplier;
 
 begin

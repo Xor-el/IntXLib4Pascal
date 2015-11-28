@@ -16,7 +16,7 @@ unit ClassicParser;
 interface
 
 uses
-  ParserBase, IParser, Generics.Collections, DTypes, StrRepHelper, IntX;
+  ParserBase, IParser, Generics.Collections, StrRepHelper, IntX;
 
 type
   /// <summary>
@@ -45,9 +45,9 @@ type
     /// <param name="digitsRes">Resulting digits.</param>
     /// <returns>Parsed integer length.</returns>
 
-    function Parse(value: String; startIndex: Integer; endIndex: Integer;
+    function Parse(Const value: String; startIndex: Integer; endIndex: Integer;
       numberBase: UInt32; charToDigits: TDictionary<Char, UInt32>;
-      digitsRes: TMyUint32Array): UInt32; override;
+      digitsRes: TArray<Cardinal>): UInt32; override;
 
   end;
 
@@ -58,9 +58,9 @@ begin
   Inherited Create(pow2Parser);
 end;
 
-function TClassicParser.Parse(value: String; startIndex: Integer;
+function TClassicParser.Parse(Const value: String; startIndex: Integer;
   endIndex: Integer; numberBase: UInt32;
-  charToDigits: TDictionary<Char, UInt32>; digitsRes: TMyUint32Array): UInt32;
+  charToDigits: TDictionary<Char, UInt32>; digitsRes: TArray<Cardinal>): UInt32;
 var
   newLength, j: UInt32;
   numberBaseLong, digit: UInt64;

@@ -16,7 +16,7 @@ unit IParser;
 interface
 
 uses
-  Generics.Collections, DTypes, IntX;
+  Generics.Collections, IntX;
 
 type
   /// <summary>
@@ -35,7 +35,7 @@ type
     /// <param name="checkFormat">Check actual format of number (0 or $ at start).</param>
     /// <returns>Parsed object.</returns>
 
-    function Parse(value: String; numberBase: UInt32;
+    function Parse(Const value: String; numberBase: UInt32;
       charToDigits: TDictionary<Char, UInt32>; checkFormat: Boolean)
       : TIntX; overload;
 
@@ -50,9 +50,9 @@ type
     /// <param name="digitsRes">Resulting digits.</param>
     /// <returns>Parsed integer length.</returns>
 
-    function Parse(value: String; startIndex: Integer; endIndex: Integer;
+    function Parse(Const value: String; startIndex: Integer; endIndex: Integer;
       numberBase: UInt32; charToDigits: TDictionary<Char, UInt32>;
-      digitsRes: TMyUInt32Array): UInt32; overload;
+      digitsRes: TArray<Cardinal>): UInt32; overload;
   end;
 
 implementation

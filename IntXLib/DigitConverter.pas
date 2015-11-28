@@ -16,7 +16,7 @@ unit DigitConverter;
 interface
 
 uses
-  Strings, DTypes, Utils, IntX;
+  Strings, Utils, IntX;
 
 type
   /// <summary>
@@ -32,30 +32,31 @@ type
     /// <param name="digits"><see cref="TIntX" /> digits.</param>
     /// <returns>Resulting bytes.</returns>
     /// <remarks>
-    /// Digits can be obtained using <see cref="TIntX.GetInternalState(TMyUInt32Array,Boolean,Boolean)" /> method.
+    /// Digits can be obtained using <see cref="TIntX.GetInternalState(TArray&lt;Cardinal&gt;,Boolean,Boolean)" /> method.
     /// </remarks>
     /// <exception cref="EArgumentNilException"><paramref name="digits" /> is a null reference.</exception>
 
-    class function ToBytes(digits: TMyUInt32Array): TMyByteArray; static;
+    class function ToBytes(digits: TArray<Cardinal>): TArray<Byte>; static;
     /// <summary>
     /// Converts bytes to big integer digits.
     /// </summary>
     /// <param name="bytes">Bytes.</param>
     /// <returns>Resulting <see cref="TIntX" /> digits.</returns>
     /// <remarks>
-    /// Big integer can be created from digits using <see cref="TIntX.Create(TMyUInt32Array,Boolean)" /> constructor.
+    /// Big integer can be created from digits using <see cref="TIntX.Create(TArray&lt;Cardinal&gt;,Boolean)" /> constructor.
     /// </remarks>
     /// <exception cref="EArgumentNilException"><paramref name="bytes" /> is a null reference.</exception>
 
-    class function FromBytes(bytes: TMyByteArray): TMyUInt32Array; static;
+    class function FromBytes(bytes: TArray<Byte>): TArray<Cardinal>; static;
 
   end;
 
 implementation
 
-class function TDigitConverter.ToBytes(digits: TMyUInt32Array): TMyByteArray;
+class function TDigitConverter.ToBytes(digits: TArray<Cardinal>): TArray<Byte>;
 
 begin
+
   if (Length(digits) = 0) then
   begin
     raise EArgumentNilException.Create('digits');
@@ -65,7 +66,7 @@ begin
   Move(digits[0], result[0], Length(result) * SizeOf(UInt32));
 end;
 
-class function TDigitConverter.FromBytes(bytes: TMyByteArray): TMyUInt32Array;
+class function TDigitConverter.FromBytes(bytes: TArray<Byte>): TArray<Cardinal>;
 
 begin
   if (bytes = Nil) then

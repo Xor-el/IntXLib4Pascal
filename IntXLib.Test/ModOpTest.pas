@@ -3,7 +3,7 @@ unit ModOpTest;
 interface
 
 uses
-  DUnitX.TestFramework, SysUtils, IntX, DTypes;
+  DUnitX.TestFramework, SysUtils, IntX;
 
 type
 
@@ -110,7 +110,7 @@ end;
 [Test]
 procedure TModOpTest.Big();
 var
-  temp1, temp2, tempM: TMyUInt32Array;
+  temp1, temp2, tempM: TArray<Cardinal>;
   int1, int2, intM: TIntX;
 begin
   SetLength(temp1, 4);

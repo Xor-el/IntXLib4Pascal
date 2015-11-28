@@ -101,7 +101,6 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <DCC_Define>madExcept;LeakChecking;$(DCC_Define)</DCC_Define>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_DebugDCUs>false</DCC_DebugDCUs>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -139,7 +138,6 @@
         <DCCReference Include="IntXLib\DigitConverter.pas"/>
         <DCCReference Include="IntXLib\OpHelpers\NewtonHelper.pas"/>
         <DCCReference Include="IntXLib\OpHelpers\DigitOpHelper.pas"/>
-        <DCCReference Include="IntXLib\Utils\DTypes.pas"/>
         <DCCReference Include="IntXLib\OpHelpers\DigitHelper.pas"/>
         <DCCReference Include="IntXLib\Multipliers\IMultiplier.pas"/>
         <DCCReference Include="IntXLib\Multipliers\MultiplyManager.pas"/>
@@ -171,6 +169,8 @@
         <DCCReference Include="IntXLib\MillerRabin\MillerRabin.pas"/>
         <DCCReference Include="IntXLib\PcgRandom\PcgRandomMinimal.pas"/>
         <DCCReference Include="IntXLib\Utils\Utils.pas"/>
+        <DCCReference Include="DecimalXLib\DecimalX.pas"/>
+        <DCCReference Include="IntegerXLib\IntegerX.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
