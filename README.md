@@ -1,59 +1,29 @@
 TIntX
 ====
 
- **`TIntX`** is a Delphi Port of [IntX](https://github.com/devoyster/IntXLib) arbitrary precision Integer library with fast, about **`O(N * log N)`** multiplication/division algorithms implementation. It provides all the basic arithmetic operations on Integers, comparing, bitwise shifting etc. It also allows parsing numbers in different bases and converting them to string, also in any base. The advantage of this library is its fast multiplication, division and from base/to base conversion algorithms. all the fast versions of the algorithms are based on fast multiplication of big Integers using [Fast Hartley Transform](http://en.wikipedia.org/wiki/Discrete_Hartley_transform) which runs for **`O(N * log N * log log N)`** time instead of classic **`O(N^2)`**.
-
-**`Porting guidelines:`**
-
-    1. All file names (units) are the same. 
-    2. Most variables were closely named. 
-    3. Some functions were written by me because I could not find a Delphi Equivalent
-       of the C# function used, in the RTL or for Backwards Compatibility with older
-       Unicode versions of Delphi.
-
-    
-**`Hints about the code:`**
-
-    1.  Multi-condition "for" loops and loops where iterator gets changed inside 
-      the loop were converted to while loops. 
-      
-    2.  All Strings were ported as 1-Based (Index) because that is what Delphi Desktop 
-       Compilers Uses by Default.
-       
-    3.  Delphi needs manual disposal of objects created, as they don't have built-in 
-        destructor (automatic garbage collectors) support in them.
-        
-    4.  This Library is written with (Delphi XE7 Update 1). 
-        This Library have been tested to work properly with Delphi (XE7 Update 1). 
-        This Library might work with other Unicode versions of Delphi (XE to Latest 
-        versions) with little or no modifications but have not been tested by me. 
-        
-    5.  Mobile Compilers are NOT Supported. you could make a fork and implement it.
+ **`TIntX`** is a Pascal port of [IntX](https://github.com/devoyster/IntXLib) arbitrary precision Integer library with fast, about **`O(N * log N)`** multiplication/division algorithms implementation. It provides all the basic arithmetic operations on Integers, comparing, bitwise shifting etc. It also allows parsing numbers in different bases and converting them to string, also in any base. The advantage of this library is its fast multiplication, division and from base/to base conversion algorithms. all the fast versions of the algorithms are based on fast multiplication of big Integers using [Fast Hartley Transform](http://en.wikipedia.org/wiki/Discrete_Hartley_transform) which runs for **`O(N * log N * log log N)`** time instead of classic **`O(N^2)`**.
   
-   
-**`Common pitfalls during porting:`**
-
-    1. Wrong Indexing of values from Strings.
 
 Code Example
 ------------
 
-Here is a sample of code which uses `TIntX` to calculate 42 in power 1048576 (which is 2^20):
+Here is a sample of code which uses `TIntX` to calculate 42 in power 1048576 (which is 2^20 (1 shl 20)):
 
 ```pascal
-uses
-SysUtils, Diagnostics, IntX, Enums;
+uses //including only the non-obvious
+SysUtils, uIntX, uEnums;
 
 procedure Calc();
 var
-  stopwatch: TStopwatch;
+  valA, valB: UInt32;
+  Delta: Double;
 
 begin
-  stopwatch := TStopwatch.Create;
-  stopwatch.Start;
-  TIntX.Pow(42, 1 shl 20);
-  stopwatch.Stop;
-  ShowMessage(Format('time elapsed is %d ms', [stopwatch.ElapsedMilliseconds]));
+  valA := GetTickCount;
+  TIntX.Pow(42, 1048576);
+  valB := GetTickCount;
+  Delta := (valA - valB) / 1000;
+  ShowMessage(Format('time elapsed is %f seconds', [Delta]));
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -66,16 +36,17 @@ end;
 ```
 
       First 'Calc()' call uses fast multiplication implementation (which is default), 
-    second, classic one. On my machine (Windows 8.1 Update 3, Intel Core i3 2.53 GHz, 
-    6 GB RAM), Compiled with 64 bits, first call took 0.933 seconds while the second one 
-    took 42 seconds.Resulting number has 1,702,101 digits.
+    second, classic one. On my machine (Windows 10 Update 2, Intel Core i3 2.53 GHz, 
+    6 GB RAM), Compiled with 64 bits, first call took 0.30 seconds while the second one 
+    took 17.91 seconds.Resulting number has 1,702,101 digits.
 
 **Some other functions implemented internally by me are**
 
   
       IntegerSquareRoot (Integer SquareRoot) 
       Square 
-      GCD (Greatest Common Divisor) 
+      GCD (Greatest Common Divisor (HCF)) 
+      LCM (Least Common Multiple)
       AbsoluteValue (Get Absolute Value of a Negative TIntX)
       Bézouts Identity
       InvMod (Modular Inverse)
@@ -86,14 +57,15 @@ end;
 	  LogN (Logarithm of a number for a specified base)
       Random (Now Uses PcgRandom Instead of Mersemme Twister)
       Modular Exponentiation (ModPow)
-      isProbablyPrime (based on Miller Rabin Primality Test)
+      IsProbablyPrime (based on Miller Rabin Primality Test)
 
 As you can see, `TIntX` implements all the standard arithmetic operators using `operator overloading` so its usage is transparent for developers, like if you're working with usual Integers.
 
 FHT and Calculations Precision
 ------------------------------
 
-Internally `TIntX` library operates with floating-point numbers when multiplication using FHT (Fast Hartley Transform) is performed so at some point it stops working correctly and loses precision. Luckily, this unpleasant side-effects effects starts to appear when Integer size is about 2^28 bytes i.e. for really huge Integers. Anyway, to catch such errors some code was added, FHT multiplication result validity check into code -- it takes N last digits of each big Integer, multiplies them using classic approach and then compares last N digits of classic result with last N digits of FHT result (so it's kind of  a simplified CRC check). If any inconsistency is found, then an Exception is thrown; this check can be disabled using global settings.
+Internally `TIntX` library operates with floating-point numbers when multiplication using FHT (Fast Hartley Transform) is performed so at some point it stops working correctly and loses precision. Luckily, this unpleasant side-effects effects starts to appear when Integer size is about 2^28 bytes i.e. for really huge Integers. Anyway, to catch such errors some code was added, FHT multiplication result validity check into code -- it takes N last digits of each big Integer, multiplies them using classic approach and then compares last N digits of classic result with last N digits of FHT result (so it's kind of  a simplified CRC check). If any inconsistency is found, then an 
+`EFhtMultiplicationException` is thrown; this check can be disabled using global settings.
 
 Internal Representation and ToString() Performance
 --------------------------------------------------
@@ -102,17 +74,60 @@ Internal Representation and ToString() Performance
  call can take quite some time to execute. This is because, internally `TIntX` big 
  Integers are stored as `2^32`-base number in `UInt32` array and to generate decimal 
  string output it should be converted from `2^32` base to decimal base. Such digits 
- storage approach was chosen intentionally -- it makes `ToString` slower but uses 
+ storage approach was chosen intentionally -- it makes `ToString()` slower but uses 
  memory efficiently and makes primitive operations on digits faster than power of 
  10-base storage (which would make `ToString()` work faster) and 
  usually computations are used more often than `ToString()`.
 
-Unit Tests
---------------------------------------------------
-      Unit Tests can be found in IntXLib.Test Folder.
-    The Unit tests uses DUnitX and TestInsight. 
-    (Thanks to the developers of DunitX and TestInsight) for making tools that makes 
-    Unit testing fun.
+**Supported Compilers**
+ 
+    FreePascal 3.0.0 and Above.
+    
+    Delphi 2010 and Above.
+
+**Installing the Library.**
+
+**Method One:**
+
+ Use the Provided Packages in the "Packages" Folder.
+
+**Method Two:**
+
+ Add the Library Path and Sub Path to your Project Search Path.
+
+ **Unit Tests.**
+
+To Run Unit Tests,
+
+**For FPC 3.0.0 and above**
+
+
+    Simply compile and run "IntXLib.Tests" project in "FreePascal.Tests" Folder.
+    
+ **Method One (Using TestInsight and DUnitX) (Preferred).**
+
+    1). Download and Install TestInsight (and DunitX if not available).
+    
+    2). Open Project Options of Unit Test (IntXLib.Tests.TestInsight) in "Delphi.Tests" 
+        Folder.
+
+    3). To Use TestInsight, right-click on the project, then select 
+		"Enable for TestInsight" or "TestInsight Project".
+        Save Project then Build and Run Test Project through TestInsight. 
+
+**Method Two (Using DUnitX Console Runner).**
+
+    1). Download and Install DunitX (if not available).
+    
+    2). Open Project Options of Unit Test (IntXLib.Tests.TestInsight) in "Delphi.Tests" 
+        Folder.
+
+    3). Save Project then Build and Run Test Project.. 
+
+###License
+
+This "Software" is Licensed Under  **`MIT License (MIT)`** .
+    
 
 Conclusion
 --------------------------------------------------

@@ -1,1 +1,0 @@
-Extract "Html.zip" to Current Directory and Open "Index.htm" to start.

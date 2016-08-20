@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="4">
+    <PathDelim Value="\"/>
+    <Name Value="IntXLib4PascalPackage"/>
+    <Type Value="RunTimeOnly"/>
+    <Author Value="Xor-el (Ugochukwu Mmaduekwe)"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\Include"/>
+        <OtherUnitFiles Value="..\..\Dividers;..\..\IntX;..\..\MillerRabin;..\..\Multipliers;..\..\OpHelpers;..\..\Parsers;..\..\PcgRandom;..\..\Settings;..\..\StringConverters;..\..\Utils"/>
+        <UnitOutputDirectory Value="C:\bin\FPC\IntXLib4Pascal\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <CodeGeneration>
+        <Optimizations>
+          <OptimizationLevel Value="4"/>
+        </Optimizations>
+      </CodeGeneration>
+    </CompilerOptions>
+    <Description Value="IntXLib4Pascal is a Delphi/FPC compatible fast arbitrary precision integer library that provides support for integer computations involving very large numbers.
+"/>
+    <License Value="MIT License"/>
+    <Version Major="1"/>
+    <Files Count="42">
+      <Item1>
+        <Filename Value="..\..\Dividers\uAutoNewtonDivider.pas"/>
+        <UnitName Value="uAutoNewtonDivider"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\..\Dividers\uClassicDivider.pas"/>
+        <UnitName Value="uClassicDivider"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\..\Dividers\uDivideManager.pas"/>
+        <UnitName Value="uDivideManager"/>
+      </Item3>
+      <Item4>
+        <Filename Value="..\..\Dividers\uDividerBase.pas"/>
+        <UnitName Value="uDividerBase"/>
+      </Item4>
+      <Item5>
+        <Filename Value="..\..\Dividers\uIDivider.pas"/>
+        <UnitName Value="uIDivider"/>
+      </Item5>
+      <Item6>
+        <Filename Value="..\..\Include\Helper.inc"/>
+        <Type Value="Include"/>
+      </Item6>
+      <Item7>
+        <Filename Value="..\..\Include\IntXLib.inc"/>
+        <Type Value="Include"/>
+      </Item7>
+      <Item8>
+        <Filename Value="..\..\IntX\uIntX.pas"/>
+        <UnitName Value="uIntX"/>
+      </Item8>
+      <Item9>
+        <Filename Value="..\..\MillerRabin\uMillerRabin.pas"/>
+        <UnitName Value="uMillerRabin"/>
+      </Item9>
+      <Item10>
+        <Filename Value="..\..\Multipliers\uAutoFhtMultiplier.pas"/>
+        <UnitName Value="uAutoFhtMultiplier"/>
+      </Item10>
+      <Item11>
+        <Filename Value="..\..\Multipliers\uClassicMultiplier.pas"/>
+        <UnitName Value="uClassicMultiplier"/>
+      </Item11>
+      <Item12>
+        <Filename Value="..\..\Multipliers\uIMultiplier.pas"/>
+        <UnitName Value="uIMultiplier"/>
+      </Item12>
+      <Item13>
+        <Filename Value="..\..\Multipliers\uMultiplierBase.pas"/>
+        <UnitName Value="uMultiplierBase"/>
+      </Item13>
+      <Item14>
+        <Filename Value="..\..\Multipliers\uMultiplyManager.pas"/>
+        <UnitName Value="uMultiplyManager"/>
+      </Item14>
+      <Item15>
+        <Filename Value="..\..\OpHelpers\uOpHelper.pas"/>
+        <UnitName Value="uOpHelper"/>
+      </Item15>
+      <Item16>
+        <Filename Value="..\..\OpHelpers\uDigitHelper.pas"/>
+        <UnitName Value="uDigitHelper"/>
+      </Item16>
+      <Item17>
+        <Filename Value="..\..\OpHelpers\uDigitOpHelper.pas"/>
+        <UnitName Value="uDigitOpHelper"/>
+      </Item17>
+      <Item18>
+        <Filename Value="..\..\OpHelpers\uFhtHelper.pas"/>
+        <UnitName Value="uFhtHelper"/>
+      </Item18>
+      <Item19>
+        <Filename Value="..\..\OpHelpers\uNewtonHelper.pas"/>
+        <UnitName Value="uNewtonHelper"/>
+      </Item19>
+      <Item20>
+        <Filename Value="..\..\OpHelpers\uStrRepHelper.pas"/>
+        <UnitName Value="uStrRepHelper"/>
+      </Item20>
+      <Item21>
+        <Filename Value="..\..\Parsers\uParseManager.pas"/>
+        <UnitName Value="uParseManager"/>
+      </Item21>
+      <Item22>
+        <Filename Value="..\..\Parsers\uParserBase.pas"/>
+        <UnitName Value="uParserBase"/>
+      </Item22>
+      <Item23>
+        <Filename Value="..\..\Parsers\uPow2Parser.pas"/>
+        <UnitName Value="uPow2Parser"/>
+      </Item23>
+      <Item24>
+        <Filename Value="..\..\Parsers\uClassicParser.pas"/>
+        <UnitName Value="uClassicParser"/>
+      </Item24>
+      <Item25>
+        <Filename Value="..\..\Parsers\uFastParser.pas"/>
+        <UnitName Value="uFastParser"/>
+      </Item25>
+      <Item26>
+        <Filename Value="..\..\Parsers\uIParser.pas"/>
+        <UnitName Value="uIParser"/>
+      </Item26>
+      <Item27>
+        <Filename Value="..\..\PcgRandom\uPcgRandomMinimal.pas"/>
+        <UnitName Value="uPcgRandomMinimal"/>
+      </Item27>
+      <Item28>
+        <Filename Value="..\..\Settings\uIntXGlobalSettings.pas"/>
+        <UnitName Value="uIntXGlobalSettings"/>
+      </Item28>
+      <Item29>
+        <Filename Value="..\..\Settings\uIntXSettings.pas"/>
+        <UnitName Value="uIntXSettings"/>
+      </Item29>
+      <Item30>
+        <Filename Value="..\..\StringConverters\uClassicStringConverter.pas"/>
+        <UnitName Value="uClassicStringConverter"/>
+      </Item30>
+      <Item31>
+        <Filename Value="..\..\StringConverters\uFastStringConverter.pas"/>
+        <UnitName Value="uFastStringConverter"/>
+      </Item31>
+      <Item32>
+        <Filename Value="..\..\StringConverters\uIStringConverter.pas"/>
+        <UnitName Value="uIStringConverter"/>
+      </Item32>
+      <Item33>
+        <Filename Value="..\..\StringConverters\uPow2StringConverter.pas"/>
+        <UnitName Value="uPow2StringConverter"/>
+      </Item33>
+      <Item34>
+        <Filename Value="..\..\StringConverters\uStringConverterBase.pas"/>
+        <UnitName Value="uStringConverterBase"/>
+      </Item34>
+      <Item35>
+        <Filename Value="..\..\StringConverters\uStringConvertManager.pas"/>
+        <UnitName Value="uStringConvertManager"/>
+      </Item35>
+      <Item36>
+        <Filename Value="..\..\Utils\uConstants.pas"/>
+        <UnitName Value="uConstants"/>
+      </Item36>
+      <Item37>
+        <Filename Value="..\..\Utils\uDigitConverter.pas"/>
+        <UnitName Value="uDigitConverter"/>
+      </Item37>
+      <Item38>
+        <Filename Value="..\..\Utils\uEnums.pas"/>
+        <UnitName Value="uEnums"/>
+      </Item38>
+      <Item39>
+        <Filename Value="..\..\Utils\uIntXLibTypes.pas"/>
+        <UnitName Value="uIntXLibTypes"/>
+      </Item39>
+      <Item40>
+        <Filename Value="..\..\Utils\uStrings.pas"/>
+        <UnitName Value="uStrings"/>
+      </Item40>
+      <Item41>
+        <Filename Value="..\..\Utils\uUtils.pas"/>
+        <UnitName Value="uUtils"/>
+      </Item41>
+      <Item42>
+        <Filename Value="..\..\Utils\uXBits.pas"/>
+        <UnitName Value="uXBits"/>
+      </Item42>
+    </Files>
+    <RequiredPkgs Count="1">
+      <Item1>
+        <PackageName Value="FCL"/>
+      </Item1>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

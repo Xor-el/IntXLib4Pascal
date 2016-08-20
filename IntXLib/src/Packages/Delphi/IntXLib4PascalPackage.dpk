@@ -1,0 +1,78 @@
+package IntXLib4PascalPackage;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  soaprtl;
+
+contains
+  uAutoNewtonDivider in '..\..\Dividers\uAutoNewtonDivider.pas',
+  uClassicDivider in '..\..\Dividers\uClassicDivider.pas',
+  uDivideManager in '..\..\Dividers\uDivideManager.pas',
+  uDividerBase in '..\..\Dividers\uDividerBase.pas',
+  uIDivider in '..\..\Dividers\uIDivider.pas',
+  uIntX in '..\..\IntX\uIntX.pas',
+  uMillerRabin in '..\..\MillerRabin\uMillerRabin.pas',
+  uAutoFhtMultiplier in '..\..\Multipliers\uAutoFhtMultiplier.pas',
+  uClassicMultiplier in '..\..\Multipliers\uClassicMultiplier.pas',
+  uIMultiplier in '..\..\Multipliers\uIMultiplier.pas',
+  uMultiplierBase in '..\..\Multipliers\uMultiplierBase.pas',
+  uMultiplyManager in '..\..\Multipliers\uMultiplyManager.pas',
+  uDigitHelper in '..\..\OpHelpers\uDigitHelper.pas',
+  uDigitOpHelper in '..\..\OpHelpers\uDigitOpHelper.pas',
+  uFhtHelper in '..\..\OpHelpers\uFhtHelper.pas',
+  uNewtonHelper in '..\..\OpHelpers\uNewtonHelper.pas',
+  uOpHelper in '..\..\OpHelpers\uOpHelper.pas',
+  uStrRepHelper in '..\..\OpHelpers\uStrRepHelper.pas',
+  uClassicParser in '..\..\Parsers\uClassicParser.pas',
+  uFastParser in '..\..\Parsers\uFastParser.pas',
+  uIParser in '..\..\Parsers\uIParser.pas',
+  uParseManager in '..\..\Parsers\uParseManager.pas',
+  uParserBase in '..\..\Parsers\uParserBase.pas',
+  uPow2Parser in '..\..\Parsers\uPow2Parser.pas',
+  uPcgRandomMinimal in '..\..\PcgRandom\uPcgRandomMinimal.pas',
+  uIntXGlobalSettings in '..\..\Settings\uIntXGlobalSettings.pas',
+  uIntXSettings in '..\..\Settings\uIntXSettings.pas',
+  uClassicStringConverter
+    in '..\..\StringConverters\uClassicStringConverter.pas',
+  uFastStringConverter in '..\..\StringConverters\uFastStringConverter.pas',
+  uIStringConverter in '..\..\StringConverters\uIStringConverter.pas',
+  uPow2StringConverter in '..\..\StringConverters\uPow2StringConverter.pas',
+  uStringConverterBase in '..\..\StringConverters\uStringConverterBase.pas',
+  uStringConvertManager in '..\..\StringConverters\uStringConvertManager.pas',
+  uConstants in '..\..\Utils\uConstants.pas',
+  uDigitConverter in '..\..\Utils\uDigitConverter.pas',
+  uEnums in '..\..\Utils\uEnums.pas',
+  uIntXLibTypes in '..\..\Utils\uIntXLibTypes.pas',
+  uStrings in '..\..\Utils\uStrings.pas',
+  uUtils in '..\..\Utils\uUtils.pas',
+  uXBits in '..\..\Utils\uXBits.pas';
+
+end.
