@@ -11,7 +11,7 @@
       <SearchPaths>
         <IncludeFiles Value="..\..\Include"/>
         <OtherUnitFiles Value="..\..\Dividers;..\..\IntX;..\..\MillerRabin;..\..\Multipliers;..\..\OpHelpers;..\..\Parsers;..\..\PcgRandom;..\..\Settings;..\..\StringConverters;..\..\Utils"/>
-        <UnitOutputDirectory Value="C:\bin\FPC\IntXLib4Pascal\$(TargetCPU)-$(TargetOS)"/>
+        <UnitOutputDirectory Value="lib\IntXLib4Pascal\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <CodeGeneration>
         <Optimizations>

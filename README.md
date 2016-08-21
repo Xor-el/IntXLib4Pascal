@@ -22,7 +22,7 @@ begin
   valA := GetTickCount;
   TIntX.Pow(42, 1048576);
   valB := GetTickCount;
-  Delta := (valA - valB) / 1000;
+  Delta := (valB - valA) / 1000;
   ShowMessage(Format('time elapsed is %f seconds', [Delta]));
 end;
 
