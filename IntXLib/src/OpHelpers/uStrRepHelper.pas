@@ -98,7 +98,7 @@ begin
   if (not charToDigits.TryGetValue(ch, digit)) then
 {$ENDIF DELPHI}
 {$IFDEF FPC}
-    if (not charToDigits.Find(UpCase(ch), Integer(digit))) then
+    if (not charToDigits.TryGetData(ch, digit)) then
 {$ENDIF FPC}
     begin
       raise EFormatException.Create(uStrings.ParseInvalidChar);
