@@ -1,13 +1,10 @@
 unit uFastParser;
-
+
 {$I ..\Include\IntXLib.inc}
 
 interface
 
 uses
-{$IFDEF DELPHI}
-  Generics.Collections,
-{$ENDIF DELPHI}
   uParserBase,
   uDigitOpHelper,
   uIMultiplier,
@@ -245,4 +242,3 @@ begin
 end;
 
 end.
-

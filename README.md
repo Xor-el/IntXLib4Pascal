@@ -2,6 +2,9 @@ TIntX
 ====
 
  **`TIntX`** is a Pascal port of [IntX](https://github.com/devoyster/IntXLib) arbitrary precision Integer library with fast, about **`O(N * log N)`** multiplication/division algorithms implementation. It provides all the basic arithmetic operations on Integers, comparing, bitwise shifting etc. It also allows parsing numbers in different bases and converting them to string, also in any base. The advantage of this library is its fast multiplication, division and from base/to base conversion algorithms. all the fast versions of the algorithms are based on fast multiplication of big Integers using [Fast Hartley Transform](http://en.wikipedia.org/wiki/Discrete_Hartley_transform) which runs for **`O(N * log N * log log N)`** time instead of classic **`O(N^2)`**.
+
+ **Build Status**
+[![Build Status](https://travis-ci.com/Xor-el/IntXLib4Pascal.svg?branch=master)](https://travis-ci.com/Xor-el/IntXLib4Pascal)
   
 
 Code Example

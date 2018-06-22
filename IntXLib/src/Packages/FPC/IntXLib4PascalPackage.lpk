@@ -22,7 +22,7 @@
     <Description Value="IntXLib4Pascal is a Delphi/FPC compatible fast arbitrary precision integer library that provides support for integer computations involving very large numbers.
 "/>
     <License Value="MIT License"/>
-    <Version Major="1"/>
+    <Version Major="1" Minor="1"/>
     <Files Count="42">
       <Item1>
         <Filename Value="..\..\Dividers\uAutoNewtonDivider.pas"/>
@@ -45,7 +45,7 @@
         <UnitName Value="uIDivider"/>
       </Item5>
       <Item6>
-        <Filename Value="..\..\Include\Helper.inc"/>
+        <Filename Value="..\..\Include\IntXLibHelper.inc"/>
         <Type Value="Include"/>
       </Item6>
       <Item7>

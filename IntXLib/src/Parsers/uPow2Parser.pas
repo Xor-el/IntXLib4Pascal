@@ -1,16 +1,10 @@
 unit uPow2Parser;
-
+
 {$I ..\Include\IntXLib.inc}
 
 interface
 
 uses
-{$IFDEF DELPHI}
-  Generics.Collections,
-{$ENDIF DELPHI}
-{$IFDEF FPC}
-  fgl,
-{$ENDIF FPC}
   uIParser,
   uXBits,
   uConstants,
@@ -139,4 +133,3 @@ begin
 end;
 
 end.
-

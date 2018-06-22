@@ -7,24 +7,33 @@ interface
 uses
 {$IFDEF FPC}
   fgl,
+  gstack,
+{$ELSE}
+  Generics.Collections,
 {$ENDIF FPC}
   SysUtils;
 
 type
 
   TFormatSettings = SysUtils.TFormatSettings;
+  EIntXLibException = class(Exception);
+  EArgumentNilException = class(EIntXLibException);
+  EFhtMultiplicationException = class(EIntXLibException);
+  EFormatException = class(EIntXLibException);
   EOverflowException = EOverflow;
-  EArgumentNilException = class(Exception);
-  EFhtMultiplicationException = class(Exception);
-  EFormatException = class(Exception);
   EArithmeticException = SysUtils.EMathError;
   EArgumentException = SysUtils.EArgumentException;
   EArgumentOutOfRangeException = SysUtils.EArgumentOutOfRangeException;
   EDivByZero = SysUtils.EDivByZero;
 
-{$IFDEF FPC}
-  TDictionary<TKey, TValue> = class(TFPGMap<TKey, TValue>);
-{$ENDIF FPC}
+  {$IFDEF FPC}
+    TMyStack<T> = class(TStack<T>);
+    TDictionary<TKey, TValue> = class(TFPGMap<TKey, TValue>);
+  {$ELSE}
+    TMyStack<T> = class(Generics.Collections.TStack<T>);
+    TDictionary<TKey, TValue> = class
+      (Generics.Collections.TDictionary<TKey, TValue>);
+  {$ENDIF FPC}
 {$IFDEF DELPHIXE_UP}
   /// <summary>
   /// Represents a dynamic array of UInt32.

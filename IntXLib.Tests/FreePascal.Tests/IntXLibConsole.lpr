@@ -1,12 +1,9 @@
-program IntXLib;
+program IntXLib.Tests;
 
 {$mode objfpc}{$H+}
 
 uses
-  Interfaces,
-  Forms,
-  GuiTestRunner,
-// fpcunittestrunner,
+  consoletestrunner,
   AbsoluteValueTest,
   AddOpTest,
   BitwiseAndOpTest,
@@ -50,10 +47,22 @@ uses
   IsProbablyPrimeOpTest,
   AsConvertOpTest;
 
-{$R *.res}
+type
+
+  { TIntXLibConsoleTestRunner }
+
+  TIntXLibConsoleTestRunner = class(TTestRunner)
+  protected
+    // override the protected methods of TTestRunner to customize its behaviour
+end;
+
+var
+Application: TIntXLibConsoleTestRunner;
 
 begin
+  Application := TIntXLibConsoleTestRunner.Create(nil);
   Application.Initialize;
-  Application.CreateForm(TGuiTestRunner, TestRunner);
   Application.Run;
+  Application.Free;
 end.
+                                

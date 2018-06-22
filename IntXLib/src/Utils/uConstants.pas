@@ -5,10 +5,6 @@
 interface
 
 uses
-{$IFDEF DELPHI}
-  Generics.Defaults,
-  Generics.Collections,
-{$ENDIF DELPHI}
   uStrRepHelper,
   uIntXLibTypes;
 

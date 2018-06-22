@@ -5,9 +5,6 @@ unit uStrRepHelper;
 interface
 
 uses
-{$IFDEF DELPHI}
-  Generics.Collections,
-{$ENDIF DELPHI}
   SysUtils,
   uStrings,
   uUtils,
@@ -86,6 +83,7 @@ class function TStrRepHelper.GetDigit(charToDigits: TDictionary<Char, UInt32>;
   ch: Char; numberBase: UInt32): UInt32;
 var
   digit: UInt32;
+  DataGotten: Boolean;
 begin
   digit := 0;
   if (charToDigits = Nil) then
@@ -94,15 +92,19 @@ begin
   end;
   // Try to identify this digit
 
-{$IFDEF DELPHI}
-  if (not charToDigits.TryGetValue(ch, digit)) then
-{$ENDIF DELPHI}
 {$IFDEF FPC}
-    if (not charToDigits.TryGetData(ch, digit)) then
+{$IFDEF FPC_LESS_THAN_3.0.2}
+  DataGotten := charToDigits.Find(ch, digit);
+{$ELSE}
+  DataGotten := charToDigits.TryGetData(ch, digit);
+{$ENDIF FPC_LESS_THAN_3.0.2}
+{$ELSE}
+  DataGotten := charToDigits.TryGetValue(ch, digit);
 {$ENDIF FPC}
-    begin
-      raise EFormatException.Create(uStrings.ParseInvalidChar);
-    end;
+  if (not(DataGotten)) then
+  begin
+    raise EFormatException.Create(uStrings.ParseInvalidChar);
+  end;
 
   if (digit >= numberBase) then
   begin
@@ -166,6 +168,9 @@ begin
 {$IFDEF FPC}
   LCharDigits := TDictionary<Char, UInt32>.Create();
   LCharDigits.Capacity := Integer(numberBase);
+{$IFDEF FPC_LESS_THAN_3.0.2}
+  FreverseLookupTable.Sorted := True;
+{$ENDIF FPC_LESS_THAN_3.0.2}
 {$ENDIF FPC}
   i := 0;
   while UInt32(i) < numberBase do

@@ -1,0 +1,63 @@
+# Part of `travis-lazarus` (https://github.com/nielsAD/travis-lazarus)
+# License: MIT
+
+language: generic
+sudo: required
+dist: trusty
+
+os:
+  - linux
+  - osx
+
+env:
+  global:
+    - WINEPREFIX=~/.winelaz
+    - DISPLAY=:99.0
+  matrix:
+   # - LAZ_PKG=true  # Use the latest version from the default package manager
+    - LAZ_VER=1.6 # Use specific (binary) release
+    - LAZ_VER=1.8.0
+   # FPC 3.0.4 Linker Fails in Old Linux OS, See 
+   # https://forum.lazarus.freepascal.org/index.php?topic=40238.0 and https://bugs.freepascal.org/view.php?id=32251
+   # - LAZ_VER=1.8.4
+
+matrix:
+  include:
+    - os: linux
+      env: LAZ_VER=1.6  LAZ_ENV=wine WINEARCH=win32 LAZ_OPT="--os=win32 --cpu=i386"
+    - os: linux
+      env: LAZ_VER=1.8.0 LAZ_ENV=wine WINEARCH=win32 LAZ_OPT="--os=win32 --cpu=i386"
+    - os: linux
+      env: LAZ_VER=1.8.4 LAZ_ENV=wine WINEARCH=win32 LAZ_OPT="--os=win32 --cpu=i386"
+    - os: linux
+      env: LAZ_VER=1.6  LAZ_ENV=wine WINEARCH=win64 LAZ_OPT="--os=win64 --cpu=x86_64"
+    - os: linux
+      env: LAZ_VER=1.8.0 LAZ_ENV=wine WINEARCH=win64 LAZ_OPT="--os=win64 --cpu=x86_64"
+    - os: linux
+      env: LAZ_VER=1.8.4 LAZ_ENV=wine WINEARCH=win64 LAZ_OPT="--os=win64 --cpu=x86_64"
+    - os: linux
+      env: LAZ_VER=1.6  LAZ_ENV=qemu-arm LAZ_OPT="--os=linux --cpu=arm"
+    - os: linux
+      env: LAZ_VER=1.8.0 LAZ_ENV=qemu-arm LAZ_OPT="--os=linux --cpu=arm"
+    - os: linux
+      env: LAZ_VER=1.8.4 LAZ_ENV=qemu-arm LAZ_OPT="--os=linux --cpu=arm"
+
+before_install:
+  # Start virtual display server
+  - Xvfb $DISPLAY &
+  - chmod +x .travis.install.py 
+
+install:
+  # Install prerequisites (fpc/lazarus/wine/qemu)
+  - ./.travis.install.py
+
+script:
+  - lazbuild --add-package-link ./IntXLib/src/Packages/FPC/IntXLib4PascalPackage.lpk  # Add IntXLib4Pascal Package
+  - lazbuild $LAZ_OPT ./IntXLib/src/Packages/FPC/IntXLib4PascalPackage.lpk  # Build IntXLib4Pascal Package
+  - lazbuild $LAZ_OPT ./IntXLib.Tests/FreePascal.Tests/IntXLibConsole.Tests.lpi  # Build IntXLib4Pascal Test Project
+  - travis_wait 120 $LAZ_ENV ./IntXLib.Tests/FreePascal.Tests/bin/IntXLib --all --format=plain --progress # Run IntXLib4Pascal TestSuite with timeout of 120 mins
+
+notifications:
+  email:
+    on_success: false
+    on_failure: change

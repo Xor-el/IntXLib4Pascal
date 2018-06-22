@@ -5,9 +5,6 @@ unit uParserBase;
 interface
 
 uses
-{$IFDEF DELPHI}
-  Generics.Collections,
-{$ENDIF DELPHI}
   Math,
   SysUtils,
   uIParser,

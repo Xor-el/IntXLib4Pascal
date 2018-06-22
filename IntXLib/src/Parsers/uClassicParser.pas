@@ -1,13 +1,10 @@
 unit uClassicParser;
-
+
 {$I ..\Include\IntXLib.inc}
 
 interface
 
 uses
-{$IFDEF DELPHI}
-  Generics.Collections,
-{$ENDIF DELPHI}
   uParserBase,
   uIParser,
   uStrRepHelper,
@@ -115,4 +112,3 @@ begin
 end;
 
 end.
-

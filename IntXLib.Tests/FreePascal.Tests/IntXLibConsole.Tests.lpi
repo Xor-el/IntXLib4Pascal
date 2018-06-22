@@ -6,9 +6,8 @@
     <General>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="IntXLib"/>
+      <Title Value="IntXLib.Tests"/>
       <ResourceType Value="res"/>
-      <UseXPManifest Value="True"/>
     </General>
     <i18n>
       <EnableI18N LFM="False"/>
@@ -19,9 +18,6 @@
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
-          <Target>
-            <Filename Value=".\bin\IntXLib"/>
-          </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
             <OtherUnitFiles Value="src"/>
@@ -38,13 +34,11 @@
               <OverflowChecks Value="True"/>
               <StackChecks Value="True"/>
             </Checks>
-            <VerifyObjMethodCallValidity Value="True"/>
           </CodeGeneration>
           <Linking>
             <Debugging>
               <DebugInfoType Value="dsDwarf2Set"/>
               <UseHeaptrc Value="True"/>
-              <TrashVariables Value="True"/>
               <UseExternalDbgSyms Value="True"/>
             </Debugging>
           </Linking>
@@ -57,27 +51,26 @@
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes Count="1">
-        <Mode0 Name="default"/>
+        <Mode0 Name="default">
+          <local>
+            <CommandLineParams Value="--format=plain --all --progress"/>
+          </local>
+        </Mode0>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="4">
+    <RequiredPackages Count="2">
       <Item1>
         <PackageName Value="IntXLib4PascalPackage"/>
       </Item1>
       <Item2>
-        <PackageName Value="fpcunittestrunner"/>
-      </Item2>
-      <Item3>
-        <PackageName Value="LCL"/>
-      </Item3>
-      <Item4>
         <PackageName Value="FCL"/>
-      </Item4>
+      </Item2>
     </RequiredPackages>
     <Units Count="44">
       <Unit0>
-        <Filename Value="IntXLib.lpr"/>
+        <Filename Value="IntXLibConsole.lpr"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="IntXLib.Tests"/>
       </Unit0>
       <Unit1>
         <Filename Value="src\AbsoluteValueTest.pas"/>
@@ -88,167 +81,167 @@
         <IsPartOfProject Value="True"/>
       </Unit2>
       <Unit3>
-        <Filename Value="src\BitwiseAndOpTest.pas"/>
+        <Filename Value="src\AsConvertOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit3>
       <Unit4>
-        <Filename Value="src\BitwiseOrOpTest.pas"/>
+        <Filename Value="src\BezoutsIdentityOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit4>
       <Unit5>
-        <Filename Value="src\ConstructorTest.pas"/>
+        <Filename Value="src\BitwiseAndOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit5>
       <Unit6>
-        <Filename Value="src\CustomAlphabetTest.pas"/>
+        <Filename Value="src\BitwiseOrOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit6>
       <Unit7>
-        <Filename Value="src\TestHelper.pas"/>
+        <Filename Value="src\ConstructorTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit7>
       <Unit8>
-        <Filename Value="src\DivOpNewtonTest.pas"/>
+        <Filename Value="src\CustomAlphabetTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit8>
       <Unit9>
-        <Filename Value="src\DivOpTest.pas"/>
+        <Filename Value="src\DivOpNewtonTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit9>
       <Unit10>
-        <Filename Value="src\EqualsOpTest.pas"/>
+        <Filename Value="src\DivOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit10>
       <Unit11>
-        <Filename Value="src\ExclusiveOrOpTest.pas"/>
+        <Filename Value="src\EqualsOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit11>
       <Unit12>
-        <Filename Value="src\ExplicitConvertOpTest.pas"/>
+        <Filename Value="src\ExclusiveOrOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit12>
       <Unit13>
-        <Filename Value="src\GreaterEqOpTest.pas"/>
+        <Filename Value="src\ExplicitConvertOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit13>
       <Unit14>
-        <Filename Value="src\GreaterOpTest.pas"/>
+        <Filename Value="src\GCDOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit14>
       <Unit15>
-        <Filename Value="src\ImplicitConvertOpTest.pas"/>
+        <Filename Value="src\GreaterEqOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit15>
       <Unit16>
-        <Filename Value="src\IntegerLogNTest.pas"/>
+        <Filename Value="src\GreaterOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit16>
       <Unit17>
-        <Filename Value="src\IntegerSquareRootTest.pas"/>
+        <Filename Value="src\ImplicitConvertOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit17>
       <Unit18>
-        <Filename Value="src\IntXZeroandOneTest.pas"/>
+        <Filename Value="src\IntegerLogNTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit18>
       <Unit19>
-        <Filename Value="src\IsOddTest.pas"/>
+        <Filename Value="src\IntegerSquareRootTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit19>
       <Unit20>
-        <Filename Value="src\LessEqOpTest.pas"/>
+        <Filename Value="src\IntXZeroandOneTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit20>
       <Unit21>
-        <Filename Value="src\LessOpTest.pas"/>
+        <Filename Value="src\InvModOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit21>
       <Unit22>
-        <Filename Value="src\ModOpTest.pas"/>
+        <Filename Value="src\IsOddTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit22>
       <Unit23>
-        <Filename Value="src\MulOpFhtTest.pas"/>
+        <Filename Value="src\IsProbablyPrimeOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit23>
       <Unit24>
-        <Filename Value="src\MulOpTest.pas"/>
+        <Filename Value="src\LCMOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit24>
       <Unit25>
-        <Filename Value="src\NormalizeTest.pas"/>
+        <Filename Value="src\LessEqOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit25>
       <Unit26>
-        <Filename Value="src\OnesComplementOpTest.pas"/>
+        <Filename Value="src\LessOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit26>
       <Unit27>
-        <Filename Value="src\ParseFastTest.pas"/>
+        <Filename Value="src\LogNTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit27>
       <Unit28>
-        <Filename Value="src\ParseTest.pas"/>
+        <Filename Value="src\ModOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit28>
       <Unit29>
-        <Filename Value="src\PerformanceTest.pas"/>
+        <Filename Value="src\ModPowOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit29>
       <Unit30>
-        <Filename Value="src\PowTest.pas"/>
+        <Filename Value="src\MulOpFhtTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit30>
       <Unit31>
-        <Filename Value="src\ShiftOpTest.pas"/>
+        <Filename Value="src\MulOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit31>
       <Unit32>
-        <Filename Value="src\SubOpTest.pas"/>
+        <Filename Value="src\NormalizeTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit32>
       <Unit33>
-        <Filename Value="src\ToStringFastTest.pas"/>
+        <Filename Value="src\OnesComplementOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit33>
       <Unit34>
-        <Filename Value="src\ToStringTest.pas"/>
+        <Filename Value="src\ParseFastTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit34>
       <Unit35>
-        <Filename Value="src\UnaryOpTest.pas"/>
+        <Filename Value="src\ParseTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit35>
       <Unit36>
-        <Filename Value="src\LogNTest.pas"/>
+        <Filename Value="src\PerformanceTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit36>
       <Unit37>
-        <Filename Value="src\GCDOpTest.pas"/>
+        <Filename Value="src\PowTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit37>
       <Unit38>
-        <Filename Value="src\LCMOpTest.pas"/>
+        <Filename Value="src\ShiftOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit38>
       <Unit39>
-        <Filename Value="src\InvModOpTest.pas"/>
+        <Filename Value="src\SubOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit39>
       <Unit40>
-        <Filename Value="src\ModPowOpTest.pas"/>
+        <Filename Value="src\TestHelper.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit40>
       <Unit41>
-        <Filename Value="src\BezoutsIdentityOpTest.pas"/>
+        <Filename Value="src\ToStringFastTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit41>
       <Unit42>
-        <Filename Value="src\IsProbablyPrimeOpTest.pas"/>
+        <Filename Value="src\ToStringTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit42>
       <Unit43>
-        <Filename Value="src\AsConvertOpTest.pas"/>
+        <Filename Value="src\UnaryOpTest.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit43>
     </Units>
@@ -265,7 +258,7 @@
     </SearchPaths>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="7">
+    <Exceptions Count="3">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -275,18 +268,6 @@
       <Item3>
         <Name Value="EFOpenError"/>
       </Item3>
-      <Item4>
-        <Name Value="EArgumentException"/>
-      </Item4>
-      <Item5>
-        <Name Value="EDivByZero"/>
-      </Item5>
-      <Item6>
-        <Name Value="EArgumentNilException"/>
-      </Item6>
-      <Item7>
-        <Name Value="EFormatException"/>
-      </Item7>
     </Exceptions>
   </Debugging>
 </CONFIG>

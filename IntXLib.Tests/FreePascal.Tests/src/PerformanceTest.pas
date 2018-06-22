@@ -8,7 +8,6 @@ uses
   SysUtils,
   fpcunit,
   testregistry,
-  LCLIntf,
   uEnums,
   TestHelper,
   uIntXLibTypes,
@@ -34,7 +33,7 @@ implementation
 procedure TTestPerformance.Multiply128BitNumbers();
 var
   temp1, temp2: TIntXLibUInt32Array;
-  A, B: UInt32;
+  A, B: UInt64;
 begin
   SetLength(temp1, 4);
   temp1[0] := 47668;
@@ -50,10 +49,10 @@ begin
   Fint1 := TIntX.Create(temp1, False);
   Fint2 := TIntX.Create(temp2, False);
 
-  A := GetTickCount;
+  A := GetTickCount64;
 
   TTestHelper.Repeater(100000, @Inner);
-  B := GetTickCount;
+  B := GetTickCount64;
   WriteLn(Format('classic multiply operation took %u ms', [B - A]));
 
 end;

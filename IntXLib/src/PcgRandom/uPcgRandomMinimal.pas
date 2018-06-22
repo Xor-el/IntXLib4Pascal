@@ -1,5 +1,5 @@
 unit uPcgRandomMinimal;
-
+
 {$I ..\Include\IntXLib.inc}
 (*
   * PCG Random Number Generation for Pascal.
@@ -144,6 +144,31 @@ type
 
 implementation
 
+class procedure TPcg.Seed(initState: UInt64; initSeq: UInt64);
+begin
+  Fm_state := UInt32(0);
+  Fm_inc := (initSeq shl 1) or UInt64(1);
+  NextUInt32();
+  Fm_state := Fm_state + initState;
+  NextUInt32();
+end;
+
+class function TPcg.GetInitSeq(tempVal: UInt64): UInt64;
+
+begin
+  result := tempVal * 181783497276652981;
+end;
+
+
+class function TPcg.GetInitState(out initSeq: UInt64): UInt64;
+
+begin
+  result := UInt64
+    (CompConverter(TimeStampToMsecs(DateTimeToTimeStamp(Now))).I64);
+  initSeq := GetInitSeq(result) * Int64(1000000);
+
+end;
+
 // static class constructor
 class constructor TPcg.Create();
 var
@@ -158,24 +183,19 @@ begin
 end;
 
 constructor TPcg.Create();
+var
+  LinitState, LinitSeq: UInt64;
 begin
   // ==> initializes using default seeds. you can change it to any reasonable
   // value
-  Seed(UInt64($853C49E6748FEA9B), UInt64($DA3E39CB94B95BDB));
+  LinitState := UInt64($853C49E6748FEA9B);
+  LinitSeq := UInt64($DA3E39CB94B95BDB);
+  Seed(LinitState, LinitSeq);
 end;
 
 constructor TPcg.Create(initState: UInt64; initSeq: UInt64);
 begin
   Seed(initState, initSeq);
-end;
-
-class procedure TPcg.Seed(initState: UInt64; initSeq: UInt64);
-begin
-  Fm_state := UInt32(0);
-  Fm_inc := (initSeq shl 1) or UInt64(1);
-  NextUInt32();
-  Fm_state := Fm_state + initState;
-  NextUInt32();
 end;
 
 class function TPcg.Range32(exclusiveBound: UInt32): UInt32;
@@ -251,20 +271,4 @@ begin
   result := rangeResult + minimum;
 end;
 
-class function TPcg.GetInitState(out initSeq: UInt64): UInt64;
-
-begin
-  result := UInt64
-    (CompConverter(TimeStampToMsecs(DateTimeToTimeStamp(Now))).I64);
-  initSeq := GetInitSeq(result) * Int64(1000000);
-
-end;
-
-class function TPcg.GetInitSeq(tempVal: UInt64): UInt64;
-
-begin
-  result := tempVal * 181783497276652981;
-end;
-
 end.
-

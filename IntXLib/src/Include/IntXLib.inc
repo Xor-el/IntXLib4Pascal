@@ -12,12 +12,20 @@
 {$IFDEF FPC}
 {$UNDEF DELPHI}
 {$MODE delphi}
-{$POINTERMATH ON}
-{$ZEROBASEDSTRINGS OFF}
-{$HINTS OFF}
-{$RANGECHECKS OFF}
+
+// Disable Overflow and RangeChecks.
 {$OVERFLOWCHECKS OFF}
-{$I Helper.inc} // Had to Include this Since Delphi Does not allow "FPC_FULLVERSION" to Compile.
+{$RANGECHECKS OFF}
+
+// Enable Pointer Math
+{$POINTERMATH ON}
+
+// Disable Warnings and Hints.
+{$WARNINGS OFF}
+{$HINTS OFF}
+{$NOTES OFF}
+
+{$I IntXLibHelper.inc} // Had to Include this Since Delphi Does not allow "FPC_FULLVERSION" to Compile.
 {$ENDIF FPC}
 
 (* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& *)
@@ -70,9 +78,20 @@
 {$DEFINE DELPHIXE7_UP}
 {$IFEND}
 
+// 10.2 Tokyo and Above
+{$IF CompilerVersion >= 32.0}
+{$DEFINE DELPHI10.2_TOKYO_UP}
+{$IFEND}
+
   // 2010 and Above
 {$IFNDEF DELPHI2010_UP}
 {$MESSAGE ERROR 'This Library requires Delphi 2010 or higher.'}
+{$ENDIF}
+
+// 10.2 Tokyo and Above
+{$IFDEF DELPHI10.2_TOKYO_UP}
+{$WARN COMBINING_SIGNED_UNSIGNED OFF}
+{$WARN COMBINING_SIGNED_UNSIGNED64 OFF}
 {$ENDIF}
 
 

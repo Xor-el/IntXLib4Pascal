@@ -5,9 +5,6 @@ unit uIntX;
 interface
 
 uses
-{$IFDEF DELPHI}
-  Generics.Collections,
-{$ENDIF DELPHI}
   Math,
   SysUtils,
 {$IFDEF DEBUG}
@@ -1746,6 +1743,23 @@ begin
   _settings.Free;
 end;
 
+class function TIntX.CompareRecords(Rec1: TIntX; Rec2: TIntX): Boolean;
+
+begin
+
+  if Length(Rec1._digits) <> Length(Rec2._digits) then
+  begin
+    result := false;
+    Exit;
+  end;
+
+  result := (CompareMem(Pointer(Rec1._digits), Pointer(Rec2._digits),
+    Length(Rec1._digits) * SizeOf(UInt32)) and (Rec1._length = Rec2._length) and
+    (Rec1._negative = Rec2._negative) and
+    (Rec1._zeroinithelper = Rec2._zeroinithelper));
+
+end;
+
 class function TIntX.GetZero: TIntX;
 begin
   result := ZeroX;
@@ -3179,23 +3193,6 @@ begin
   begin
     Normalize();
   end;
-end;
-
-class function TIntX.CompareRecords(Rec1: TIntX; Rec2: TIntX): Boolean;
-
-begin
-
-  if Length(Rec1._digits) <> Length(Rec2._digits) then
-  begin
-    result := false;
-    Exit;
-  end;
-
-  result := (CompareMem(Pointer(Rec1._digits), Pointer(Rec2._digits),
-    Length(Rec1._digits) * SizeOf(UInt32)) and (Rec1._length = Rec2._length) and
-    (Rec1._negative = Rec2._negative) and
-    (Rec1._zeroinithelper = Rec2._zeroinithelper));
-
 end;
 
 end.

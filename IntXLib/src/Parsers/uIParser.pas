@@ -1,16 +1,10 @@
 unit uIParser;
-
+
 {$I ..\Include\IntXLib.inc}
 
 interface
 
 uses
-{$IFDEF DELPHI}
-  Generics.Collections,
-{$ENDIF DELPHI}
-{$IFDEF FPC}
-  fgl,
-{$ENDIF FPC}
   uIntX,
   uIntXLibTypes;
 
@@ -54,4 +48,3 @@ type
 implementation
 
 end.
-

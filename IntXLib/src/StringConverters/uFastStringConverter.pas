@@ -1,17 +1,11 @@
 unit uFastStringConverter;
-
+
 {$I ..\Include\IntXLib.inc}
 
 interface
 
 uses
   SysUtils,
-{$IFDEF DELPHI}
-  Generics.Collections,
-{$ENDIF DELPHI}
-{$IFDEF FPC}
-  gstack,
-{$ENDIF FPC}
   uEnums,
   uDigitHelper,
   uStringConverterBase,
@@ -93,7 +87,7 @@ var
   resultLength, loLength, innerStep, outerStep, j: UInt32;
   multiplier: IIMultiplier;
   divider: IIDivider;
-  baseIntStack: TStack<TIntX>;
+  baseIntStack: TMyStack<TIntX>;
   baseInt: TIntX;
   resultPtr1Const, resultPtr2Const, tempBufferPtr, resultPtr1, resultPtr2,
     tempPtr, ptr1, ptr2, ptr1end, baseIntPtr, outputPtr: PCardinal;
@@ -132,7 +126,7 @@ begin
 
   // Generate all needed pows of numberBase in stack
 
-  baseIntStack := TStack<TIntX>.Create;
+  baseIntStack := TMyStack<TIntX>.Create;
   try
 
     baseInt := Default (TIntX);
@@ -257,4 +251,3 @@ begin
 end;
 
 end.
-
