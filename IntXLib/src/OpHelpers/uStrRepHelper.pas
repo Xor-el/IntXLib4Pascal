@@ -94,7 +94,7 @@ begin
 
 {$IFDEF FPC}
 {$IFDEF FPC_LESS_THAN_3.0.2}
-  DataGotten := charToDigits.Find(ch, digit);
+  DataGotten := charToDigits.Find(UpCase(ch), Integer(digit));
 {$ELSE}
   DataGotten := charToDigits.TryGetData(ch, digit);
 {$ENDIF FPC_LESS_THAN_3.0.2}
@@ -169,7 +169,7 @@ begin
   LCharDigits := TDictionary<Char, UInt32>.Create();
   LCharDigits.Capacity := Integer(numberBase);
 {$IFDEF FPC_LESS_THAN_3.0.2}
-  FreverseLookupTable.Sorted := True;
+  LCharDigits.Sorted := True;
 {$ENDIF FPC_LESS_THAN_3.0.2}
 {$ENDIF FPC}
   i := 0;
