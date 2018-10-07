@@ -20,23 +20,27 @@ type
     /// <summary>
     /// Calculates Arithmetic shift right.
     /// </summary>
-    /// <param name="value">Integer value to compute 'Asr' on.</param>
-    /// <param name="ShiftBits"> number of bits to shift value to.</param>
+    /// <param name="AValue">Integer value to compute 'Asr' on.</param>
+    /// <param name="AShiftBits">Byte, number of bits to shift value to.</param>
     /// <returns>Shifted value.</returns>
-    /// <seealso href="http://stackoverflow.com/questions/21940986/">[Delphi ASR Implementation for Integer]</seealso>
+    /// <remarks>
+    /// Emulated Implementation was gotten from FreePascal sources
+    /// </remarks>
 
-    class function Asr32(value: Integer; ShiftBits: Integer): Integer; overload;
+    class function Asr32(AValue: Integer; AShiftBits: Byte): Integer;
       static; inline;
 
     /// <summary>
     /// Calculates Arithmetic shift right.
     /// </summary>
-    /// <param name="value">Int64 value to compute 'Asr' on.</param>
-    /// <param name="ShiftBits"> number of bits to shift value to.</param>
+    /// <param name="AValue">Int64 value to compute 'Asr' on.</param>
+    /// <param name="AShiftBits">Byte, number of bits to shift value to.</param>
     /// <returns>Shifted value.</returns>
-    /// <seealso href="http://github.com/Spelt/ZXing.Delphi/blob/master/Lib/Classes/Common/MathUtils.pas">[Delphi ASR Implementation for Int64]</seealso>
+    /// <remarks>
+    /// Emulated Implementation was gotten from FreePascal sources
+    /// </remarks>
 
-    class function Asr64(value: Int64; ShiftBits: Integer): Int64; overload;
+    class function Asr64(AValue: Int64; AShiftBits: Byte): Int64;
       static; inline;
 
     // Lifted from DaThoX Free Pascal generics library with little modifications.
@@ -48,21 +52,29 @@ type
 
 implementation
 
-class function TUtils.Asr32(value: Integer; ShiftBits: Integer): Integer;
+class function TUtils.Asr32(AValue: Integer; AShiftBits: Byte): Integer;
 
 begin
-  Result := value shr ShiftBits;
-  if (value and $80000000) > 0 then
-    // if you don't want to cast ($FFFFFFFF) to an Integer, simply replace it with
-    // (-1) to avoid range check error.
-    Result := Result or (Integer($FFFFFFFF) shl (32 - ShiftBits));
+{$IFDEF FPC}
+  Result := SarLongInt(AValue, AShiftBits);
+{$ELSE}
+  Result := Int32(UInt32(UInt32(UInt32(AValue) shr (AShiftBits and 31)) or
+    (UInt32(Int32(UInt32(0 - UInt32(UInt32(AValue) shr 31)) and
+    UInt32(Int32(0 - (Ord((AShiftBits and 31) <> 0) { and 1 } )))))
+    shl (32 - (AShiftBits and 31)))));
+{$ENDIF FPC}
 end;
 
-class function TUtils.Asr64(value: Int64; ShiftBits: Integer): Int64;
+class function TUtils.Asr64(AValue: Int64; AShiftBits: Byte): Int64;
 begin
-  Result := value shr ShiftBits;
-  if (value and $8000000000000000) > 0 then
-    Result := Result or ($FFFFFFFFFFFFFFFF shl (64 - ShiftBits));
+{$IFDEF FPC}
+  Result := SarInt64(AValue, AShiftBits);
+{$ELSE}
+  Result := Int64(UInt64(UInt64(UInt64(AValue) shr (AShiftBits and 63)) or
+    (UInt64(Int64(UInt64(0 - UInt64(UInt64(AValue) shr 63)) and
+    UInt64(Int64(0 - (Ord((AShiftBits and 63) <> 0) { and 1 } )))))
+    shl (64 - (AShiftBits and 63)))));
+{$ENDIF FPC}
 end;
 
 class procedure TUtils.QuickSort(var AValues: TIntXLibCharArray;
