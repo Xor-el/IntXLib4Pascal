@@ -2,6 +2,8 @@ package IntXLib4PascalPackage;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$WARNINGS OFF}
+{$HINTS OFF}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
