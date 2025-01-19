@@ -1,7 +1,0 @@
-{
-    "app" : "IntXLib",
-    "lib" : "IntXLib",
-    "tst" : "IntXLib.Tests/FreePascal.Tests/IntXLibConsole.Tests.lpi",
-    "pkg" : [
-    ]
-}
